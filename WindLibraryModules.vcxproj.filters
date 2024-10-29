@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Module Files">
+      <UniqueIdentifier>{c62ddb1d-85bd-4780-844d-685f5b2c1893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Allegro Module Files">
+      <UniqueIdentifier>{dd76cad4-7823-4c3a-957d-919137e3ca2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Allegro Module Files\Addon Files">
+      <UniqueIdentifier>{389c730a-6393-4f55-9d65-15d5ee236c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Allegro Module Files\Partition Files">
+      <UniqueIdentifier>{64dc9bbb-84de-4f83-9eec-9a1e71650c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Wind Module Files">
+      <UniqueIdentifier>{b80c04d6-4657-40b1-b824-c07988810499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Wind Module Files\Partition Files">
+      <UniqueIdentifier>{41901217-d51c-4b73-a346-8ecee458ada5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Wind Module Files\Addon Files">
+      <UniqueIdentifier>{85bafcd8-f251-4661-892f-b44f9a194520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Addon Files">
+      <UniqueIdentifier>{34930e46-816a-41e6-9ee8-b6350139e7d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro.ixx">
+      <Filter>Module Files\Allegro Module Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_altime.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_array.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_base.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_draw.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_io.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_lock.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_blender.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_clipboard.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_color.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_config.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_cpu.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_debug.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_display.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_drawing.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_error.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_events.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_file.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fixed.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fmaths.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fshook.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fullscreen_mode.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_haptic.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_joystick.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_keyboard.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_keycodes.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_memory.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_monitor.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_mouse.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_mouse_cursor.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_path.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_platform.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_render_state.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_shader.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_system.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_threads.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_timer.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_tls.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_touch_input.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_transformations.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_utf8.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_acodec.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_audio.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_color.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_font.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_image.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_memfile.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_physfs.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_primitives.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_ttf.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_video.ixx">
+      <Filter>Module Files\Allegro Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\wind.ixx">
+      <Filter>Module Files\Wind Module Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_base.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_bitmap.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_box.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_color.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_config.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_console.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_console_base.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_console_font.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_dialog.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_dson.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_error.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_file.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_frame.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_hex.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_input.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json_error.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json_io.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json_object.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json_parser.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_json_tokenizer.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_map.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_math.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_memory.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_path.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_string.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_system.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_tilemap.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_tilesheet.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_vector.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\addons\datafile_addon.ixx">
+      <Filter>Module Files\Wind Module Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_bitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_console_font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_dson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_hex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_tokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_cell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_io.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilemap_tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilesheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\addons\datafile_addon.cpp">
+      <Filter>Source Files\Addon Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

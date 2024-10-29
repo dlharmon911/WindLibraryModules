@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{8bb8f0b3-11ff-4d0e-b8e0-9ebf386ad4c5}</ProjectGuid>
+    <RootNamespace>WindLibraryModules</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Allegro_AddonImage>true</Allegro_AddonImage>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonPhysfs>true</Allegro_AddonPhysfs>
+    <Allegro_AddonFont>true</Allegro_AddonFont>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Allegro_AddonImage>true</Allegro_AddonImage>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonPhysfs>true</Allegro_AddonPhysfs>
+    <Allegro_AddonFont>true</Allegro_AddonFont>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Allegro_AddonImage>true</Allegro_AddonImage>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonPhysfs>true</Allegro_AddonPhysfs>
+    <Allegro_AddonFont>true</Allegro_AddonFont>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Allegro_AddonImage>true</Allegro_AddonImage>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonPhysfs>true</Allegro_AddonPhysfs>
+    <Allegro_AddonFont>true</Allegro_AddonFont>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_acodec.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_audio.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_color.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_font.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_image.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_memfile.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_physfs.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_primitives.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_ttf.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\addon\a_addon_video.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_altime.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_array.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_base.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_draw.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_io.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_bitmap_lock.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_blender.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_clipboard.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_color.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_config.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_cpu.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_debug.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_display.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_drawing.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_error.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_events.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_file.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fixed.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fmaths.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fshook.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_fullscreen_mode.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_haptic.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_joystick.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_keyboard.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_keycodes.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_memory.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_monitor.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_mouse.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_mouse_cursor.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_path.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_platform.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_render_state.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_shader.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_system.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_threads.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_timer.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_tls.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_touch_input.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_transformations.ixx" />
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_utf8.ixx" />
+    <ClCompile Include="modules\addons\datafile_addon.ixx" />
+    <ClCompile Include="modules\wind.ixx" />
+    <ClCompile Include="modules\w_base.ixx" />
+    <ClCompile Include="modules\w_bitmap.ixx" />
+    <ClCompile Include="modules\w_box.ixx" />
+    <ClCompile Include="modules\w_color.ixx" />
+    <ClCompile Include="modules\w_config.ixx" />
+    <ClCompile Include="modules\w_console.ixx" />
+    <ClCompile Include="modules\w_console_base.ixx" />
+    <ClCompile Include="modules\w_console_font.ixx" />
+    <ClCompile Include="modules\w_dialog.ixx" />
+    <ClCompile Include="modules\w_dson.ixx" />
+    <ClCompile Include="modules\w_error.ixx" />
+    <ClCompile Include="modules\w_file.ixx" />
+    <ClCompile Include="modules\w_frame.ixx" />
+    <ClCompile Include="modules\w_hex.ixx" />
+    <ClCompile Include="modules\w_input.ixx" />
+    <ClCompile Include="modules\w_json.ixx" />
+    <ClCompile Include="modules\w_json_error.ixx" />
+    <ClCompile Include="modules\w_json_io.ixx" />
+    <ClCompile Include="modules\w_json_object.ixx" />
+    <ClCompile Include="modules\w_json_parser.ixx" />
+    <ClCompile Include="modules\w_json_tokenizer.ixx" />
+    <ClCompile Include="modules\w_map.ixx" />
+    <ClCompile Include="modules\w_math.ixx" />
+    <ClCompile Include="modules\w_memory.ixx" />
+    <ClCompile Include="modules\w_path.ixx" />
+    <ClCompile Include="modules\w_string.ixx" />
+    <ClCompile Include="modules\w_system.ixx" />
+    <ClCompile Include="modules\w_tilemap.ixx" />
+    <ClCompile Include="modules\w_tilesheet.ixx" />
+    <ClCompile Include="modules\w_vector.ixx" />
+    <ClCompile Include="src\addons\datafile_addon.cpp" />
+    <ClCompile Include="src\w_bitmap.cpp" />
+    <ClCompile Include="src\w_config.cpp" />
+    <ClCompile Include="src\w_console.cpp" />
+    <ClCompile Include="src\w_console_font.cpp" />
+    <ClCompile Include="src\w_dson.cpp" />
+    <ClCompile Include="src\w_error.cpp" />
+    <ClCompile Include="src\w_file.cpp" />
+    <ClCompile Include="src\w_font.cpp" />
+    <ClCompile Include="src\w_frame.cpp" />
+    <ClCompile Include="src\w_hex.cpp" />
+    <ClCompile Include="src\w_input.cpp" />
+    <ClCompile Include="src\w_json_error.cpp" />
+    <ClCompile Include="src\w_json_object.cpp" />
+    <ClCompile Include="src\w_json_parser.cpp" />
+    <ClCompile Include="src\w_json_tokenizer.cpp" />
+    <ClCompile Include="src\w_map.cpp" />
+    <ClCompile Include="src\w_map_camera.cpp" />
+    <ClCompile Include="src\w_map_cell.cpp" />
+    <ClCompile Include="src\w_map_draw.cpp" />
+    <ClCompile Include="src\w_map_io.cpp" />
+    <ClCompile Include="src\w_path.cpp" />
+    <ClCompile Include="src\w_string.cpp" />
+    <ClCompile Include="src\w_system.cpp" />
+    <ClCompile Include="src\w_tilemap.cpp" />
+    <ClCompile Include="src\w_tilemap_tile.cpp" />
+    <ClCompile Include="src\w_tilesheet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\AllegroDeps.1.14.0\build\native\AllegroDeps.targets" Condition="Exists('packages\AllegroDeps.1.14.0\build\native\AllegroDeps.targets')" />
+    <Import Project="packages\Allegro.5.2.9\build\native\Allegro.targets" Condition="Exists('packages\Allegro.5.2.9\build\native\Allegro.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\AllegroDeps.1.14.0\build\native\AllegroDeps.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\AllegroDeps.1.14.0\build\native\AllegroDeps.targets'))" />
+    <Error Condition="!Exists('packages\Allegro.5.2.9\build\native\Allegro.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Allegro.5.2.9\build\native\Allegro.targets'))" />
+  </Target>
+</Project>
