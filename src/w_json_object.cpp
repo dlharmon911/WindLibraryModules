@@ -135,7 +135,7 @@ namespace wind
 		return std::atof(al::c_str((ALLEGRO::USTRING&)this->m_data));
 	}
 
-	string_t json_t::get_as_string()
+	string_t json_t::get_as_string() const
 	{
 		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_STRING);
 
@@ -144,21 +144,6 @@ namespace wind
 		if (this->m_data)
 		{
 			rv = ((string_t&)this->m_data);
-		}
-
-		return rv;
-	}
-
-	const string_t json_t::get_as_string() const
-	{
-		string_t rv;
-
-		if (this->m_type == WIND::JSON::TYPE_STRING)
-		{
-			if (this->m_data)
-			{
-				rv = std::static_pointer_cast<ALLEGRO::USTRING_DATA>(this->m_data);
-			}
 		}
 
 		return rv;
@@ -259,22 +244,22 @@ namespace wind
 		return this->m_data.empty();
 	}
 
-	json_object_t::reference_t json_object_t::at(const json_key_t& key)
+	json_object_t::reference_element_type json_object_t::at(const json_key_t& key)
 	{
 		return this->m_data.at(key);
 	}
 
-	json_object_t::const_reference_t json_object_t::at(const json_key_t& key) const
+	json_object_t::const_reference_element_type json_object_t::at(const json_key_t& key) const
 	{
 		return this->m_data.at(key);
 	}
 
-	json_object_t::reference_t json_object_t::operator [](const json_key_t& key)
+	json_object_t::reference_element_type json_object_t::operator [](const json_key_t& key)
 	{
 		return this->m_data[key];
 	}
 
-	void json_object_t::add(const json_key_t& key, const value_t& val)
+	void json_object_t::add(const json_key_t& key, const element_type& val)
 	{
 		this->m_data[key] = val;
 	}
@@ -323,10 +308,10 @@ namespace wind
 
 	json_array_t::json_array_t() : m_data() {}
 	json_array_t::json_array_t(size_t n) : m_data(n) {}
-	json_array_t::json_array_t(size_t n, const value_t& val) : m_data(n, val) {}
+	json_array_t::json_array_t(size_t n, const element_type& val) : m_data(n, val) {}
 	json_array_t::json_array_t(const json_array_t& array) : m_data(array.m_data) {}
 	json_array_t::json_array_t(json_array_t& array) : m_data(array.m_data) {}
-	json_array_t::json_array_t(std::initializer_list<value_t> il) : m_data(il) {}
+	json_array_t::json_array_t(std::initializer_list<element_type> il) : m_data(il) {}
 	json_array_t::~json_array_t() {}
 
 	json_array_t& json_array_t::operator = (const json_array_t& array)
@@ -341,7 +326,7 @@ namespace wind
 		return *this;
 	}
 
-	json_array_t& json_array_t::operator = (std::initializer_list<value_t> il)
+	json_array_t& json_array_t::operator = (std::initializer_list<element_type> il)
 	{
 		this->m_data = il;
 		return *this;
@@ -362,31 +347,31 @@ namespace wind
 		return this->m_data.empty();
 	}
 
-	json_array_t::reference_t json_array_t::at(size_t index)
+	json_array_t::reference_element_type json_array_t::at(size_t index)
 	{
 		ALLEGRO::ASSERT(index < this->m_data.size());
 		return this->m_data[index];
 	}
 
-	json_array_t::const_reference_t json_array_t::at(size_t index) const
+	json_array_t::const_reference_element_type json_array_t::at(size_t index) const
 	{
 		ALLEGRO::ASSERT(index < this->m_data.size());
 		return this->m_data[index];
 	}
 
-	json_array_t::reference_t json_array_t::operator [](size_t index)
+	json_array_t::reference_element_type json_array_t::operator [](size_t index)
 	{
 		ALLEGRO::ASSERT(index < this->m_data.size());
 		return this->m_data[index];
 	}
 
-	json_array_t::const_reference_t json_array_t::operator [](size_t index) const
+	json_array_t::const_reference_element_type json_array_t::operator [](size_t index) const
 	{
 		ALLEGRO::ASSERT(index < this->m_data.size());
 		return this->m_data[index];
 	}
 
-	void json_array_t::push_back(const value_t& val)
+	void json_array_t::push_back(const element_type& val)
 	{
 		this->m_data.push_back(val);
 	}
@@ -396,17 +381,17 @@ namespace wind
 		this->m_data.pop_back();
 	}
 
-	json_array_t::iterator json_array_t::insert(const_iterator position, const value_t& val)
+	json_array_t::iterator json_array_t::insert(const_iterator position, const element_type& val)
 	{
 		return iterator(this->m_data.insert(position.m_it, val));
 	}
 
-	json_array_t::iterator json_array_t::insert(const_iterator position, size_t n, const value_t& val)
+	json_array_t::iterator json_array_t::insert(const_iterator position, size_t n, const element_type& val)
 	{
 		return iterator(this->m_data.insert(position.m_it, n, val));
 	}
 
-	json_array_t::iterator json_array_t::insert(const_iterator position, std::initializer_list<value_t> il)
+	json_array_t::iterator json_array_t::insert(const_iterator position, std::initializer_list<element_type> il)
 	{
 		return iterator(this->m_data.insert(position.m_it, il));
 	}
@@ -421,12 +406,12 @@ namespace wind
 		return iterator(this->m_data.erase(first.m_it, last.m_it));
 	}
 
-	void json_array_t::assign(size_t n, const value_t& val)
+	void json_array_t::assign(size_t n, const element_type& val)
 	{
 		this->m_data.assign(n, val);
 	}
 
-	void json_array_t::assign(std::initializer_list<value_t> il)
+	void json_array_t::assign(std::initializer_list<element_type> il)
 	{
 		this->m_data.assign(il);
 	}

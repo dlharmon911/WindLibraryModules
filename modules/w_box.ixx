@@ -10,8 +10,8 @@ namespace wind
 {
 	namespace box
 	{
-		template <typename T, typename Q>
-		bool is_point_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::POINT<Q>& point)
+		export template <typename T, typename Q>
+		auto is_point_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::POINT<Q>& point) -> bool
 		{
 			return (math.compare<T>(T(point.x), box.top_left.x) >= 0 &&
 					math.compare<T>(T(point.y), box.top_left.y) >= 0 &&
@@ -19,14 +19,14 @@ namespace wind
 					math.compare<T>(T(point.y), box.bottom_right.y) <= 0);
 		}
 
-		template <typename T, typename Q>
-		bool is_box_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::BOX<Q>& other)
+		export template <typename T, typename Q>
+		auto is_box_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::BOX<Q>& other) -> bool
 		{
 			return (is_point_inside(box, other.top_left) && is_point_inside(box, other.bottom_right));
 		}
 
-		template <typename T, typename Q>
-		bool is_box_over(const ALLEGRO::BOX<T>& box, const ALLEGRO::BOX<Q>& other, ALLEGRO::BOX<T>& over)
+		export template <typename T, typename Q>
+		auto is_box_over(const ALLEGRO::BOX<T>& box, const ALLEGRO::BOX<Q>& other, ALLEGRO::BOX<T>& over) -> bool
 		{
 			if (math.compare<T>(T(other.bottom_right.x), box.top_left.x) < 0 ||
 				math.compare<T>(T(other.top_left.x), box.bottom_right.x) > 0 ||

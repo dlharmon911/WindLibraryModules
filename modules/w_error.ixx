@@ -6,23 +6,23 @@ import :string;
 
 namespace wind
 {
-	export class error_t
+	export class error_t : public class_t<error_t>
 	{
 	public:
 		error_t();
 		error_t(const string_t& message, const string_t& filename = string_t(), int32_t line = 0, const string_t& function = string_t());
 		error_t(const error_t& error);
 		~error_t();
-		error_t& operator = (const error_t& error);
+		auto operator = (const error_t& error) -> error_t&;
 
-		const string_t& get_message() const;
-		void set_message(const string_t& message);
-		const string_t& get_filename() const;
-		void set_filename(const string_t& filename);
-		int32_t get_line() const;
-		void set_line(int32_t line);
-		const string_t& get_function() const;
-		void set_function(const string_t& function);
+		auto get_message() const -> const string_t&;
+		auto set_message(const string_t& message) -> void;
+		auto get_filename() const -> const string_t&;
+		auto set_filename(const string_t& filename) -> void;
+		auto get_line() const -> int32_t;
+		auto set_line(int32_t line) -> void;
+		auto get_function() const -> const string_t&;
+		auto set_function(const string_t& function) -> void;
 
 	private:
 		string_t m_message{};
@@ -33,11 +33,11 @@ namespace wind
 
 	namespace error
 	{
-		export void clear();
-		export void push(const string_t& message, const string_t& filename = string_t(), int32_t line = 0, const string_t& function = string_t());
-		export void push(const error_t& error);
-		export const error_t peek();
-		export void pop();
-		export size_t count();
+		export auto clear() -> void;
+		export auto push(const string_t& message, const string_t& filename = string_t(), int32_t line = 0, const string_t& function = string_t()) -> void;
+		export auto push(const error_t& error) -> void;
+		export auto peek() -> const error_t;
+		export auto pop() -> void;
+		export auto count() -> size_t;
 	}
 }

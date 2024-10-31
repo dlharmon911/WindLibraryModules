@@ -210,7 +210,7 @@ namespace wind
 				if (this->m_node->has_content())
 				{
 					string_t temp = this->m_node->get_content();
-					int rv = config::expand_string(*this->m_config, temp, output);
+					int32_t rv = config::expand_string(*this->m_config, temp, output);
 
 					if (rv < 0)
 					{

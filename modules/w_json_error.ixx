@@ -32,6 +32,6 @@ namespace WIND
 
 namespace wind
 {
-	export void do_json_error(size_t index, const string_t& file, int32_t line);
+	export auto do_json_error(size_t index, const string_t& file, int32_t line) -> void;
 }
 

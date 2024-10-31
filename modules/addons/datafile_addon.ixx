@@ -41,13 +41,14 @@ namespace WIND
 
 namespace wind
 {
-	export class datafile_t
+	export class datafile_t : public wind::class_t<datafile_t>
 	{
 	public:
-		using pointer_type = std::shared_ptr<void>*;
-		using reference_type = std::shared_ptr<void>&;
-		using const_pointer_type = const std::shared_ptr<void>*;
-		using const_reference_type = const std::shared_ptr<void>&;
+		using element_type = std::shared_ptr<void>;
+		using pointer_element_type = wind::add_pointer<element_type>::type;
+		using const_pointer_element_type = wind::add_pointer<wind::add_const<element_type>::type>::type;
+		using reference_element_type = wind::add_reference<element_type>::type;
+		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 	private:
 		using vector_t = std::vector<std::shared_ptr<void>>;
@@ -99,14 +100,14 @@ namespace wind
 			iterator(vector_t::iterator o, std::vector<object_info_t>::iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
-			reference_type data() { return *this->m_o; }
+			reference_element_type data() { return *this->m_o; }
 
 			bool operator == (const iterator& it) const { return (this->m_o == it.m_o && this->m_e == it.m_e); }
 			bool operator != (const iterator& it) const { return !operator == (it); }
 			iterator& operator ++() { ++this->m_o; ++this->m_e; return *this; }
-			iterator operator++(int) { iterator tmp = *this; ++(*this); return tmp; }
-			reference_type operator *() { return *this->m_o; }
-			pointer_type operator &() { return &(*this->m_o); }
+			iterator operator++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
+			reference_element_type operator *() { return *this->m_o; }
+			pointer_element_type operator &() { return &(*this->m_o); }
 
 		private:
 			vector_t::iterator m_o;
@@ -123,14 +124,14 @@ namespace wind
 			const_iterator(vector_t::const_iterator o, std::vector<object_info_t>::const_iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
-			const_reference_type data() const { return *this->m_o; }
+			const_reference_element_type data() const { return *this->m_o; }
 
 			bool operator == (const const_iterator& it) const { return (this->m_o == it.m_o && this->m_e == it.m_e); }
 			bool operator != (const const_iterator& it) const { return !operator == (it); }
 			const_iterator& operator ++() { ++this->m_o; ++this->m_e; return *this; }
-			const_iterator operator++(int) { const_iterator tmp = *this; ++(*this); return tmp; }
-			const_reference_type operator *() const { return *this->m_o; }
-			const_pointer_type operator &() const { return &(*this->m_o); }
+			const_iterator operator++(int32_t) { const_iterator tmp = *this; ++(*this); return tmp; }
+			const_reference_element_type operator *() const { return *this->m_o; }
+			const_pointer_element_type operator &() const { return &(*this->m_o); }
 
 		private:
 			vector_t::const_iterator m_o;
@@ -173,7 +174,7 @@ namespace wind
 			class data_t;
 			bool datafile_parser(data_t& data, object_t& object);
 
-			export class data_t
+			export class data_t : public wind::class_t<data_t>
 			{
 			public:
 				data_t();
@@ -220,7 +221,7 @@ namespace wind
 				class iterator
 				{
 				public:
-					using value_type = data_t;
+					using element_type = data_t;
 
 					iterator() = default;
 
@@ -230,7 +231,7 @@ namespace wind
 					bool operator == (const iterator& it) const { return (this->m_iter == it.m_iter); }
 					bool operator != (const iterator& it) const { return !operator == (it); }
 					iterator& operator ++() { ++this->m_iter; return *this; }
-					iterator operator++(int) { iterator tmp = *this; ++(*this); return tmp; }
+					iterator operator++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
 					const data_t operator *() const { return data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
 
 					friend class data_t;

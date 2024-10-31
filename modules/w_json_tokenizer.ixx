@@ -62,20 +62,20 @@ namespace WIND
 
 namespace wind
 {
-	export class json_token_t
+	export class json_token_t : public class_t<json_token_t>
 	{
 	public:
 		json_token_t();
 		json_token_t(int32_t type, const string_t& str);
 		json_token_t(const json_token_t& token);
 		~json_token_t();
-		json_token_t& operator = (const json_token_t& token);
-		void clear();
-		void set_type(int32_t type);
-		int32_t get_type() const;
-		void set_string(const string_t& str);
-		string_t& get_string();
-		const string_t& get_string() const;
+		auto operator = (const json_token_t& token) ->json_token_t&;
+		auto clear() -> void;
+		auto set_type(int32_t type) -> void;
+		auto get_type() const -> int32_t;
+		auto set_string(const string_t& str) -> void;
+		auto get_string() -> string_t&;
+		auto get_string() const -> const string_t&;
 
 	private:
 		int32_t m_type;
@@ -95,7 +95,7 @@ namespace wind
 		json_tokenizer_t(json_tokenizer_t& tokenizer) : m_char(tokenizer.m_char), m_begin(tokenizer.m_begin), m_end(tokenizer.m_end) {}
 		~json_tokenizer_t() {}
 
-		json_tokenizer_t& operator = (const json_tokenizer_t& tokenizer)
+		auto operator = (const json_tokenizer_t& tokenizer) -> json_tokenizer_t&
 		{
 			this->m_char = tokenizer.m_char;
 			this->m_begin = tokenizer.m_begin;
@@ -104,7 +104,7 @@ namespace wind
 			return *this;
 		}
 
-		json_token_t get_next()
+		auto get_next() -> json_token_t
 		{
 			json_token_t rv;
 
@@ -152,7 +152,7 @@ namespace wind
 			return rv;
 		}
 
-		static size_t tokenize(std::vector<json_token_t>& tokens, iterator begin, iterator end)
+		static auto tokenize(std::vector<json_token_t>& tokens, iterator begin, iterator end) -> size_t
 		{
 			json_tokenizer_t tokenizer(begin, end);
 
@@ -186,7 +186,7 @@ namespace wind
 
 	private:
 
-		int32_t pop()
+		auto pop() -> int32_t
 		{
 			if (this->m_begin == this->m_end)
 			{
@@ -201,7 +201,7 @@ namespace wind
 			return this->m_char;
 		}
 
-		json_token_t parse_unquoted_string()
+		auto parse_unquoted_string() -> json_token_t
 		{
 			json_token_t rv;
 
@@ -238,7 +238,7 @@ namespace wind
 			return rv;
 		}
 
-		int32_t parse_escape_chars(string_t& str)
+		auto parse_escape_chars(string_t& str) -> int32_t
 		{
 			int32_t rv = 0;
 
@@ -301,7 +301,7 @@ namespace wind
 			return rv;
 		}
 
-		json_token_t parse_quoted_string()
+		auto parse_quoted_string() -> json_token_t
 		{
 			json_token_t rv;
 
@@ -346,7 +346,7 @@ namespace wind
 			return rv;
 		}
 
-		size_t parse_fragment_exp(string_t& string)
+		auto parse_fragment_exp(string_t& string) -> size_t
 		{
 			string_t epart = wind::string::create(this->m_char, 1);
 
@@ -377,7 +377,7 @@ namespace wind
 			return epart.length();
 		}
 
-		size_t parse_fragment_int(string_t& string)
+		auto parse_fragment_int(string_t& string) -> size_t
 		{
 			string_t ipart;
 
@@ -408,7 +408,7 @@ namespace wind
 			return ipart.length();
 		}
 
-		json_token_t parse_number()
+		auto parse_number() -> json_token_t
 		{
 			bool error = false;
 			json_token_t rv;
@@ -465,7 +465,7 @@ namespace wind
 			return rv;
 		}
 
-		void remove_whitespace()
+		auto remove_whitespace() -> void
 		{
 			while (this->m_char)
 			{

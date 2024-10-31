@@ -24,19 +24,19 @@ namespace wind
 		double m_last_updated = 0.0;
 	} time_info_t;
 
-	export class system_t
+	export class system_t : public class_t<system_t>
 	{
 	public:
 		system_t(const std::shared_ptr<dialog_t>& dialog);
 		~system_t();
-		int32_t run(const vector_t<wind::string_t>& args);
+		auto run(const vector_t<wind::string_t>& args) -> int32_t;
 
 	private:
-		int32_t init(const vector_t<wind::string_t>& args);
-		void shutdown();
-		void loop();
+		auto init(const vector_t<wind::string_t>& args)->int32_t;
+		auto shutdown() -> void;
+		auto loop() -> void;
 
-		std::shared_ptr<dialog_t> m_dialog;
+		std::shared_ptr<dialog_t> m_dialog{};
 		ALLEGRO::DISPLAY m_display{nullptr};
 		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
 		ALLEGRO::TIMER m_timer{nullptr};
@@ -46,7 +46,7 @@ namespace wind
 
 	namespace system
 	{
-		export inline wind::string_t timestamp()
+		export inline auto timestamp() -> wind::string_t
 		{
 			char buffer[1024];
 			struct tm local;

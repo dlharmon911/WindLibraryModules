@@ -40,43 +40,41 @@ namespace wind
 
 	namespace map
 	{
-		export class cell_t
+		export class cell_t : public class_t<cell_t>
 		{
 		public:
-			using value_type = tilemap::tile_t;
-			using pointer_type = value_type*;
-			using const_pointer_type = const value_type*;
-			using reference_type = value_type&;
-			using const_reference_type = const value_type&;
+			using element_type = tilemap::tile_t;
+			using pointer_element_type = wind::add_pointer<element_type>::type;
+			using const_pointer_element_type = wind::add_pointer<wind::add_const<element_type>::type>::type;
+			using reference_element_type = wind::add_reference<element_type>::type;
+			using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		private:
-			using vector_type = std::array<value_type, WIND::MAP::CELL::LAYER_COUNT>;
+			using vector_type = std::array<element_type, WIND::MAP::CELL::LAYER_COUNT>;
 
 		public:
 			cell_t();
 			cell_t(const cell_t& cell);
 			~cell_t();
-			cell_t& operator = (const cell_t& cell);
+			auto operator = (const cell_t& cell) ->cell_t&;
 
-			reference_type at(size_t index);
-			const_reference_type at(size_t index) const;
-			reference_type operator [](size_t index);
-			const_reference_type operator [](size_t index) const;
+			auto at(size_t index) -> reference_element_type;
+			auto at(size_t index) const ->const_reference_element_type;
+			auto operator [](size_t index)->reference_element_type;
+			auto operator [](size_t index) const->const_reference_element_type;
 
 			class iterator
 			{
 			private:
 				iterator() = default;
 			public:
-				typedef std::ptrdiff_t difference_type;
-
 				iterator(vector_type::iterator it) : m_it(it) {}
-				bool operator == (const iterator& it) const { return (this->m_it == it.m_it); }
-				bool operator != (const iterator& it) const { return !operator == (it); }
-				iterator& operator ++() { ++this->m_it; return *this; }
-				iterator operator ++(int) { iterator tmp = *this; ++(*this); return tmp; }
-				reference_type operator *() { return (*this->m_it); }
-				pointer_type operator ->() { return &(*this->m_it); }
+				auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
+				auto operator != (const iterator& it) const -> bool { return !operator == (it); }
+				auto operator ++() -> iterator& { ++this->m_it; return *this; }
+				auto operator ++(int32_t) -> iterator { iterator tmp = *this; ++(*this); return tmp; }
+				auto operator *() -> reference_element_type { return (*this->m_it); }
+				auto operator ->() -> pointer_element_type { return &(*this->m_it); }
 
 			private:
 				vector_type::iterator m_it;
@@ -90,47 +88,42 @@ namespace wind
 				typedef std::ptrdiff_t difference_type;
 
 				const_iterator(const vector_type::const_iterator it) : m_it(it) {}
-				bool operator == (const const_iterator& it) const { return (this->m_it == it.m_it); }
-				bool operator != (const const_iterator& it) const { return !operator == (it); }
-				const_iterator& operator ++() { ++this->m_it; return *this; }
-				const_iterator operator ++(int) { const_iterator tmp = *this; ++(*this); return tmp; }
-				const_reference_type operator *() const { return (*this->m_it); }
-				const_pointer_type operator ->() const { return &(*this->m_it); }
+				auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
+				auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
+				auto operator ++() -> const_iterator& { ++this->m_it; return *this; }
+				auto operator ++(int32_t) -> const_iterator { const_iterator tmp = *this; ++(*this); return tmp; }
+				auto operator *() const -> const_reference_element_type { return (*this->m_it); }
+				auto operator ->() const -> const_pointer_element_type { return &(*this->m_it); }
 
 			private:
 				vector_type::const_iterator m_it;
 			};
 
-			iterator begin();
-			iterator end();
-			const_iterator cbegin();
-			const_iterator cend();
+			auto begin()->iterator;
+			auto end()->iterator;
+			auto cbegin()->const_iterator;
+			auto cend()->const_iterator;
 
 		private:
 			vector_type m_data;
 		};
 
-		export class camera_t
+		export class camera_t : public class_t<camera_t>
 		{
 		public:
 			camera_t();
 			camera_t(const camera_t& camera);
 			camera_t(ALLEGRO::SIZE<size_t> camera_size, ALLEGRO::POINT<size_t> tile_shift);
 			~camera_t();
-			camera_t& operator = (const camera_t& camera);
-
-			void set_map(ALLEGRO::RECTANGLE<size_t> map);
-			void set_tile(ALLEGRO::POINT<size_t> shift);
-
-			ALLEGRO::POINT<size_t> get_position() const;
-			void set_position(ALLEGRO::POINT<size_t> position);
-
-			const ALLEGRO::SIZE<size_t>& get_size() const;
-			void set_size(ALLEGRO::SIZE<size_t> size);
-
-			ALLEGRO::POINT<size_t> get_shift() const;
-
-			ALLEGRO::POINT<int32_t> move(const ALLEGRO::POINT<int32_t> delta);
+			auto operator = (const camera_t& camera) ->camera_t&;
+			auto set_map(ALLEGRO::RECTANGLE<size_t> map) -> void;
+			auto set_tile(ALLEGRO::POINT<size_t> shift) -> void;
+			auto get_position() const ->ALLEGRO::POINT<size_t>;
+			auto set_position(ALLEGRO::POINT<size_t> position) -> void;
+			auto get_size() const -> const ALLEGRO::SIZE<size_t>&;
+			auto set_size(ALLEGRO::SIZE<size_t> size) -> void;
+			auto get_shift() const -> ALLEGRO::POINT<size_t>;
+			auto move(const ALLEGRO::POINT<int32_t> delta) -> ALLEGRO::POINT<int32_t>;
 
 		private:
 			ALLEGRO::RECTANGLE<size_t> m_camera;
@@ -140,17 +133,17 @@ namespace wind
 		};
 	}
 
-	export class map_t
+	export class map_t : public class_t<map_t>
 	{
 	public:
-		using value_type = map::cell_t;
-		using pointer_type = value_type*;
-		using const_pointer_type = const value_type*;
-		using reference_type = value_type&;
-		using const_reference_type = const value_type&;
+		using element_type = map::cell_t;
+		using pointer_element_type = wind::add_pointer<element_type>::type;
+		using const_pointer_element_type = wind::add_pointer<const element_type>::type;
+		using reference_element_type = wind::add_reference<element_type>::type;
+		using const_reference_element_type = wind::add_reference<const element_type>::type;
 
 	private:
-		using shared_type = std::shared_ptr<value_type[]>;
+		using shared_type = std::shared_ptr<element_type[]>;
 
 	public:
 		map_t();
@@ -158,69 +151,65 @@ namespace wind
 		map_t(ALLEGRO::SIZE<size_t> size);
 		map_t(const map_t& map);
 		~map_t();
-		map_t& operator = (const map_t& map);
+		auto operator = (const map_t& map) -> map_t&;
 
-		explicit operator bool() const;
+		explicit operator bool () const;
 
-		void clear();
+		auto clear() -> void;
 
-		bool reset(size_t width, size_t height);
-		bool reset(ALLEGRO::SIZE<size_t> size);
+		auto reset(size_t width, size_t height) -> bool;
+		auto reset(ALLEGRO::SIZE<size_t> size) -> bool;
 
-		void* data();
-		const void* data() const;
+		auto data() -> void*;
+		auto data() const -> const void*;
 
-		const ALLEGRO::SIZE<size_t>& size() const;
+		auto size() const -> const ALLEGRO::SIZE<size_t>&;
 
-		reference_type at(size_t index);
-		const_reference_type at(size_t index) const;
-		reference_type operator [](size_t index);
-		const_reference_type operator [](size_t index) const;
+		auto at(size_t index) -> reference_element_type;
+		auto at(size_t index) const->const_reference_element_type;
+		auto operator [](size_t index)->reference_element_type;
+		auto operator [](size_t index) const->const_reference_element_type;
 
-		class iterator
+		class iterator : public class_t<iterator>
 		{
 		private:
 			iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			iterator(shared_type & data, size_t offset) : m_data(data.get()), m_offset(offset) {}
-			bool operator == (iterator& it) const { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
-			bool operator != (iterator& it) const { return !operator == (it); }
-			iterator& operator ++() { ++this->m_offset; return *this; }
-			iterator operator ++(int) { iterator tmp = *this; ++(*this); return tmp; }
-			reference_type operator *() { return (this->m_data[this->m_offset]); }
-			pointer_type operator ->() { return &(this->m_data[this->m_offset]); }
+			auto operator == (iterator& it) const -> bool { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
+			auto operator != (iterator& it) const -> bool { return !operator == (it); }
+			auto operator ++ () -> iterator& { ++this->m_offset; return *this; }
+			auto operator ++ (int32_t) -> iterator { iterator tmp = *this; ++(*this); return tmp; }
+			auto operator * () -> reference_element_type { return (this->m_data[this->m_offset]); }
+			auto operator -> () -> pointer_element_type { return &(this->m_data[this->m_offset]); }
 
 		private:
-			const pointer_type m_data;
+			const pointer_element_type m_data;
 			size_t m_offset;
 		};
 
-		class const_iterator
+		class const_iterator : public class_t<const_iterator>
 		{
 		private:
 			const_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_iterator(const shared_type& data, size_t offset) : m_data(data.get()), m_offset(offset) {}
-			bool operator == (const const_iterator& it) const { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
-			bool operator != (const const_iterator& it) const { return !operator == (it); }
-			const_iterator& operator ++() { ++this->m_offset; return *this; }
-			const_iterator operator ++(int) { const_iterator tmp = *this; ++(*this); return tmp; }
-			const_reference_type operator *() const { return (this->m_data[this->m_offset]); }
-			const_pointer_type operator ->() const { return &(this->m_data[this->m_offset]); }
+			auto operator == (const const_iterator& it) const -> bool { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
+			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
+			auto operator ++ () -> const_iterator& { ++this->m_offset; return *this; }
+			auto operator ++ (int32_t) -> const_iterator { const_iterator tmp = *this; ++(*this); return tmp; }
+			auto operator * () const -> const_reference_element_type { return (this->m_data[this->m_offset]); }
+			auto operator -> () const -> const_pointer_element_type { return &(this->m_data[this->m_offset]); }
 
 		private:
-			const pointer_type m_data;
+			const pointer_element_type m_data;
 			size_t m_offset;
 		};
 
-		iterator begin();
-		iterator end();
-		const_iterator cbegin();
-		const_iterator cend();
+		auto begin()->iterator;
+		auto end()->iterator;
+		auto cbegin()->const_iterator;
+		auto cend()->const_iterator;
 
 	private:
 		shared_type m_data;
@@ -229,8 +218,8 @@ namespace wind
 
 	namespace map
 	{
-		export bool load(map_t& map, const string_t& filename);
-		export bool save(const map_t& map, const string_t& filename);
-		export void draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, ALLEGRO::POINT<size_t> position);
+		export auto load(map_t& map, const string_t& filename) -> bool;
+		export auto save(const map_t& map, const string_t& filename) -> bool;
+		export auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, ALLEGRO::POINT<size_t> position) -> void;
 	}
 }

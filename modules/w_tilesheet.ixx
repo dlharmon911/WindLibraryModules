@@ -11,28 +11,28 @@ import :string;
 
 namespace wind
 {
-	export class tilesheet_t
+	export class tilesheet_t : public class_t<tilesheet_t>
 	{
 	public:
-		using value_t = ALLEGRO::BITMAP;
-		using pointer_t = value_t*;
-		using reference_t = value_t&;
-		using const_pointer_t = const value_t*;
-		using const_reference_t = const value_t&;
+		using element_type = ALLEGRO::BITMAP;
+		using pointer_element_type = wind::add_pointer<element_type>::type;
+		using const_pointer_element_type = wind::add_pointer<wind::add_const<element_type>::type>::type;
+		using reference_element_type = wind::add_reference<element_type>::type;
+		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		tilesheet_t();
 		tilesheet_t(const std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size);
 		tilesheet_t(const tilesheet_t& tilesheet);
 		~tilesheet_t();
-		tilesheet_t& operator = (const tilesheet_t& tilesheet);
+		auto operator = (const tilesheet_t& tilesheet) -> reference_type;
 		void clear();
 		size_t count() const;
 		bool is_empty() const;
 		const ALLEGRO::SIZE<size_t>& tile_size() const;
-		reference_t at(size_t index);
-		const_reference_t at(size_t index) const;
-		reference_t operator [](size_t index);
-		const_reference_t operator [](size_t index) const;
+		reference_element_type at(size_t index);
+		const_reference_element_type at(size_t index) const;
+		reference_element_type operator [](size_t index);
+		const_reference_element_type operator [](size_t index) const;
 
 		class iterator
 		{
@@ -41,16 +41,16 @@ namespace wind
 		public:
 			typedef std::ptrdiff_t difference_type;
 
-			iterator(std::vector<value_t>::iterator it) : m_it(it) {}
+			iterator(std::vector<element_type>::iterator it) : m_it(it) {}
 			bool operator == (const iterator& it) const { return (this->m_it == it.m_it); }
 			bool operator != (const iterator& it) const { return !operator == (it); }
 			iterator& operator ++() { ++this->m_it; return *this; }
-			iterator operator ++(int) { iterator tmp = *this; ++(*this); return tmp; }
-			reference_t operator *() { return (*this->m_it); }
-			reference_t operator ->() { return (*this->m_it); }
+			iterator operator ++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
+			reference_element_type operator *() { return (*this->m_it); }
+			reference_element_type operator ->() { return (*this->m_it); }
 
 		private:
-			std::vector<value_t>::iterator m_it;
+			std::vector<element_type>::iterator m_it;
 		};
 
 		class const_iterator
@@ -60,16 +60,16 @@ namespace wind
 		public:
 			typedef std::ptrdiff_t difference_type;
 
-			const_iterator(std::vector<value_t>::const_iterator it) : m_it(it) {}
+			const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
 			bool operator == (const const_iterator& it) const { return (this->m_it == it.m_it); }
 			bool operator != (const const_iterator& it) const { return !operator == (it); }
 			const_iterator& operator ++() { ++this->m_it; return *this; }
-			const_iterator operator ++(int) { const_iterator tmp = *this; ++(*this); return tmp; }
-			const_reference_t operator *() const { return (*this->m_it); }
-			const_reference_t operator ->() const { return (*this->m_it); }
+			const_iterator operator ++(int32_t) { const_iterator tmp = *this; ++(*this); return tmp; }
+			const_reference_element_type operator *() const { return (*this->m_it); }
+			const_reference_element_type operator ->() const { return (*this->m_it); }
 
 		private:
-			std::vector<value_t>::const_iterator m_it;
+			std::vector<element_type>::const_iterator m_it;
 		};
 
 		class reverse_iterator
@@ -79,16 +79,16 @@ namespace wind
 		public:
 			typedef std::ptrdiff_t difference_type;
 
-			reverse_iterator(std::vector<value_t>::reverse_iterator it) : m_it(it) {}
+			reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
 			bool operator == (const reverse_iterator& it) const { return (this->m_it == it.m_it); }
 			bool operator != (const reverse_iterator& it) const { return !operator == (it); }
 			reverse_iterator& operator --() { --this->m_it; return *this; }
-			reverse_iterator operator --(int) { reverse_iterator tmp = *this; --(*this); return tmp; }
-			reference_t operator *() { return (*this->m_it); }
-			reference_t operator ->() { return (*this->m_it); }
+			reverse_iterator operator --(int32_t) { reverse_iterator tmp = *this; --(*this); return tmp; }
+			reference_element_type operator *() { return (*this->m_it); }
+			reference_element_type operator ->() { return (*this->m_it); }
 
 		private:
-			std::vector<value_t>::reverse_iterator m_it;
+			std::vector<element_type>::reverse_iterator m_it;
 		};
 
 		class const_reverse_iterator
@@ -98,16 +98,16 @@ namespace wind
 		public:
 			typedef std::ptrdiff_t difference_type;
 
-			const_reverse_iterator(std::vector<value_t>::const_reverse_iterator it) : m_it(it) {}
+			const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
 			bool operator == (const const_reverse_iterator& it) const { return (this->m_it == it.m_it); }
 			bool operator != (const const_reverse_iterator& it) const { return !operator == (it); }
 			const_reverse_iterator& operator --() { --this->m_it; return *this; }
-			const_reverse_iterator operator --(int) { const_reverse_iterator tmp = *this; --(*this); return tmp; }
-			const_reference_t operator *() const { return (*this->m_it); }
-			const_reference_t operator ->() const { return (*this->m_it); }
+			const_reverse_iterator operator --(int32_t) { const_reverse_iterator tmp = *this; --(*this); return tmp; }
+			const_reference_element_type operator *() const { return (*this->m_it); }
+			const_reference_element_type operator ->() const { return (*this->m_it); }
 
 		private:
-			std::vector<value_t>::const_reverse_iterator m_it;
+			std::vector<element_type>::const_reverse_iterator m_it;
 		};
 
 		iterator begin();
@@ -120,7 +120,7 @@ namespace wind
 		const_reverse_iterator crend();
 
 	private:
-		std::vector<value_t> m_bitmaps{};
+		std::vector<element_type> m_bitmaps{};
 		ALLEGRO::SIZE<size_t> m_tile_size{ 0, 0 };
 	};
 }

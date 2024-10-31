@@ -38,7 +38,7 @@ namespace wind
 		int32_t rv = 0;
 		wind::vector_t<wind::string_t> args(argc);
 
-		for (int i = 0; i < argc; ++i)
+		for (int32_t i = 0; i < argc; ++i)
 		{
 			args[i] = argv[i];
 		}

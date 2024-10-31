@@ -10,6 +10,6 @@ namespace wind
 {
 	namespace bitmap
 	{
-		export bool is_empty(ALLEGRO::BITMAP& bitmap);
+		export auto is_empty(ALLEGRO::BITMAP& bitmap) -> bool;
 	}
 }

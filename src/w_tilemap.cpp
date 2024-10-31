@@ -41,7 +41,7 @@ namespace wind
 		return this->m_sheets.data();
 	}
 
-	void tilemap_t::push_back(reference_type tilemap)
+	auto tilemap_t::push_back(reference_element_type tilemap) -> void
 	{
 		this->m_sheets.push_back(tilemap);
 	}
@@ -76,22 +76,22 @@ namespace wind
 		this->m_tilesize = tilesize;
 	}
 
-	tilemap_t::reference_type tilemap_t::at(size_t index)
+	tilemap_t::reference_element_type tilemap_t::at(size_t index)
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::const_reference_type tilemap_t::at(size_t index) const
+	tilemap_t::const_reference_element_type tilemap_t::at(size_t index) const
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::reference_type tilemap_t::operator [](size_t index)
+	tilemap_t::reference_element_type tilemap_t::operator [](size_t index)
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::const_reference_type tilemap_t::operator [](size_t index) const
+	tilemap_t::const_reference_element_type tilemap_t::operator [](size_t index) const
 	{
 		return this->m_sheets[index];
 	}

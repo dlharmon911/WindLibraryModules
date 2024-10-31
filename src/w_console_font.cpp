@@ -349,6 +349,8 @@ namespace wind
 			return 0;
 		}
 
+		font_t create_font_from_array(const uint8_t* data, size_t count, int32_t start);
+
 		font_t create_font_default()
 		{
 			constexpr size_t size = (sizeof(default_font_data) / sizeof(uint8_t)) >> WIND::CONSOLE::FONT_GLYPH_SHIFT;
@@ -538,7 +540,7 @@ namespace wind
 		void draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const char* format, ...)
 		{
 			va_list args;
-			int len;
+			int32_t len;
 			char* buffer;
 
 			va_start(args, format);

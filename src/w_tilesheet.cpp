@@ -50,24 +50,24 @@ namespace wind
 		return this->m_tile_size;
 	}
 
-	tilesheet_t::reference_t tilesheet_t::at(size_t index)
+	tilesheet_t::reference_element_type tilesheet_t::at(size_t index)
 	{
 		ALLEGRO::ASSERT(index < this->m_bitmaps.size());
 		return this->m_bitmaps[index];
 	}
 
-	tilesheet_t::const_reference_t tilesheet_t::at(size_t index) const
+	tilesheet_t::const_reference_element_type tilesheet_t::at(size_t index) const
 	{
 		ALLEGRO::ASSERT(index < this->m_bitmaps.size());
 		return this->m_bitmaps[index];
 	}
 
-	tilesheet_t::reference_t tilesheet_t::operator [](size_t index)
+	tilesheet_t::reference_element_type tilesheet_t::operator [](size_t index)
 	{
 		return this->at(index);
 	}
 
-	tilesheet_t::const_reference_t tilesheet_t::operator [](size_t index) const
+	tilesheet_t::const_reference_element_type tilesheet_t::operator [](size_t index) const
 	{
 		return this->at(index);
 	}

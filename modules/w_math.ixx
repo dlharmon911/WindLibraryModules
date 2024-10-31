@@ -8,7 +8,7 @@ namespace wind
 {
 	namespace math
 	{
-		export template <typename T> T abs(const T& a, const T& b)
+		export template <typename T> inline auto abs(const T& a, const T& b) -> T
 		{
 			if (a > b)
 			{
@@ -18,17 +18,17 @@ namespace wind
 			return (b - a);
 		}
 
-		template <> float abs(const float& a, const float& b)
+		export template <> inline auto abs(const float& a, const float& b) -> float
 		{
 			return fabsf(a - b);
 		}
 
-		template <> double abs(const double& a, const double& b)
+		export template <> inline auto abs(const double& a, const double& b) -> double
 		{
 			return fabs(a - b);
 		}
 
-		export template <typename T> inline int32_t compare(const T& a, const T& b)
+		export template <typename T> inline auto compare(const T& a, const T& b) -> int32_t
 		{
 			if (abs<T>(a - b) < std::numeric_limits<T>::epsilon())
 			{
@@ -43,12 +43,12 @@ namespace wind
 			return 0;
 		}
 
-		export template <typename T> inline bool is_equal(const T& a, const T& b)
+		export template <typename T> inline auto is_equal(const T& a, const T& b) -> bool
 		{
 			return (compare<T>(a, b) == 0);
 		}
 
-		export template <typename T> inline bool is_between(const T& a, const T& b, const T& c)
+		export template <typename T> inline auto is_between(const T& a, const T& b, const T& c) -> bool
 		{
 			return (compare<T>(a, b) >= 0 && compare<T>(a, c) <= 0);
 		}

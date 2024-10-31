@@ -7,14 +7,14 @@ import :base;
 namespace wind
 {
 	export template <typename T>
-	class vector_t
+	class vector_t : public class_t<vector_t<T>>
 	{
 	public:
 		using element_type = T;
-		using pointer_type = element_type*;
-		using reference_type = element_type&;
-		using const_pointer_type = const element_type*;
-		using const_reference_type = const element_type&;
+		using pointer_element_type = wind::add_pointer<element_type>::type;
+		using const_pointer_element_type = wind::add_pointer<const element_type>::type;
+		using reference_element_type = wind::add_reference<element_type>::type;
+		using const_reference_element_type = wind::add_reference<const element_type>::type;
 
 		vector_t() : m_data(nullptr), m_count(0) {}
 
@@ -130,45 +130,45 @@ namespace wind
 			return sizeof(element_type);
 		}
 
-		reference_type at(size_t index)
+		reference_element_type at(size_t index)
 		{
 			ALLEGRO::ASSERT(this->m_data && index < this->m_count);
 			return this->m_data.get()[index];
 		}
 
-		const_reference_type at(size_t index) const
+		const_reference_element_type at(size_t index) const
 		{
 			ALLEGRO::ASSERT(this->m_data && index < this->m_count);
 			return this->m_data.get()[index];
 		}
 
-		reference_type operator [](size_t index)
+		reference_element_type operator [](size_t index)
 		{
 			ALLEGRO::ASSERT(this->m_data && index < this->m_count);
 			return this->m_data.get()[index];
 		}
 
-		const_reference_type operator [](size_t index) const
+		const_reference_element_type operator [](size_t index) const
 		{
 			ALLEGRO::ASSERT(this->m_data && index < this->m_count);
 			return this->m_data.get()[index];
 		}
 
-		pointer_type get_data()
+		pointer_element_type get_data()
 		{
 			if (this->m_data)
 			{
-				return (pointer_type)this->m_data.get()->m_data;
+				return (pointer_element_type)this->m_data.get()->m_data;
 			}
 
 			return nullptr;
 		}
 
-		const_pointer_type get_data() const
+		const_pointer_element_type get_data() const
 		{
 			if (this->m_data)
 			{
-				return (const_pointer_type)this->m_data.get()->m_data;
+				return (const_pointer_element_type)this->m_data.get()->m_data;
 			}
 
 			return nullptr;
@@ -204,25 +204,25 @@ namespace wind
 			
 			iterator& operator ++() { ++this->m_offset; return *this; }
 			
-			iterator operator ++(int) { iterator tmp = *this; ++(*this); return tmp; }
+			iterator operator ++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
 
-			reference_type get_data()
+			reference_element_type get_data()
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data[this->m_offset];
 			}
 
-			const_reference_type get_data() const
+			const_reference_element_type get_data() const
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data[this->m_offset];
 			}
 
-			reference_type operator *() { return this->get_data(); }
-			const_reference_type operator *() const { return this->get_data(); }
+			reference_element_type operator *() { return this->get_data(); }
+			const_reference_element_type operator *() const { return this->get_data(); }
 			
-			reference_type operator ->() { return this->get_data(); }
-			const_reference_type operator ->() const { return this->get_data(); }
+			reference_element_type operator ->() { return this->get_data(); }
+			const_reference_element_type operator ->() const { return this->get_data(); }
 
 		private:
 			std::shared_ptr<element_type[]> m_data{};
@@ -260,25 +260,25 @@ namespace wind
 
 			const_iterator& operator ++() { ++this->m_offset; return *this; }
 
-			const_iterator operator ++(int) { const_iterator tmp = *this; ++(*this); return tmp; }
+			const_iterator operator ++(int32_t) { const_iterator tmp = *this; ++(*this); return tmp; }
 
-			reference_type get_data()
+			reference_element_type get_data()
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data[this->m_offset];
 			}
 
-			const_reference_type get_data() const
+			const_reference_element_type get_data() const
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data[this->m_offset];
 			}
 
-			reference_type operator *() { return this->get_data(); }
-			const_reference_type operator *() const { return this->get_data(); }
+			reference_element_type operator *() { return this->get_data(); }
+			const_reference_element_type operator *() const { return this->get_data(); }
 
-			reference_type operator ->() { return this->get_data(); }
-			const_reference_type operator ->() const { return this->get_data(); }
+			reference_element_type operator ->() { return this->get_data(); }
+			const_reference_element_type operator ->() const { return this->get_data(); }
 
 		private:
 			std::shared_ptr<element_type[]> m_data{};
@@ -316,25 +316,25 @@ namespace wind
 
 			reverse_iterator& operator --() { --this->m_offset; return *this; }
 
-			reverse_iterator operator --(int) { reverse_iterator tmp = *this; --(*this); return tmp; }
+			reverse_iterator operator --(int32_t) { reverse_iterator tmp = *this; --(*this); return tmp; }
 
-			reference_type get_data()
+			reference_element_type get_data()
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data.get()[this->m_offset];
 			}
 
-			const_reference_type get_data() const
+			const_reference_element_type get_data() const
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data.get()[this->m_offset];
 			}
 
-			reference_type operator *() { return this->get_data(); }
-			const_reference_type operator *() const { return this->get_data(); }
+			reference_element_type operator *() { return this->get_data(); }
+			const_reference_element_type operator *() const { return this->get_data(); }
 
-			reference_type operator ->() { return this->get_data(); }
-			const_reference_type operator ->() const { return this->get_data(); }
+			reference_element_type operator ->() { return this->get_data(); }
+			const_reference_element_type operator ->() const { return this->get_data(); }
 
 		private:
 			std::shared_ptr<element_type[]> m_data{};
@@ -371,25 +371,25 @@ namespace wind
 
 			const_reverse_iterator& operator --() { --this->m_offset; return *this; }
 
-			const_reverse_iterator operator --(int) { const_reverse_iterator tmp = *this; --(*this); return tmp; }
+			const_reverse_iterator operator --(int32_t) { const_reverse_iterator tmp = *this; --(*this); return tmp; }
 
-			reference_type get_data()
+			reference_element_type get_data()
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data.get()[this->m_offset];
 			}
 
-			const_reference_type get_data() const
+			const_reference_element_type get_data() const
 			{
 				ALLEGRO::ASSERT(this->m_data && this->m_offset < this->m_count);
 				return this->m_data.get()[this->m_offset];
 			}
 
-			reference_type operator *() { return this->get_data(); }
-			const_reference_type operator *() const { return this->get_data(); }
+			reference_element_type operator *() { return this->get_data(); }
+			const_reference_element_type operator *() const { return this->get_data(); }
 
-			reference_type operator ->() { return this->get_data(); }
-			const_reference_type operator ->() const { return this->get_data(); }
+			reference_element_type operator ->() { return this->get_data(); }
+			const_reference_element_type operator ->() const { return this->get_data(); }
 
 		private:
 			std::shared_ptr<element_type[]> m_data{};

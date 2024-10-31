@@ -46,7 +46,7 @@ namespace wind
 						default:
 						{
 							string_t h = hex_to_string(c, "u", 4);
-							int p = 0;
+							int32_t p = 0;
 						} break;
 						}
 

@@ -46,6 +46,6 @@ namespace wind
 			workspace
 		};
 
-		export void draw(const ALLEGRO::POINT<float> point, const ALLEGRO::SIZE<float> dim, frame::type type = type::normal, frame::border::type border = border::type::raised);
+		export auto draw(const ALLEGRO::POINT<float> point, const ALLEGRO::SIZE<float> dim, frame::type type = type::normal, frame::border::type border = border::type::raised) -> void;
 	}
 }

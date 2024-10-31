@@ -689,7 +689,7 @@ namespace wind
 		{
 			string_t rv;
 			va_list args;
-			int len;
+			int32_t len;
 			char* buffer;
 
 			va_start(args, format);

@@ -33,12 +33,12 @@ namespace wind
 		return mouse_state[button];
 	}
 
-	void set_mouse_position(ALLEGRO::POINT<int32_t> pos)
+	void set_mouse_position(const ALLEGRO::POINT<int32_t>& pos)
 	{
 		mouse_pos = pos;
 	}
 
-	void set_mouse_wheel(ALLEGRO::POINT<int32_t> wheel)
+	void set_mouse_wheel(const ALLEGRO::POINT<int32_t>& wheel)
 	{
 		mouse_wheel = wheel;
 	}

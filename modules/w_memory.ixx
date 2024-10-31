@@ -3,19 +3,20 @@ export module wind:memory;
 import <vector>;
 import <string>;
 import <cstdint>;
+import <memory>;
 import allegro;
 import :base;
 
 namespace wind
 {
 	template<typename Type>
-	std::shared_ptr<void> make_shared(Type* object)
+	auto make_shared(Type* object) -> std::shared_ptr<void>
 	{
 		return std::shared_ptr<void>(object);
 	}
 
 	template<typename Type>
-	std::shared_ptr<void> make_shared(Type* object, void (*Deleter)(Type*))
+	auto make_shared(Type* object, void (*Deleter)(Type*)) -> std::shared_ptr<void>
 	{
 		return std::shared_ptr<void>((void*)object, Deleter);
 	}

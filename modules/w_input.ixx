@@ -18,20 +18,20 @@ namespace wind
 		bool m_was_pressed;
 	} button_state_t;
 
-	export void set_mouse_pressed(int32_t button);
-	export void set_mouse_released(int32_t button);
-	export void set_mouse_position(ALLEGRO::POINT<int32_t> pos);
-	export void set_mouse_wheel(ALLEGRO::POINT<int32_t> pos);
+	export auto set_mouse_pressed(int32_t button) -> void;
+	export auto set_mouse_released(int32_t button) -> void;
+	export auto set_mouse_position(const ALLEGRO::POINT<int32_t>& pos) -> void;
+	export auto set_mouse_wheel(const ALLEGRO::POINT<int32_t>& pos) -> void;
 
-	export const button_state_t& get_mouse_state(int32_t button);
-	export const ALLEGRO::POINT<int32_t>& get_mouse_position();
-	export const ALLEGRO::POINT<int32_t>& get_mouse_wheel();
+	export auto get_mouse_state(int32_t button) -> const button_state_t&;
+	export auto get_mouse_position() -> const ALLEGRO::POINT<int32_t>&;
+	export auto get_mouse_wheel() -> const ALLEGRO::POINT<int32_t>&;
 
 
-	export void set_keyboard_pressed(int32_t key);
-	export void set_keyboard_released(int32_t key);
-	export const button_state_t& get_keyboard_state(int32_t key);
+	export auto set_keyboard_pressed(int32_t key) -> void;
+	export auto set_keyboard_released(int32_t key) -> void;
+	export auto get_keyboard_state(int32_t key) -> const button_state_t&;
 
-	export void input_acknowledge();
+	export auto input_acknowledge() -> void;
 }
 

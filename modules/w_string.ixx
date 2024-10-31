@@ -17,10 +17,10 @@ namespace wind
 
 	namespace string
 	{
-		string_t to_lower(const string_t& string);
+		auto to_lower(const string_t& string) -> string_t;
 	}
 
-	export class string_t
+	export class string_t : public class_t<string_t>
 	{
 	public:
 		static constexpr size_t npos = -1;
@@ -32,18 +32,20 @@ namespace wind
 			codepoint_t(const ALLEGRO::USTRING& string, int32_t offset);
 			codepoint_t(const codepoint_t& ref);
 			~codepoint_t() = default;
-			codepoint_t& operator = (const codepoint_t& ref);
-			ALLEGRO::USTRING& get_string();
-			const ALLEGRO::USTRING& get_string() const;
-			int32_t get_offset() const;
-			void set_offset(int32_t offset);
-			uchar_t get_codepoint() const;
-			size_t get_size() const;
+
 			operator uchar_t () const;
-			size_t set_codepoint(uchar_t codepoint);
-			codepoint_t& operator = (uchar_t codepoint);
-			bool operator == (const codepoint_t& codepoint) const;
-			bool operator != (const codepoint_t& codepoint) const;
+
+			auto operator = (const codepoint_t& ref)->codepoint_t&;
+			auto get_string() -> ALLEGRO::USTRING&;
+			auto get_string() const -> const ALLEGRO::USTRING&;
+			auto get_offset() const -> int32_t;
+			auto set_offset(int32_t offset) -> void;
+			auto get_codepoint() const -> uchar_t;
+			auto get_size() const -> size_t;
+			auto set_codepoint(uchar_t codepoint) -> size_t;
+			auto operator = (uchar_t codepoint) -> codepoint_t&;
+			auto operator == (const codepoint_t& codepoint) const -> bool;
+			auto operator != (const codepoint_t& codepoint) const -> bool;
 
 		protected:
 			ALLEGRO::USTRING m_string;

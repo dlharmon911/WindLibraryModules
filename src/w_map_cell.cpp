@@ -22,28 +22,28 @@ namespace wind
 			return *this;
 		}
 
-		cell_t::reference_type cell_t::at(size_t index)
+		cell_t::reference_element_type cell_t::at(size_t index)
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::const_reference_type cell_t::at(size_t index) const
+		cell_t::const_reference_element_type cell_t::at(size_t index) const
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::reference_type cell_t::operator [](size_t index)
+		cell_t::reference_element_type cell_t::operator [](size_t index)
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::const_reference_type cell_t::operator [](size_t index) const
+		cell_t::const_reference_element_type cell_t::operator [](size_t index) const
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 

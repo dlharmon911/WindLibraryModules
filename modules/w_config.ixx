@@ -13,24 +13,22 @@ namespace wind
 {
 	namespace config
 	{
-		int32_t read(const string_t& filename, dson_t& config_file);
-		int32_t write(const string_t& filename, dson_t& config_file);
-		int32_t expand_string(const dson_t& config_file, const string_t& name, string_t& output);
+		export auto read(const string_t& filename, dson_t& config_file) -> int32_t;
+		export auto write(const string_t& filename, dson_t& config_file) -> int32_t;
+		export auto expand_string(const dson_t& config_file, const string_t& name, string_t& output) -> int32_t;
 
-		string_t get_string(dson_t& config_file, const string_t& name, const string_t& default_value);
-		void set_string(dson_t& config_file, const string_t& name, const string_t& value);
+		//export auto get_string(dson_t& config_file, const string_t& name, const string_t& default_value) -> string_t;
+		//export auto set_string(dson_t& config_file, const string_t& name, const string_t& value) -> void;
 
-		template <typename T>
-		T get_as(dson_t& config_file, const string_t& name, const T default_value) = delete;
+		export template <typename T> auto get_as(dson_t& config_file, const string_t& name, const T default_value) -> T = delete;
 
-		template <> int32_t get_as(dson_t& config_file, const string_t& name, const int32_t default_value);
-		template <> double get_as(dson_t& config_file, const string_t& name, const double default_value);
-		template <> bool get_as(dson_t& config_file, const string_t& name, const bool default_value);
+		export template <> auto get_as(dson_t& config_file, const string_t& name, const int32_t default_value) -> int32_t;
+		export template <> auto get_as(dson_t& config_file, const string_t& name, const double default_value) -> double;
+		export template <> auto get_as(dson_t& config_file, const string_t& name, const bool default_value) -> bool;
 
-		template <typename T>
-		void set_as(dson_t& config_file, const string_t& name, const T value) = delete;
-		template <> void set_as(dson_t& config_file, const string_t& name, int32_t value);
-		template <>	void set_as(dson_t& config_file, const string_t& name, double value);
-		template <> void set_as(dson_t& config_file, const string_t& name, bool value);
+		export template <typename T> auto set_as(dson_t& config_file, const string_t& name, const T value) -> void = delete;
+		export template <> auto set_as(dson_t& config_file, const string_t& name, int32_t value) -> void;
+		export template <>	auto set_as(dson_t& config_file, const string_t& name, double value) -> void;
+		export template <> auto set_as(dson_t& config_file, const string_t& name, bool value) -> void;
 	}
 }

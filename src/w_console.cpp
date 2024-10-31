@@ -324,7 +324,7 @@ namespace wind
 
 					for (int32_t layer = 0; layer < (1 + (end - begin)); ++layer)
 					{
-						int index = 0;
+						int32_t index = 0;
 						for (int32_t j = 0; j < 2; ++j)
 						{
 							for (int32_t i = 0; i < 2; ++i)
