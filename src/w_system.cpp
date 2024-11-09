@@ -32,10 +32,24 @@ namespace WIND
 
 namespace wind
 {
+	namespace system
+	{
+		ALLEGRO::DISPLAY m_display{ nullptr };
+		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
+
+		const ALLEGRO::DISPLAY& get_display()
+		{
+			return system::m_display;
+		}
+
+		const ALLEGRO::EVENT_QUEUE& get_event_queue()
+		{
+			return system::m_event_queue;
+		}
+	}
+
 	system_t::system_t(const std::shared_ptr<dialog_t>& dialog) :
 		m_dialog(dialog),
-		m_display(),
-		m_event_queue(),
 		m_timer(),
 		m_time_info({ 0.0, 0.0 }),
 		m_kill(false)
@@ -143,8 +157,8 @@ namespace wind
 		al::set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 		al::set_new_display_option(ALLEGRO_VSYNC, 2, ALLEGRO_SUGGEST);
 		al::set_new_window_title(this->m_dialog->get_title().c_str());
-		this->m_display = al::create_display(WIND::DISPLAY_SIZE);
-		if (!this->m_display)
+		system::m_display = al::create_display(WIND::DISPLAY_SIZE);
+		if (!system::m_display)
 		{
 			std::cout << "failed" << std::endl;
 			return -1;
@@ -156,7 +170,7 @@ namespace wind
 		HICON icon1 = LoadIcon(GetModuleHandle(NULL), L"IDI_ICON1");
 		if (icon1)
 		{
-			HWND winhandle = al::windows::get_window_handle(this->m_display);
+			HWND winhandle = al::windows::get_window_handle(system::m_display);
 			SetClassLongPtr(winhandle, GCLP_HICON, (LONG_PTR)icon1);
 			SetClassLongPtr(winhandle, GCLP_HICONSM, (LONG_PTR)icon1);
 		}
@@ -166,13 +180,13 @@ namespace wind
 		if (icon2)
 		{
 			al::convert_mask_to_alpha(icon2, wind::map_rgb_i(0xff00ff));
-			al::set_display_icon(this->m_display, icon2);
+			al::set_display_icon(system::m_display, icon2);
 			icon2.reset();
 		}
 
 		std::cout << "Creating Event Queue: ";
-		this->m_event_queue = al::create_event_queue();
-		if (!this->m_event_queue)
+		system::m_event_queue = al::create_event_queue();
+		if (!system::m_event_queue)
 		{
 			std::cout << "failed" << std::endl;
 			return -1;
@@ -188,10 +202,10 @@ namespace wind
 		}
 		std::cout << "pass" << std::endl;
 
-		al::register_event_source(m_event_queue, al::get_display_event_source(this->m_display));
-		al::register_event_source(m_event_queue, al::get_timer_event_source(this->m_timer));
-		al::register_event_source(m_event_queue, al::get_keyboard_event_source());
-		al::register_event_source(m_event_queue, al::get_mouse_event_source());
+		al::register_event_source(system::m_event_queue, al::get_display_event_source(system::m_display));
+		al::register_event_source(system::m_event_queue, al::get_timer_event_source(this->m_timer));
+		al::register_event_source(system::m_event_queue, al::get_keyboard_event_source());
+		al::register_event_source(system::m_event_queue, al::get_mouse_event_source());
 
 		const auto now = std::chrono::system_clock::now();
 		const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
@@ -226,10 +240,10 @@ namespace wind
 		this->m_timer.reset();
 		std::cout << "Timer Destroyed" << std::endl;
 
-		this->m_event_queue.reset();
+		system::m_event_queue.reset();
 		std::cout << "Event Queue Destroyed" << std::endl;
 
-		this->m_display.reset();
+		system::m_display.reset();
 		std::cout << "Display Destroyed" << std::endl;
 
 		PHYSFS_deinit();
@@ -246,15 +260,15 @@ namespace wind
 		this->m_dialog->on_start();
 
 		al::start_timer(this->m_timer);
-		al::pause_event_queue(this->m_event_queue, false);
+		al::pause_event_queue(system::m_event_queue, false);
 
 		timepoint = al::get_time();
 
 		while (!this->m_kill)
 		{
-			while (!al::is_event_queue_empty(this->m_event_queue))
+			while (!al::is_event_queue_empty(system::m_event_queue))
 			{
-				al::get_next_event(this->m_event_queue, event);
+				al::get_next_event(system::m_event_queue, event);
 
 				switch (event.type)
 				{
@@ -425,7 +439,7 @@ namespace wind
 					{
 					}                
 					
-					al::acknowledge_resize(this->m_display);
+					al::acknowledge_resize(system::m_display);
 				} break;
 
 				case ALLEGRO_EVENT_DISPLAY_CLOSE:
@@ -493,14 +507,14 @@ namespace wind
 			}
 			else
 			{
-				this->m_dialog->on_render(this->m_display);
+				this->m_dialog->on_render(system::m_display);
 				al::flip_display();
 			}
 
 			al::rest(0.1);
 		}
 
-		al::pause_event_queue(this->m_event_queue, true);
+		al::pause_event_queue(system::m_event_queue, true);
 		al::stop_timer(this->m_timer);
 
 		this->m_dialog->on_stop();

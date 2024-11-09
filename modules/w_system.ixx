@@ -37,8 +37,6 @@ namespace wind
 		auto loop() -> void;
 
 		std::shared_ptr<dialog_t> m_dialog{};
-		ALLEGRO::DISPLAY m_display{nullptr};
-		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
 		ALLEGRO::TIMER m_timer{nullptr};
 		time_info_t m_time_info{ 0.0, 0.0 };
 		bool m_kill{ false };
@@ -46,6 +44,9 @@ namespace wind
 
 	namespace system
 	{
+		export const ALLEGRO::DISPLAY& get_display();
+		export const ALLEGRO::EVENT_QUEUE& get_event_queue();
+
 		export inline auto timestamp() -> wind::string_t
 		{
 			char buffer[1024];
