@@ -507,7 +507,7 @@ namespace wind
 			}
 			else
 			{
-				this->m_dialog->on_render(system::m_display);
+				this->m_dialog->on_render();
 				al::flip_display();
 			}
 

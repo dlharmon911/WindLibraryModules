@@ -24,7 +24,7 @@ namespace wind
 		virtual auto on_start() -> int32_t = 0;
 		virtual auto on_stop() -> int32_t = 0;
 		virtual auto on_update(int32_t tick_count) -> int32_t = 0;
-		virtual auto on_render(const ALLEGRO::DISPLAY& display) -> int32_t = 0;
+		virtual auto on_render() -> int32_t = 0;
 
 		virtual auto on_joystick_axis(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_joystick_button_down(const ALLEGRO::EVENT& event) -> bool { return false; }
