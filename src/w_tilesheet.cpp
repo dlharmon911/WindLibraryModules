@@ -82,12 +82,12 @@ namespace wind
 		return iterator(this->m_bitmaps.end());
 	}
 
-	tilesheet_t::const_iterator tilesheet_t::cbegin()
+	tilesheet_t::const_iterator tilesheet_t::cbegin() const
 	{
 		return const_iterator(this->m_bitmaps.cbegin());
 	}
 
-	tilesheet_t::const_iterator tilesheet_t::cend()
+	tilesheet_t::const_iterator tilesheet_t::cend() const
 	{
 		return const_iterator(this->m_bitmaps.cend());
 	}
@@ -102,12 +102,12 @@ namespace wind
 		return reverse_iterator(this->m_bitmaps.rend());
 	}
 
-	tilesheet_t::const_reverse_iterator tilesheet_t::crbegin()
+	tilesheet_t::const_reverse_iterator tilesheet_t::crbegin() const
 	{
 		return const_reverse_iterator(this->m_bitmaps.crbegin());
 	}
 
-	tilesheet_t::const_reverse_iterator tilesheet_t::crend()
+	tilesheet_t::const_reverse_iterator tilesheet_t::crend() const
 	{
 		return const_reverse_iterator(this->m_bitmaps.crend());
 	}

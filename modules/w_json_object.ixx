@@ -42,13 +42,14 @@ namespace wind
 		json_t(const json_array_t& val);
 		json_t(const json_t& json);
 		~json_t();
+
 		auto operator = (const json_t& json) -> json_t&;
 
 		auto is_defined() const -> bool;
 
-		void clear();
+		auto clear() -> void;
 
-		int32_t type() const;
+		auto type() const -> int32_t;
 
 		auto set_as_boolean(bool val) -> bool;
 		auto set_as_number(double val) -> bool;

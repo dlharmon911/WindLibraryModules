@@ -14,6 +14,7 @@ export import :console;
 export import :console.base;
 export import :console.font;
 export import :dialog;
+export import :dialog.widget;
 export import :dson;
 export import :error;
 export import :file;

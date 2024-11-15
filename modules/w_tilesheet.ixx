@@ -25,29 +25,27 @@ namespace wind
 		tilesheet_t(const tilesheet_t& tilesheet);
 		~tilesheet_t();
 		auto operator = (const tilesheet_t& tilesheet) -> reference_type;
-		void clear();
-		size_t count() const;
-		bool is_empty() const;
-		const ALLEGRO::SIZE<size_t>& tile_size() const;
-		reference_element_type at(size_t index);
-		const_reference_element_type at(size_t index) const;
-		reference_element_type operator [](size_t index);
-		const_reference_element_type operator [](size_t index) const;
+		auto clear() -> void;
+		auto count() const -> size_t;
+		auto is_empty() const -> bool;
+		auto tile_size() const -> const ALLEGRO::SIZE<size_t>&;
+		auto at(size_t index) -> reference_element_type;
+		auto at(size_t index) const->const_reference_element_type;
+		auto operator [](size_t index)->reference_element_type;
+		auto operator [](size_t index) const ->const_reference_element_type;
 
 		class iterator
 		{
 		private:
 			iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			iterator(std::vector<element_type>::iterator it) : m_it(it) {}
-			bool operator == (const iterator& it) const { return (this->m_it == it.m_it); }
-			bool operator != (const iterator& it) const { return !operator == (it); }
-			iterator& operator ++() { ++this->m_it; return *this; }
-			iterator operator ++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
-			reference_element_type operator *() { return (*this->m_it); }
-			reference_element_type operator ->() { return (*this->m_it); }
+			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
+			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
+			auto operator ++() -> iterator& { ++this->m_it; return *this; }
+			auto operator ++ (int32_t) -> iterator { iterator tmp = *this; ++(*this); return tmp; }
+			auto operator * () -> reference_element_type { return (*this->m_it); }
+			auto operator -> () -> pointer_element_type { return &(*this->m_it); }
 
 		private:
 			std::vector<element_type>::iterator m_it;
@@ -58,15 +56,13 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
-			bool operator == (const const_iterator& it) const { return (this->m_it == it.m_it); }
-			bool operator != (const const_iterator& it) const { return !operator == (it); }
-			const_iterator& operator ++() { ++this->m_it; return *this; }
-			const_iterator operator ++(int32_t) { const_iterator tmp = *this; ++(*this); return tmp; }
-			const_reference_element_type operator *() const { return (*this->m_it); }
-			const_reference_element_type operator ->() const { return (*this->m_it); }
+			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
+			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
+			auto operator ++() -> const_iterator& { ++this->m_it; return *this; }
+			auto operator ++ (int32_t) -> const_iterator { const_iterator tmp = *this; ++(*this); return tmp; }
+			auto operator * () -> const_reference_element_type { return (*this->m_it); }
+			auto operator -> () -> const_pointer_element_type { return &(*this->m_it); }
 
 		private:
 			std::vector<element_type>::const_iterator m_it;
@@ -77,15 +73,13 @@ namespace wind
 		private:
 			reverse_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
-			bool operator == (const reverse_iterator& it) const { return (this->m_it == it.m_it); }
-			bool operator != (const reverse_iterator& it) const { return !operator == (it); }
-			reverse_iterator& operator --() { --this->m_it; return *this; }
-			reverse_iterator operator --(int32_t) { reverse_iterator tmp = *this; --(*this); return tmp; }
-			reference_element_type operator *() { return (*this->m_it); }
-			reference_element_type operator ->() { return (*this->m_it); }
+			auto operator == (const reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
+			auto operator != (const reverse_iterator& it) const -> bool { return !operator == (it); }
+			auto operator --() -> reverse_iterator& { --this->m_it; return *this; }
+			auto operator -- (int32_t) -> reverse_iterator { reverse_iterator tmp = *this; --(*this); return tmp; }
+			auto operator * () -> const_reference_element_type { return (*this->m_it); }
+			auto operator -> () -> const_pointer_element_type { return &(*this->m_it); }
 
 		private:
 			std::vector<element_type>::reverse_iterator m_it;
@@ -96,28 +90,26 @@ namespace wind
 		private:
 			const_reverse_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
-			bool operator == (const const_reverse_iterator& it) const { return (this->m_it == it.m_it); }
-			bool operator != (const const_reverse_iterator& it) const { return !operator == (it); }
-			const_reverse_iterator& operator --() { --this->m_it; return *this; }
-			const_reverse_iterator operator --(int32_t) { const_reverse_iterator tmp = *this; --(*this); return tmp; }
-			const_reference_element_type operator *() const { return (*this->m_it); }
-			const_reference_element_type operator ->() const { return (*this->m_it); }
+			auto operator == (const const_reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
+			auto operator != (const const_reverse_iterator& it) const -> bool { return !operator == (it); }
+			auto operator --() -> const_reverse_iterator& { --this->m_it; return *this; }
+			auto operator -- (int32_t) -> const_reverse_iterator { const_reverse_iterator tmp = *this; --(*this); return tmp; }
+			auto operator * () -> const_reference_element_type { return (*this->m_it); }
+			auto operator -> () -> const_pointer_element_type { return &(*this->m_it); }
 
 		private:
 			std::vector<element_type>::const_reverse_iterator m_it;
 		};
 
-		iterator begin();
-		iterator end();
-		const_iterator cbegin();
-		const_iterator cend();
-		reverse_iterator rbegin();
-		reverse_iterator rend();
-		const_reverse_iterator crbegin();
-		const_reverse_iterator crend();
+		auto begin() -> iterator;
+		auto end() -> iterator;
+		auto cbegin() const->const_iterator;
+		auto cend() const->const_iterator;
+		auto rbegin() -> reverse_iterator;
+		auto rend() -> reverse_iterator;
+		auto crbegin() const->const_reverse_iterator;
+		auto crend() const->const_reverse_iterator;
 
 	private:
 		std::vector<element_type> m_bitmaps{};

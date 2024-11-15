@@ -46,4 +46,24 @@ namespace wind
 
 		return c.i;
 	}
+
+	export inline auto map_sepia(const ALLEGRO::COLOR& color) -> ALLEGRO::COLOR
+	{
+		ALLEGRO::COLOR rv{ 0.0f, 0.0f, 0.0f, 1.0f };
+
+		rv.red = std::min(1.0f, (color.red * 0.393f) + (color.green * 0.769f) + (color.blue * 0.189f));
+		rv.green = std::min(1.0f, (color.red * 0.349f) + (color.green * 0.686f) + (color.blue * 0.168f));
+		rv.blue = std::min(1.0f, (color.red * 0.272f) + (color.green * 0.534f) + (color.blue * 0.131f));
+
+		return rv;
+	}
+
+	export inline auto map_grayscale(const ALLEGRO::COLOR& color) -> ALLEGRO::COLOR
+	{
+		ALLEGRO::COLOR rv{ 0.0f, 0.0f, 0.0f, 1.0f };
+
+		rv.red = std::min(1.0f, (rv.green = rv.blue = 0.299f * color.red + 0.587f * color.green + 0.114f * color.blue));
+
+		return rv;
+	}
 }

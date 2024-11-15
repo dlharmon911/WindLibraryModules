@@ -372,6 +372,21 @@
     <ClCompile Include="src\addons\w_datafile_addon.cpp">
       <Filter>Source Files\Addon Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\w_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_dialog_widget.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_dialog_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_dialog_widget_button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_dialog_widget_button.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

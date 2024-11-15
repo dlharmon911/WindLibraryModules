@@ -144,8 +144,9 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
-      <EnableModules>true</EnableModules>
+      <EnableModules>false</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +165,7 @@
       <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -236,6 +238,8 @@
     <ClCompile Include="modules\w_console_base.ixx" />
     <ClCompile Include="modules\w_console_font.ixx" />
     <ClCompile Include="modules\w_dialog.ixx" />
+    <ClCompile Include="modules\w_dialog_widget.ixx" />
+    <ClCompile Include="modules\w_dialog_widget_button.ixx" />
     <ClCompile Include="modules\w_dson.ixx" />
     <ClCompile Include="modules\w_error.ixx" />
     <ClCompile Include="modules\w_file.ixx" />
@@ -262,6 +266,9 @@
     <ClCompile Include="src\w_config.cpp" />
     <ClCompile Include="src\w_console.cpp" />
     <ClCompile Include="src\w_console_font.cpp" />
+    <ClCompile Include="src\w_dialog.cpp" />
+    <ClCompile Include="src\w_dialog_widget.cpp" />
+    <ClCompile Include="src\w_dialog_widget_button.cpp" />
     <ClCompile Include="src\w_dson.cpp" />
     <ClCompile Include="src\w_error.cpp" />
     <ClCompile Include="src\w_file.cpp" />

@@ -9,13 +9,15 @@ import :base;
 
 namespace wind
 {
-	template<typename Type>
+	export template<typename T> struct array_deleter { auto operator ()(T const* p) -> void { delete[] p; } };
+
+	export template<typename Type>
 	auto make_shared(Type* object) -> std::shared_ptr<void>
 	{
 		return std::shared_ptr<void>(object);
 	}
 
-	template<typename Type>
+	export template<typename Type>
 	auto make_shared(Type* object, void (*Deleter)(Type*)) -> std::shared_ptr<void>
 	{
 		return std::shared_ptr<void>((void*)object, Deleter);

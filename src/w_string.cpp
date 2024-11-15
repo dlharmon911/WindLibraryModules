@@ -14,7 +14,7 @@ namespace wind
 
 	namespace string
 	{
-		const char* validate_string(const char* string)
+		auto validate_string(const char* string)
 		{
 			if (string)
 			{
@@ -27,39 +27,40 @@ namespace wind
 
 	string_t::codepoint_t::codepoint_t(const ALLEGRO::USTRING& string, int32_t offset) : m_string(string), m_offset(offset) {}
 	string_t::codepoint_t::codepoint_t(const codepoint_t& ref) : m_string(ref.m_string), m_offset(ref.m_offset) {}
-	string_t::codepoint_t& string_t::codepoint_t::operator = (const codepoint_t& ref)
+
+	auto string_t::codepoint_t::operator = (const codepoint_t& ref) -> const codepoint_t&
 	{
 		this->m_string = ref.m_string;
 		this->m_offset = ref.m_offset;
 		return *this;
 	}
 
-	ALLEGRO::USTRING& string_t::codepoint_t::get_string()
+	auto string_t::codepoint_t::get_string() -> ALLEGRO::USTRING&
 	{
 		return this->m_string;
 	}
 
-	const ALLEGRO::USTRING& string_t::codepoint_t::get_string() const
+	auto string_t::codepoint_t::get_string() const -> const ALLEGRO::USTRING&
 	{
 		return this->m_string;
 	}
 
-	int32_t string_t::codepoint_t::get_offset() const
+	auto string_t::codepoint_t::get_offset() const -> int32_t
 	{
 		return this->m_offset;
 	}
 
-	void string_t::codepoint_t::set_offset(int32_t offset)
+	auto string_t::codepoint_t::set_offset(int32_t offset) -> void
 	{
 		this->m_offset = offset;
 	}
 
-	uchar_t string_t::codepoint_t::get_codepoint() const
+	auto string_t::codepoint_t::get_codepoint() const -> uchar_t
 	{
 		return al::ustr_get(this->m_string, (uchar_t)this->m_offset);
 	}
 
-	size_t string_t::codepoint_t::get_size() const
+	auto string_t::codepoint_t::get_size() const -> size_t
 	{
 		static const int32_t MinimumValue = 0;
 		static const int32_t MaximumValue = 0x10ffff;
@@ -83,23 +84,23 @@ namespace wind
 		return al::ustr_get(this->m_string, (uchar_t)this->m_offset);
 	}
 
-	size_t string_t::codepoint_t::set_codepoint(uchar_t codepoint)
+	auto string_t::codepoint_t::set_codepoint(uchar_t codepoint) -> size_t
 	{
 		return al::ustr_set_chr(this->m_string, (int32_t)this->m_offset, codepoint);
 	}
 
-	string_t::codepoint_t& string_t::codepoint_t::operator = (uchar_t codepoint)
+	auto string_t::codepoint_t::operator = (uchar_t codepoint) -> const codepoint_t&
 	{
 		al::ustr_set_chr(this->m_string, (int32_t)this->m_offset, codepoint);
 		return *this;
 	}
 
-	bool string_t::codepoint_t::operator == (const string_t::codepoint_t& codepoint) const
+	auto string_t::codepoint_t::operator == (const string_t::codepoint_t& codepoint) const -> bool
 	{
 		return (this->m_string == codepoint.m_string && this->m_offset == codepoint.m_offset);
 	}
 
-	bool string_t::codepoint_t::operator != (const string_t::codepoint_t& codepoint) const
+	auto string_t::codepoint_t::operator != (const string_t::codepoint_t& codepoint) const -> bool
 	{
 		return !operator == (codepoint);
 	}
@@ -145,128 +146,128 @@ namespace wind
 	{
 	}
 
-	string_t& string_t::assign(const ALLEGRO::USTRING& string)
+	auto string_t::assign(const ALLEGRO::USTRING& string) -> string_t&
 	{
 		this->m_data = ((bool)string ? al::ustr_dup(string) : al::ustr_new(""));
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::assign(const std::string& string)
+	auto string_t::assign(const std::string& string) -> string_t&
 	{
 		this->m_data = al::ustr_new(string.c_str());
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::assign(const string_t& str)
+	auto string_t::assign(const string_t& str) -> string_t&
 	{
 		this->m_data = al::ustr_dup(str.m_data);
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::assign(const char* string)
+	auto string_t::assign(const char* string) -> string_t&
 	{
 		this->m_data = al::ustr_new(string::validate_string(string));
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::assign(const std::initializer_list<uchar_t> il)
+	auto string_t::assign(const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->assign(string_t(il));
 	}
 
-	string_t& string_t::operator = (const ALLEGRO::USTRING& string)
+	auto string_t::operator = (const ALLEGRO::USTRING& string) -> string_t&
 	{
 		this->m_data = ((bool)string ? al::ustr_dup(string) : al::ustr_new(""));
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::operator = (const std::string& string)
+	auto string_t::operator = (const std::string& string) -> string_t&
 	{
 		this->m_data = al::ustr_new(string.c_str());
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::operator = (const char* string)
+	auto string_t::operator = (const char* string) -> string_t&
 	{
 		this->m_data = al::ustr_new(string::validate_string(string));
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::operator = (const string_t& string)
+	auto string_t::operator = (const string_t& string) -> string_t&
 	{
 		this->m_data = al::ustr_dup(string.m_data);
 		ALLEGRO::ASSERT(this->m_data);
 		return *this;
 	}
 
-	string_t& string_t::operator = (const std::initializer_list<uchar_t> il)
+	auto string_t::operator = (const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->assign(string_t(il));
 	}
 
-	string_t& string_t::operator += (const ALLEGRO::USTRING& string)
+	auto string_t::operator += (const ALLEGRO::USTRING& string) -> string_t&
 	{
 		return this->append(string);
 	}
 
-	string_t& string_t::operator += (const std::string& string)
+	auto string_t::operator += (const std::string& string) -> string_t&
 	{
 		return this->append(string);
 	}
 
-	string_t& string_t::operator += (const char* string)
+	auto string_t::operator += (const char* string) -> string_t&
 	{
 		return this->append(string::validate_string(string));
 	}
 
-	string_t& string_t::operator += (const string_t& string)
+	auto string_t::operator += (const string_t& string) -> string_t&
 	{
 		return this->append(string);
 	}
 
-	string_t& string_t::operator += (const std::initializer_list<uchar_t> il)
+	auto string_t::operator += (const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->append(il);
 	}
 
-	bool string_t::operator == (const string_t& u) const
+	auto string_t::operator == (const string_t& u) const -> bool
 	{
 		return al::ustr_equal(this->u_str(), u.u_str());
 	}
 
-	bool string_t::operator != (const string_t& u) const
+	auto string_t::operator != (const string_t& u) const -> bool
 	{
 		return !(this->operator == (u));
 	}
 
-	bool string_t::operator == (const std::string& s) const
+	auto string_t::operator == (const std::string& s) const -> bool
 	{
 		return (std::strcmp(s.c_str(), this->c_str()) == 0);
 	}
 
-	bool string_t::operator != (const std::string& s) const
+	auto string_t::operator != (const std::string& s) const -> bool
 	{
 		return !(this->operator == (s));
 	}
 
-	bool string_t::operator == (const char* string) const
+	auto string_t::operator == (const char* string) const -> bool
 	{
 		return (std::strcmp(string::validate_string(string), this->c_str()) == 0);
 	}
 
-	bool string_t::operator != (const char* string) const
+	auto string_t::operator != (const char* string) const -> bool
 	{
 		return !(this->operator == (string));
 	}
 
-	const char* string_t::c_str() const
+	auto string_t::c_str() const -> const char*
 	{
 		return al::c_str(this->m_data);
 	}
@@ -276,47 +277,47 @@ namespace wind
 		return al::c_str(this->m_data);
 	}
 
-	const ALLEGRO::USTRING& string_t::u_str() const
+	auto string_t::u_str() const -> const ALLEGRO::USTRING&
 	{
 		return this->m_data;
 	}
 
-	string_t::operator const ALLEGRO::USTRING& () const
+	auto string_t::u_str() -> ALLEGRO::USTRING&
 	{
 		return this->m_data;
 	}
 
-	ALLEGRO::USTRING& string_t::u_str()
+	string_t::operator const ALLEGRO::USTRING&() const
 	{
 		return this->m_data;
 	}
 
-	string_t::operator ALLEGRO::USTRING& ()
+	string_t::operator ALLEGRO::USTRING&()
 	{
 		return this->m_data;
 	}
 
-	size_t string_t::size() const
+	auto string_t::size() const -> size_t
 	{
 		return al::ustr_size(this->m_data);
 	}
 
-	size_t string_t::length() const
+	auto string_t::length() const -> size_t
 	{
 		return al::ustr_length(this->m_data);
 	}
 
-	bool string_t::empty() const
+	auto string_t::empty() const -> bool
 	{
 		return (al::ustr_length(this->m_data) == 0);
 	}
 
-	void string_t::clear()
+	auto string_t::clear() -> void
 	{
 		al::ustr_truncate(this->m_data, 0);
 	}
 
-	string_t string_t::substr(size_t pos, size_t count) const
+	auto string_t::substr(size_t pos, size_t count) const -> string_t
 	{
 		int32_t end = 0;
 
@@ -336,183 +337,183 @@ namespace wind
 		return rv;
 	}
 
-	string_t::codepoint_t string_t::operator[] (size_t pos)
+	auto string_t::operator[] (size_t pos) -> string_t::codepoint_t
 	{
 		return this->at(pos);
 	}
 
-	const string_t::codepoint_t string_t::operator[] (size_t pos) const
+	auto string_t::operator[] (size_t pos) const -> const string_t::codepoint_t
 	{
 		return this->at(pos);
 	}
 
-	string_t::codepoint_t string_t::at(size_t pos)
+	auto string_t::at(size_t pos) -> string_t::codepoint_t
 	{
 		ALLEGRO::ASSERT(pos < al::ustr_length(this->m_data));
 
 		return codepoint_t(this->m_data, (int32_t)pos);
 	}
 
-	const string_t::codepoint_t string_t::at(size_t pos) const
+	auto string_t::at(size_t pos) const -> const string_t::codepoint_t
 	{
 		ALLEGRO::ASSERT(pos < al::ustr_length(this->m_data));
 
 		return codepoint_t(this->m_data, (int32_t)pos);
 	}
 
-	void string_t::push_back(uchar_t c)
+	auto string_t::push_back(uchar_t c) -> void
 	{
 		al::ustr_append_chr(this->m_data, c);
 	}
 
-	void string_t::pop_back()
+	auto string_t::pop_back() -> void
 	{
 		ALLEGRO::ASSERT(al::ustr_size(this->m_data) > 0);
 		al::ustr_remove_chr(this->m_data, (int32_t)al::ustr_size(this->m_data) - 1);
 	}
 
-	string_t::iterator string_t::begin()
+	auto string_t::begin() -> string_t::iterator
 	{
 		return string_t::iterator(this->m_data, 0);
 	}
 
-	string_t::iterator string_t::end()
+	auto string_t::end() -> string_t::iterator
 	{
 		return string_t::iterator(this->m_data, (int32_t)this->length());
 	}
 
-	string_t::const_iterator string_t::cbegin() const
+	auto string_t::cbegin() const -> string_t::const_iterator
 	{
 		return string_t::const_iterator(this->m_data, 0);
 	}
 
-	string_t::const_iterator string_t::cend() const
+	auto string_t::cend() const -> string_t::const_iterator
 	{
 		return string_t::const_iterator(this->m_data, (int32_t)this->length());
 	}
 
-	string_t::reverse_iterator string_t::rbegin()
+	auto string_t::rbegin() -> string_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_data, (int32_t)this->length() - 1);
 	}
 
-	string_t::reverse_iterator string_t::rend()
+	auto string_t::rend() -> string_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_data, -1);
 	}
 
-	string_t::const_reverse_iterator string_t::crbegin() const
+	auto string_t::crbegin() const -> string_t::const_reverse_iterator
 	{
 		return const_reverse_iterator(this->m_data, (int32_t)this->length() - 1);
 	}
 
-	string_t::const_reverse_iterator string_t::crend() const
+	auto string_t::crend() const -> string_t::const_reverse_iterator
 	{
 		return const_reverse_iterator(this->m_data, -1);
 	}
 
-	string_t& string_t::append(const string_t& rhs)
+	auto string_t::append(const string_t& rhs) -> string_t&
 	{
 		al::ustr_append(this->u_str(), rhs.u_str());
 		return *this;
 	}
 
-	string_t& string_t::append(const std::string& rhs)
+	auto string_t::append(const std::string& rhs) -> string_t&
 	{
 		al::ustr_append_cstr(this->u_str(), rhs.c_str());
 		return *this;
 	}
 
-	string_t& string_t::append(const char* string)
+	auto string_t::append(const char* string) -> string_t&
 	{
 		al::ustr_append_cstr(this->u_str(), string::validate_string(string));
 		return *this;
 	}
 
-	string_t& string_t::append(uchar_t rhs)
+	auto string_t::append(uchar_t rhs) -> string_t&
 	{
 		this->push_back(rhs);
 		return *this;
 	}
 
-	string_t& string_t::append(const std::initializer_list<uchar_t> il)
+	auto string_t::append(const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->append(string_t(il));
 	}
 
-	string_t& string_t::prepend(const string_t& rhs)
+	auto string_t::prepend(const string_t& rhs) -> string_t&
 	{
 		al::ustr_insert(this->u_str(), 0, rhs.u_str());
 		return *this;
 	}
 
-	string_t& string_t::prepend(const std::string& rhs)
+	auto string_t::prepend(const std::string& rhs) -> string_t&
 	{
 		al::ustr_insert_cstr(this->u_str(), 0, rhs.c_str());
 		return *this;
 	}
 
-	string_t& string_t::prepend(const char* string)
+	auto string_t::prepend(const char* string) -> string_t&
 	{
 		al::ustr_insert_cstr(this->u_str(), 0, string::validate_string(string));
 		return *this;
 	}
 
-	string_t& string_t::prepend(uchar_t rhs)
+	auto string_t::prepend(uchar_t rhs) -> string_t&
 	{
 		return this->insert(0, rhs);
 	}
 
-	string_t& string_t::prepend(const std::initializer_list<uchar_t> il)
+	auto string_t::prepend(const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->append(string_t(il));
 	}
 
-	int32_t string_t::compare(const string_t& rhs) const
+	auto string_t::compare(const string_t& rhs) const -> int32_t
 	{
 		return al::ustr_compare(this->u_str(), rhs.u_str());
 	}
 
-	int32_t string_t::compare(const std::string& rhs) const
+	auto string_t::compare(const std::string& rhs) const -> int32_t
 	{
 		return al::ustr_compare(this->u_str(), string_t(rhs).u_str());
 	}
 
-	int32_t string_t::compare(const char* string) const
+	auto string_t::compare(const char* string) const -> int32_t
 	{
 		return al::ustr_compare(this->u_str(), string_t(string::validate_string(string)).u_str());
 	}
 
-	string_t& string_t::insert(size_t pos, const string_t& rhs)
+	auto string_t::insert(size_t pos, const string_t& rhs) -> string_t&
 	{
 		al::ustr_insert(this->u_str(), (int32_t)pos, rhs.u_str());
 		return *this;
 	}
 
-	string_t& string_t::insert(size_t pos, const std::string& rhs)
+	auto string_t::insert(size_t pos, const std::string& rhs) -> string_t&
 	{
 		al::ustr_insert_cstr(this->u_str(), (int32_t)pos, rhs.c_str());
 		return *this;
 	}
 
-	string_t& string_t::insert(size_t pos, const char* rhs)
+	auto string_t::insert(size_t pos, const char* rhs) -> string_t&
 	{
 		al::ustr_insert_cstr(this->u_str(), (int32_t)pos, (rhs ? rhs : ""));
 		return *this;
 	}
 
-	string_t& string_t::insert(size_t pos, uchar_t rhs)
+	auto string_t::insert(size_t pos, uchar_t rhs) -> string_t&
 	{
 		al::ustr_insert_chr(this->u_str(), (int32_t)pos, rhs);
 		return *this;
 	}
 
-	string_t& string_t::insert(size_t pos, const std::initializer_list<uchar_t> il)
+	auto string_t::insert(size_t pos, const std::initializer_list<uchar_t> il) -> string_t&
 	{
 		return this->insert(pos, string_t(il));
 	}
 
-	string_t& string_t::erase(size_t pos, size_t length)
+	auto string_t::erase(size_t pos, size_t length) -> string_t&
 	{
 		int32_t end = 0;
 
@@ -529,40 +530,40 @@ namespace wind
 		return *this;
 	}
 
-	string_t& string_t::replace(size_t pos, size_t length, const string_t& rhs)
+	auto string_t::replace(size_t pos, size_t length, const string_t& rhs) -> string_t&
 	{
 		al::ustr_replace_range(this->u_str(), (int32_t)pos, (int32_t)length, rhs.u_str());
 		return *this;
 	}
 
-	string_t& string_t::replace(size_t pos, size_t length, const std::string& rhs)
+	auto string_t::replace(size_t pos, size_t length, const std::string& rhs) -> string_t&
 	{
 		al::ustr_replace_range(this->u_str(), (int32_t)pos, (int32_t)length, string_t(rhs).u_str());
 		return *this;
 	}
 
-	string_t& string_t::replace(size_t pos, size_t length, const char* rhs)
+	auto string_t::replace(size_t pos, size_t length, const char* rhs) -> string_t&
 	{
 		al::ustr_replace_range(this->u_str(), (int32_t)pos, (int32_t)length, string_t(rhs).u_str());
 		return *this;
 	}
 
-	bool string_t::starts_with(const string_t& rhs) const
+	auto string_t::starts_with(const string_t& rhs) const -> bool
 	{
 		return al::ustr_has_prefix(this->u_str(), rhs.u_str());
 	}
 
-	bool string_t::starts_with(const std::string& rhs) const
+	auto string_t::starts_with(const std::string& rhs) const->bool
 	{
 		return al::ustr_has_prefix_cstr(this->u_str(), rhs.c_str());
 	}
 
-	bool string_t::starts_with(const char* string) const
+	auto string_t::starts_with(const char* string) const -> bool
 	{
 		return al::ustr_has_prefix_cstr(this->u_str(), string::validate_string(string));
 	}
 
-	bool string_t::starts_with(uchar_t rhs) const
+	auto string_t::starts_with(uchar_t rhs) const -> bool
 	{
 		if (this->size())
 		{
@@ -575,22 +576,22 @@ namespace wind
 		return false;
 	}
 
-	bool string_t::ends_with(const string_t& rhs) const
+	auto string_t::ends_with(const string_t& rhs) const -> bool
 	{
 		return al::ustr_has_suffix(this->u_str(), rhs.u_str());
 	}
 
-	bool string_t::ends_with(const std::string& rhs) const
+	auto string_t::ends_with(const std::string& rhs) const -> bool
 	{
 		return al::ustr_has_suffix_cstr(this->u_str(), rhs.c_str());
 	}
 
-	bool string_t::ends_with(const char* string) const
+	auto string_t::ends_with(const char* string) const -> bool
 	{
 		return al::ustr_has_suffix_cstr(this->u_str(), string::validate_string(string));
 	}
 
-	bool string_t::ends_with(uchar_t rhs) const
+	auto string_t::ends_with(uchar_t rhs) const -> bool
 	{
 		if (this->size())
 		{
@@ -603,47 +604,47 @@ namespace wind
 		return false;
 	}
 
-	bool string_t::contains(const string_t& rhs) const
+	auto string_t::contains(const string_t& rhs) const -> bool
 	{
 		return (al::ustr_find_str(this->u_str(), 0, rhs.u_str()) >= 0);
 	}
 
-	bool string_t::contains(const std::string& rhs) const
+	auto string_t::contains(const std::string& rhs) const -> bool
 	{
 		return (al::ustr_find_cstr(this->u_str(), 0, rhs.c_str()) >= 0);
 	}
 
-	bool string_t::contains(const char* string) const
+	auto string_t::contains(const char* string) const -> bool
 	{
 		return (al::ustr_find_cstr(this->u_str(), 0, string::validate_string(string)) >= 0);
 	}
 
-	bool string_t::contains(uchar_t rhs) const
+	auto string_t::contains(uchar_t rhs) const -> bool
 	{
 		return (al::ustr_find_chr(this->u_str(), 0, rhs) >= 0);
 	}
 
-	size_t string_t::find(const string_t& rhs, size_t pos) const
+	auto string_t::find(const string_t& rhs, size_t pos) const -> size_t
 	{
 		return (size_t)al::ustr_find_str(this->u_str(), (int32_t)pos, rhs.u_str());
 	}
 
-	size_t string_t::find(const std::string& rhs, size_t pos) const
+	auto string_t::find(const std::string& rhs, size_t pos) const -> size_t
 	{
 		return (size_t)al::ustr_find_cstr(this->u_str(), (int32_t)pos, rhs.c_str());
 	}
 
-	size_t string_t::find(const char* string, size_t pos) const
+	auto string_t::find(const char* string, size_t pos) const -> size_t
 	{
 		return (size_t)al::ustr_find_cstr(this->u_str(), (int32_t)pos, string::validate_string(string));
 	}
 
-	size_t string_t::find(uchar_t rhs, size_t pos) const
+	auto string_t::find(uchar_t rhs, size_t pos) const -> size_t
 	{
 		return (size_t)al::ustr_find_chr(this->u_str(), (int32_t)pos, rhs);
 	}
 
-	size_t string_t::rfind(const string_t& rhs, size_t pos) const
+	auto string_t::rfind(const string_t& rhs, size_t pos) const -> size_t
 	{
 		if (pos == npos)
 		{
@@ -653,7 +654,7 @@ namespace wind
 		return (size_t)al::ustr_rfind_str(this->u_str(), (int32_t)pos, rhs.u_str());
 	}
 
-	size_t string_t::rfind(const std::string& rhs, size_t pos) const
+	auto string_t::rfind(const std::string& rhs, size_t pos) const -> size_t
 	{
 		if (pos == npos)
 		{
@@ -663,7 +664,7 @@ namespace wind
 		return (size_t)al::ustr_rfind_cstr(this->u_str(), (int32_t)pos, rhs.c_str());
 	}
 
-	size_t string_t::rfind(const char* string, size_t pos) const
+	auto string_t::rfind(const char* string, size_t pos) const -> size_t
 	{
 		if (pos == npos)
 		{
@@ -673,7 +674,7 @@ namespace wind
 		return (size_t)al::ustr_rfind_cstr(this->u_str(), (int32_t)pos, string::validate_string(string));
 	}
 
-	size_t string_t::rfind(uchar_t rhs, size_t pos) const
+	auto string_t::rfind(uchar_t rhs, size_t pos) const -> size_t
 	{
 		if (pos == npos)
 		{
@@ -685,7 +686,7 @@ namespace wind
 
 	namespace string
 	{
-		string_t to_string(const char* format, ...)
+		auto to_string(const char* format, ...) -> string_t
 		{
 			string_t rv;
 			va_list args;
@@ -709,7 +710,7 @@ namespace wind
 		}
 
 
-		string_t create(uchar_t c, size_t n)
+		auto create(uchar_t c, size_t n) -> string_t
 		{
 			ALLEGRO::USTRING u = al::ustr_new("");
 
@@ -723,8 +724,7 @@ namespace wind
 			return string_t(u);
 		}
 
-
-		string_t to_lower(const string_t& string)
+		auto to_lower(const string_t& string) -> string_t
 		{
 			string_t output;
 
@@ -736,7 +736,7 @@ namespace wind
 			return output;
 		}
 
-		string_t to_upper(const string_t& string)
+		auto to_upper(const string_t& string) -> string_t
 		{
 			string_t output;
 
@@ -748,7 +748,7 @@ namespace wind
 			return output;
 		}
 
-		string_t fuse(const std::vector<string_t> vector, char separator)
+		auto fuse(const std::vector<string_t> vector, char separator) -> string_t
 		{
 			string_t output;
 
@@ -765,7 +765,7 @@ namespace wind
 			return output;
 		}
 
-		size_t separate(const string_t& string, std::vector<string_t>& vector, const char separator)
+		auto separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t
 		{
 			size_t x = string.find(0, separator);
 
@@ -781,66 +781,78 @@ namespace wind
 
 			return vector.size();
 		}
+
+		template <> auto to_string(const bool& value) -> string_t
+		{
+			string_t string = (value ? "true" : "false");
+
+			return string;
+		}
+
+		template <> auto to_string(const string_t& value) -> string_t
+		{
+			return value;
+		}
 	}
 }
 
-wind::string_t operator + (const wind::string_t& lhs, const wind::string_t& rhs)
+auto operator + (const wind::string_t& lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const wind::string_t& lhs, const std::string& rhs)
+auto operator + (const wind::string_t& lhs, const std::string& rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const wind::string_t& lhs, const char* rhs)
+auto operator + (const wind::string_t& lhs, const char* rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const char* lhs, const wind::string_t& rhs)
+auto operator + (const char* lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const std::string& lhs, const wind::string_t& rhs)
+auto operator + (const std::string& lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const wind::string_t& lhs, wind::uchar_t rhs)
+auto operator + (const wind::string_t& lhs, wind::uchar_t rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.push_back(rhs);
 	return rv;
 }
 
-wind::string_t operator + (wind::uchar_t lhs, const wind::string_t& rhs)
+auto operator + (wind::uchar_t lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = wind::string::create(lhs, 1);
 	rv.append(rhs);
 	return rv;
 }
 
-wind::string_t operator + (const wind::string_t& lhs, char rhs)
+auto operator + (const wind::string_t& lhs, char rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
 	rv.push_back(rhs);
 	return rv;
 }
 
-wind::string_t operator + (char lhs, const wind::string_t& rhs)
+auto operator + (char lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = wind::string::create(lhs, 1);
 	rv.append(rhs);
