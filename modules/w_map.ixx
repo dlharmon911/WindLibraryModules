@@ -40,7 +40,7 @@ namespace wind
 
 	namespace map
 	{
-		export class cell_t : public class_t<cell_t>
+		export class cell_t
 		{
 		public:
 			using element_type = tilemap::tile_t;
@@ -56,10 +56,10 @@ namespace wind
 			cell_t();
 			cell_t(const cell_t& cell);
 			~cell_t();
-			auto operator = (const cell_t& cell) ->cell_t&;
+			auto operator = (const cell_t& cell)->cell_t&;
 
 			auto at(size_t index) -> reference_element_type;
-			auto at(size_t index) const ->const_reference_element_type;
+			auto at(size_t index) const->const_reference_element_type;
 			auto operator [](size_t index)->reference_element_type;
 			auto operator [](size_t index) const->const_reference_element_type;
 
@@ -85,8 +85,6 @@ namespace wind
 			private:
 				const_iterator() = default;
 			public:
-				typedef std::ptrdiff_t difference_type;
-
 				const_iterator(const vector_type::const_iterator it) : m_it(it) {}
 				auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 				auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
@@ -99,31 +97,31 @@ namespace wind
 				vector_type::const_iterator m_it;
 			};
 
-			auto begin()->iterator;
-			auto end()->iterator;
-			auto cbegin()->const_iterator;
-			auto cend()->const_iterator;
+			auto begin() -> iterator;
+			auto end() -> iterator;
+			auto cbegin() -> const_iterator;
+			auto cend() -> const_iterator;
 
 		private:
 			vector_type m_data;
 		};
 
-		export class camera_t : public class_t<camera_t>
+		export class camera_t
 		{
 		public:
 			camera_t();
 			camera_t(const camera_t& camera);
-			camera_t(ALLEGRO::SIZE<size_t> camera_size, ALLEGRO::POINT<size_t> tile_shift);
+			camera_t(const ALLEGRO::SIZE<size_t>& camera_size, const ALLEGRO::POINT<size_t>& tile_shift);
 			~camera_t();
-			auto operator = (const camera_t& camera) ->camera_t&;
-			auto set_map(ALLEGRO::RECTANGLE<size_t> map) -> void;
-			auto set_tile(ALLEGRO::POINT<size_t> shift) -> void;
-			auto get_position() const ->ALLEGRO::POINT<size_t>;
-			auto set_position(ALLEGRO::POINT<size_t> position) -> void;
+			auto operator = (const camera_t& camera)->camera_t&;
+			auto set_map(const ALLEGRO::RECTANGLE<size_t>& map) -> void;
+			auto set_tile(const ALLEGRO::POINT<size_t>& shift) -> void;
+			auto get_position() const->ALLEGRO::POINT<size_t>;
+			auto set_position(const ALLEGRO::POINT<size_t>& position) -> void;
 			auto get_size() const -> const ALLEGRO::SIZE<size_t>&;
-			auto set_size(ALLEGRO::SIZE<size_t> size) -> void;
-			auto get_shift() const -> ALLEGRO::POINT<size_t>;
-			auto move(const ALLEGRO::POINT<int32_t> delta) -> ALLEGRO::POINT<int32_t>;
+			auto set_size(const ALLEGRO::SIZE<size_t>& size) -> void;
+			auto get_shift() const->ALLEGRO::POINT<size_t>;
+			auto move(const ALLEGRO::POINT<int32_t>& delta) -> ALLEGRO::POINT<int32_t>;
 
 		private:
 			ALLEGRO::RECTANGLE<size_t> m_camera;
@@ -133,7 +131,7 @@ namespace wind
 		};
 	}
 
-	export class map_t : public class_t<map_t>
+	export class map_t
 	{
 	public:
 		using element_type = map::cell_t;
@@ -151,14 +149,14 @@ namespace wind
 		map_t(ALLEGRO::SIZE<size_t> size);
 		map_t(const map_t& map);
 		~map_t();
-		auto operator = (const map_t& map) -> map_t&;
+		auto operator = (const map_t& map)->map_t&;
 
-		explicit operator bool () const;
+		explicit operator bool() const;
 
 		auto clear() -> void;
 
 		auto reset(size_t width, size_t height) -> bool;
-		auto reset(ALLEGRO::SIZE<size_t> size) -> bool;
+		auto reset(const ALLEGRO::SIZE<size_t>& size) -> bool;
 
 		auto data() -> void*;
 		auto data() const -> const void*;
@@ -170,12 +168,12 @@ namespace wind
 		auto operator [](size_t index)->reference_element_type;
 		auto operator [](size_t index) const->const_reference_element_type;
 
-		class iterator : public class_t<iterator>
+		class iterator
 		{
 		private:
 			iterator() = default;
 		public:
-			iterator(shared_type & data, size_t offset) : m_data(data.get()), m_offset(offset) {}
+			iterator(shared_type& data, size_t offset) : m_data(data.get()), m_offset(offset) {}
 			auto operator == (iterator& it) const -> bool { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
 			auto operator != (iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++ () -> iterator& { ++this->m_offset; return *this; }
@@ -188,7 +186,7 @@ namespace wind
 			size_t m_offset;
 		};
 
-		class const_iterator : public class_t<const_iterator>
+		class const_iterator
 		{
 		private:
 			const_iterator() = default;
@@ -206,10 +204,10 @@ namespace wind
 			size_t m_offset;
 		};
 
-		auto begin()->iterator;
-		auto end()->iterator;
-		auto cbegin()->const_iterator;
-		auto cend()->const_iterator;
+		auto begin() -> iterator;
+		auto end() -> iterator;
+		auto cbegin() const -> map_t::const_iterator;
+		auto cend() const -> map_t::const_iterator;
 
 	private:
 		shared_type m_data;
@@ -220,6 +218,6 @@ namespace wind
 	{
 		export auto load(map_t& map, const string_t& filename) -> bool;
 		export auto save(const map_t& map, const string_t& filename) -> bool;
-		export auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, ALLEGRO::POINT<size_t> position) -> void;
+		export auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, const ALLEGRO::POINT<size_t>& position) -> void;
 	}
 }

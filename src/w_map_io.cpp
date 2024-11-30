@@ -8,12 +8,12 @@ namespace wind
 {
 	namespace map
 	{
-		bool load(map_t& map, const string_t& filename)
+		auto load(map_t& map, const string_t& filename) -> bool
 		{
 			return false;
 		}
 
-		bool save(const map_t& map, const string_t& filename)
+		auto save(const map_t& map, const string_t& filename) -> bool
 		{
 			return false;
 		}

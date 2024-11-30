@@ -11,8 +11,10 @@ import :string;
 
 namespace wind
 {
-	const char* error_text[] =
+	namespace internal
 	{
+		const std::array<const wind::string_t, WIND::JSON::ERROR_COUNT> error_messages
+		{
 			"ERROR_STREAM_ENDED_EARLY",
 			"ERROR_FILE_OUTPUT_ERROR",
 			"ERROR_INVALID_TOKEN",
@@ -22,21 +24,22 @@ namespace wind
 			"ERROR_HEX_LENGTH",
 			"ERROR_ESCAPE_CHAR",
 			"ERROR_CHAR_VALUE"
-	};
+		};
+	}
 
-	inline void message(size_t index, const char** message_list, size_t n, int32_t line, const char* filename)
+	auto message(size_t index, int32_t line, const wind::string_t& filename) -> void
 	{
-		if (index < n)
+		if (index < internal::error_messages.size())
 		{
 			std::cout << "\n\n*********************************************************************\n"
 				<< "Error at line #:" << line << " in file \"" << filename << "\"\n"
-				<< "Message: \"" << message_list[index] << "\"\n"
+				<< "Message: \"" << internal::error_messages[index] << "\"\n"
 				<< "\n*********************************************************************" << std::endl;
 		}
 	}
 
-	void do_json_error(size_t index, const string_t& file, int32_t line)
+	auto do_json_error(size_t index, const string_t& file, int32_t line) -> void
 	{
-		message(index, error_text, sizeof(error_text), line, file.c_str());
+		message(index, line, file.c_str());
 	}
 }

@@ -31,7 +31,7 @@ namespace wind
 	class json_object_t;
 	class json_array_t;
 
-	export class json_t : public class_t<json_t>
+	export class json_t
 	{
 	public:
 		json_t();
@@ -43,13 +43,13 @@ namespace wind
 		json_t(const json_t& json);
 		~json_t();
 
-		auto operator = (const json_t& json) -> json_t&;
+		auto operator = (const json_t& json)->json_t&;
 
 		auto is_defined() const -> bool;
 
 		auto clear() -> void;
 
-		auto type() const -> int32_t;
+		auto get_type() const->int32_t;
 
 		auto set_as_boolean(bool val) -> bool;
 		auto set_as_number(double val) -> bool;
@@ -59,7 +59,7 @@ namespace wind
 
 		auto get_as_boolean() const -> bool;
 		auto get_as_number() const -> double;
-		auto get_as_string() const -> string_t;
+		auto get_as_string() const->string_t;
 		auto get_as_object() -> json_object_t&;
 		auto get_as_object() const -> const json_object_t&;
 		auto get_as_array() -> json_array_t&;
@@ -83,7 +83,7 @@ namespace wind
 
 	export using json_pair_t = std::pair<json_key_t, json_t>;
 
-	export class json_object_t : public class_t<json_object_t>
+	export class json_object_t
 	{
 	private:
 		using vector_t = std::unordered_map<json_key_t, json_t>;
@@ -101,14 +101,14 @@ namespace wind
 		json_object_t(json_object_t& object);
 		~json_object_t();
 
-		auto operator = (const json_object_t& object) -> json_object_t&;
-		auto operator = (json_object_t& object) -> json_object_t&;
+		auto operator = (const json_object_t& object)->json_object_t&;
+		auto operator = (json_object_t& object)->json_object_t&;
 		auto clear() noexcept -> void;
 		auto size() const noexcept -> size_t;
 		auto is_empty() const noexcept -> bool;
 
 		auto at(const json_key_t& key) -> reference_element_type;
-		auto at(const json_key_t& key) const -> const_reference_element_type;
+		auto at(const json_key_t& key) const->const_reference_element_type;
 		auto operator [](const json_key_t& key)->reference_element_type;
 
 		auto add(const json_key_t& key, const element_type& val) -> void;
@@ -155,12 +155,12 @@ namespace wind
 		};
 
 		auto find(const json_key_t& key) -> iterator;
-		auto find(const json_key_t& key) const -> const_iterator;
+		auto find(const json_key_t& key) const->const_iterator;
 
-		auto begin()-> iterator;
+		auto begin() -> iterator;
 		auto end() -> iterator;
-		auto cbegin() const -> const_iterator;
-		auto cend() const -> const_iterator;
+		auto cbegin() const->const_iterator;
+		auto cend() const->const_iterator;
 
 	private:
 
@@ -169,7 +169,7 @@ namespace wind
 
 	/****************************************************************************************************/
 
-	export class json_array_t : public class_t<json_array_t>
+	export class json_array_t
 	{
 	public:
 		using element_type = json_t;
@@ -187,14 +187,14 @@ namespace wind
 		json_array_t(std::initializer_list<element_type> il);
 		~json_array_t();
 
-		auto operator = (const json_array_t& array) -> json_array_t&;
+		auto operator = (const json_array_t& array)->json_array_t&;
 		auto operator = (json_array_t& array)->json_array_t&;
 		auto operator = (std::initializer_list<element_type> il)->json_array_t&;
 		auto clear() noexcept -> void;
 		auto size() const noexcept -> size_t;
 		auto is_empty() const noexcept -> bool;
 		auto at(size_t index) -> reference_element_type;
-		auto at(size_t index) const -> const_reference_element_type;
+		auto at(size_t index) const->const_reference_element_type;
 		auto operator [](size_t index)->reference_element_type;
 		auto operator [](size_t index) const->const_reference_element_type;
 
@@ -273,9 +273,9 @@ namespace wind
 			std::vector<element_type>::const_reverse_iterator m_it;
 		};
 
-		auto insert(const_iterator position, const element_type& val)->iterator;
-		auto insert(const_iterator position, size_t n, const element_type& val)->iterator;
-		auto insert(const_iterator position, std::initializer_list<element_type> il)->iterator;
+		auto insert(const_iterator position, const element_type& val) -> iterator;
+		auto insert(const_iterator position, size_t n, const element_type& val) -> iterator;
+		auto insert(const_iterator position, std::initializer_list<element_type> il) -> iterator;
 		template <class InputIterator> auto insert(const_iterator position, InputIterator first, InputIterator last) -> iterator
 		{
 			return iterator(this->m_data.insert(position, first, last));
@@ -293,13 +293,13 @@ namespace wind
 		auto assign(size_t n, const element_type& val) -> void;
 		auto assign(std::initializer_list<element_type> il) -> void;
 
-		auto begin()->iterator;
-		auto end()->iterator;
+		auto begin() -> iterator;
+		auto end() -> iterator;
 		auto cbegin() const->const_iterator;
 		auto cend() const->const_iterator;
-		auto rbegin()->reverse_iterator;
-		auto rend()->reverse_iterator;
-		auto crbegin() const ->const_reverse_iterator;
+		auto rbegin() -> reverse_iterator;
+		auto rend() -> reverse_iterator;
+		auto crbegin() const->const_reverse_iterator;
 		auto crend() const->const_reverse_iterator;
 
 	private:

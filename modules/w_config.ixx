@@ -17,9 +17,6 @@ namespace wind
 		export auto write(const string_t& filename, dson_t& config_file) -> int32_t;
 		export auto expand_string(const dson_t& config_file, const string_t& name, string_t& output) -> int32_t;
 
-		//export auto get_string(dson_t& config_file, const string_t& name, const string_t& default_value) -> string_t;
-		//export auto set_string(dson_t& config_file, const string_t& name, const string_t& value) -> void;
-
 		export template <typename T> auto get_as(dson_t& config_file, const string_t& name, const T default_value) -> T = delete;
 
 		export template <> auto get_as(dson_t& config_file, const string_t& name, const int32_t default_value) -> int32_t;

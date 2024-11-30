@@ -18,13 +18,13 @@ namespace wind
 	json_token_t::json_token_t(const json_token_t& token) : m_type(token.m_type), m_ustring(token.m_ustring) {}
 	json_token_t::~json_token_t() {}
 
-	void json_token_t::clear()
+	auto json_token_t::clear() -> void
 	{
 		this->m_type = WIND::JSON::TOKEN::TYPE_UNDEFINED;
 		this->m_ustring.clear();
 	}
 
-	json_token_t& json_token_t::operator = (const json_token_t& token)
+	auto json_token_t::operator = (const json_token_t& token) -> json_token_t&
 	{
 		this->m_type = token.m_type;
 		this->m_ustring = token.m_ustring;
@@ -32,27 +32,27 @@ namespace wind
 		return *this;
 	}
 
-	void json_token_t::set_type(int32_t type)
+	auto json_token_t::set_type(int32_t type) -> void
 	{
 		this->m_type = type;
 	}
 
-	int32_t json_token_t::get_type() const
+	auto json_token_t::get_type() const -> int32_t
 	{
 		return this->m_type;
 	}
 
-	void json_token_t::set_string(const string_t& ustring)
+	auto json_token_t::set_string(const string_t& ustring) -> void
 	{
 		this->m_ustring = ustring;
 	}
 
-	string_t& json_token_t::get_string()
+	auto json_token_t::get_string() -> string_t&
 	{
 		return this->m_ustring;
 	}
 
-	const string_t& json_token_t::get_string() const
+	auto json_token_t::get_string() const -> const string_t&
 	{
 		return this->m_ustring;
 	}

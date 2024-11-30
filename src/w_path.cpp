@@ -10,7 +10,7 @@ namespace wind
 {
 	namespace path
 	{
-		bool set_working_directory()
+		auto set_working_directory() -> bool
 		{
 			ALLEGRO::PATH base_path = al::get_standard_path(ALLEGRO::RESOURCES_PATH);
 
@@ -24,15 +24,15 @@ namespace wind
 			return false;
 		}
 
-		string_t get_working_directory()
+		auto get_working_directory() -> string_t
 		{
 			constexpr size_t size = 2048;
-			char buffer[size];
+			std::array<char, size> buffer{""};
 
-			return string_t(_getcwd(buffer, size));
+			return string_t(_getcwd(buffer.data(), size));
 		}
 
-		string_t get_file_part(const string_t& filepath)
+		auto get_file_part(const string_t& filepath) -> string_t
 		{
 			string_t out;
 			ALLEGRO::PATH path = al::create_path(filepath.c_str());
@@ -43,18 +43,18 @@ namespace wind
 			return out;
 		}
 
-		string_t get_path_part(const string_t& filepath)
+		auto get_path_part(const string_t& filepath) -> string_t
 		{
 			string_t filename = get_file_part(filepath);
 
-			if (filepath.size() > filename.size())
-			{
-			}
+			//if (filepath.size() > filename.size())
+			//{
+			//}
 
 			return filepath.substr(0, filepath.length() - filename.size());
 		}
 
-		string_t make_canonical(const string_t& str)
+		auto make_canonical(const string_t& str) -> string_t
 		{
 			string_t out;
 
@@ -75,7 +75,7 @@ namespace wind
 			return out;
 		}
 
-		string_t get_extension_part(const string_t& filepath)
+		auto get_extension_part(const string_t& filepath) -> string_t
 		{
 			size_t size = filepath.rfind('.');
 
@@ -87,61 +87,64 @@ namespace wind
 			return filepath.substr(size + 1);
 		}
 
-		size_t find_all_files(const string_t& filepath, const string_t& ext, std::vector<string_t>& vec)
+		auto process_entry(std::vector<string_t>& vec, const string_t& ext, const ALLEGRO::FS_ENTRY& next) -> int32_t
 		{
+			ALLEGRO::PATH path{};
+			string_t filename{};
+			string_t extension{};
+
+			if (!(al::get_fs_entry_mode(next) & ALLEGRO::FILEMODE_ISFILE))
+			{
+				return 0;
+			}
+
+			path = al::create_path(al::get_fs_entry_name(next));
+			if (!path)
+			{
+				return -1;
+			}
+
+			filename = al::get_path_filename(path);
+			extension = al::get_path_extension(path);
+
+			if (extension.size() > 0 && extension[0] == '.')
+			{
+				extension = extension.substr(1, extension.size() - 1);
+			}
+
+			if (ext == "*" || ext == extension)
+			{
+				vec.push_back(path::get_file_part(al::get_fs_entry_name(next)));
+			}
+
+			return 0;
+		}
+
+		auto find_all_files(const string_t& filepath, const string_t& ext, std::vector<string_t>& vec) -> size_t
+		{
+			ALLEGRO::FS_ENTRY next;
 			size_t size = vec.size();
 			ALLEGRO::FS_ENTRY entry = al::create_fs_entry(filepath.c_str());
 
-			if (entry)
+			if (!entry || !(al::get_fs_entry_mode(entry) & ALLEGRO::FILEMODE_ISDIR) || al::open_directory(entry))
 			{
-				ALLEGRO::FS_ENTRY next;
-
-				if (!(al::get_fs_entry_mode(entry) & ALLEGRO::FILEMODE_ISDIR))
-				{
-					return 0;
-				}
-
-				if (!al::open_directory(entry))
-				{
-					return 0;
-				}
-
-				while (true)
-				{
-					if (!(next = al::read_directory(entry))) break;
-
-					if (al::get_fs_entry_mode(next) & ALLEGRO::FILEMODE_ISFILE)
-					{
-						string_t filename;
-						string_t extension;
-
-						ALLEGRO::PATH path = al::create_path(al::get_fs_entry_name(next));
-						if (!path)
-						{
-							break;
-						}
-
-						filename = al::get_path_filename(path);
-						extension = al::get_path_extension(path);
-
-						if (extension.size() > 0 && extension[0] == '.')
-						{
-							extension = extension.substr(1, extension.size() - 1);
-						}
-
-						if (ext == "*" || ext == extension)
-						{
-							vec.push_back(path::get_file_part(al::get_fs_entry_name(next)));
-						}
-					}
-				}
-
-				al::close_directory(entry);
+				return 0;
 			}
+
+			while (next = al::read_directory(entry))
+			{
+				if (process_entry(vec, ext, next) < 0)
+				{
+					break;
+				}
+			}
+
+			al::close_directory(entry);
+
 			return vec.size() - size;
 		}
 
-		void split_filepath(const string_t& path, string_t& dir, string_t& basename, string_t& extension)
+		auto split_filepath(const string_t& path, string_t& dir, string_t& basename, string_t& extension) -> void
 		{
 			string_t ptemp = make_canonical(path);
 

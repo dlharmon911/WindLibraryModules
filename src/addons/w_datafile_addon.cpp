@@ -5,7 +5,7 @@ import <vector>;
 import <string>;
 import <cstdint>;
 import <map>;
-import <algorithm>;
+import std;
 import allegro;
 import allegro.physfs_addon;
 import wind;
@@ -432,7 +432,6 @@ namespace wind
 
 		return -1;
 	}
-
 
 	datafile_t::object_info_t& datafile_t::get_info(size_t index)
 	{
@@ -904,17 +903,6 @@ namespace wind
 				}
 
 				return (bool)object.m_object && (size == count);
-			}
-
-			bool text_parser(data_t& data, object_t& object)
-			{
-				if (data.has_content())
-				{
-					object.m_object = al::ustr_dup(data.get_string().u_str());
-					ALLEGRO::ASSERT(object.m_object);
-				}
-
-				return (bool)object.m_object;
 			}
 		}
 	}

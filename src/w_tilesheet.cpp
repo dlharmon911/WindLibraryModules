@@ -21,7 +21,7 @@ namespace wind
 
 	tilesheet_t::~tilesheet_t() {}
 
-	tilesheet_t& tilesheet_t::operator = (const tilesheet_t& tilesheet)
+	auto tilesheet_t::operator = (const tilesheet_t& tilesheet) -> wind::add_reference_t<tilesheet_t>
 	{
 		this->m_bitmaps = tilesheet.m_bitmaps;
 		this->m_tile_size = tilesheet.m_tile_size;
@@ -29,85 +29,85 @@ namespace wind
 		return *this;
 	}
 
-	void tilesheet_t::clear()
+	auto tilesheet_t::clear() -> void
 	{
 		this->m_bitmaps.clear();
 		this->m_tile_size = { 0,0 };
 	}
 
-	size_t tilesheet_t::count() const
+	auto tilesheet_t::count() const -> size_t
 	{
 		return this->m_bitmaps.size();
 	}
 
-	bool tilesheet_t::is_empty() const
+	auto tilesheet_t::is_empty() const -> bool
 	{
 		return !this->m_bitmaps.size();
 	}
 
-	const ALLEGRO::SIZE<size_t>& tilesheet_t::tile_size() const
+	auto tilesheet_t::tile_size() const -> wind::add_reference_t <const ALLEGRO::SIZE<size_t>>
 	{
 		return this->m_tile_size;
 	}
 
-	tilesheet_t::reference_element_type tilesheet_t::at(size_t index)
+	auto tilesheet_t::at(size_t index) -> tilesheet_t::reference_element_type
 	{
 		ALLEGRO::ASSERT(index < this->m_bitmaps.size());
 		return this->m_bitmaps[index];
 	}
 
-	tilesheet_t::const_reference_element_type tilesheet_t::at(size_t index) const
+	auto tilesheet_t::at(size_t index) const -> tilesheet_t::const_reference_element_type
 	{
 		ALLEGRO::ASSERT(index < this->m_bitmaps.size());
 		return this->m_bitmaps[index];
 	}
 
-	tilesheet_t::reference_element_type tilesheet_t::operator [](size_t index)
+	auto tilesheet_t::operator [](size_t index) -> tilesheet_t::reference_element_type
 	{
 		return this->at(index);
 	}
 
-	tilesheet_t::const_reference_element_type tilesheet_t::operator [](size_t index) const
+	auto tilesheet_t::operator [](size_t index) const -> tilesheet_t::const_reference_element_type
 	{
 		return this->at(index);
 	}
 
-	tilesheet_t::iterator tilesheet_t::begin()
+	auto tilesheet_t::begin() -> tilesheet_t::iterator
 	{
 		return iterator(this->m_bitmaps.begin());
 	}
 
-	tilesheet_t::iterator tilesheet_t::end()
+	auto tilesheet_t::end() -> tilesheet_t::iterator
 	{
 		return iterator(this->m_bitmaps.end());
 	}
 
-	tilesheet_t::const_iterator tilesheet_t::cbegin() const
+	auto tilesheet_t::cbegin() const -> tilesheet_t::const_iterator
 	{
 		return const_iterator(this->m_bitmaps.cbegin());
 	}
 
-	tilesheet_t::const_iterator tilesheet_t::cend() const
+	auto tilesheet_t::cend() const -> tilesheet_t::const_iterator
 	{
 		return const_iterator(this->m_bitmaps.cend());
 	}
 
-	tilesheet_t::reverse_iterator tilesheet_t::rbegin()
+	auto tilesheet_t::rbegin() -> tilesheet_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_bitmaps.rbegin());
 	}
 
-	tilesheet_t::reverse_iterator tilesheet_t::rend()
+	auto tilesheet_t::rend() -> tilesheet_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_bitmaps.rend());
 	}
 
-	tilesheet_t::const_reverse_iterator tilesheet_t::crbegin() const
+	auto tilesheet_t::crbegin() const -> tilesheet_t::const_reverse_iterator
 	{
 		return const_reverse_iterator(this->m_bitmaps.crbegin());
 	}
 
-	tilesheet_t::const_reverse_iterator tilesheet_t::crend() const
+	auto tilesheet_t::crend() const -> tilesheet_t::const_reverse_iterator
 	{
 		return const_reverse_iterator(this->m_bitmaps.crend());
 	}
@@ -165,7 +165,7 @@ namespace wind
 					return false;
 				}
 
-				if (json.type() != WIND::JSON::TYPE_OBJECT)
+				if (json.get_type() != WIND::JSON::TYPE_OBJECT)
 				{
 					return false;
 				}
@@ -176,7 +176,7 @@ namespace wind
 				{
 					const json_t& tilesheet_object = (*json_object.cbegin());
 
-					if (tilesheet_object.type() != WIND::JSON::TYPE_OBJECT)
+					if (tilesheet_object.get_type() != WIND::JSON::TYPE_OBJECT)
 					{
 						return false;
 					}
@@ -203,7 +203,7 @@ namespace wind
 
 						for (auto bit = bitmap_array.cbegin(); bit != bitmap_array.cend(); ++bit)
 						{
-							if (bit->type() != WIND::JSON::TYPE_STRING)
+							if (bit->get_type() != WIND::JSON::TYPE_STRING)
 							{
 								return false;
 							}
@@ -239,7 +239,7 @@ namespace wind
 					return false;
 				}
 
-				ALLEGRO::BITMAP target{al::get_target_bitmap()};
+				ALLEGRO::BITMAP target{ al::get_target_bitmap() };
 				al::set_target_bitmap(tiles[0]);
 				al::clear_to_color(wind::map_rgb_i(0xff00ff));
 				al::convert_mask_to_alpha(tiles[0], wind::map_rgb_i(0xff00ff));

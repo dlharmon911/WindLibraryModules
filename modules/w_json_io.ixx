@@ -23,4 +23,3 @@ namespace wind
 		return json_parser_t::value::write(json, filename);
 	}
 }
-

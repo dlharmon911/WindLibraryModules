@@ -7,7 +7,7 @@ import :base;
 namespace wind
 {
 	export template <typename T>
-	class vector_t : public class_t<vector_t<T>>
+		class vector_t
 	{
 	public:
 		using element_type = T;
@@ -179,12 +179,10 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
-			
+
 			iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
-			
+
 			auto operator = (const iterator& it) -> iterator&
 			{
 				this->m_data = it.m_data;
@@ -197,13 +195,13 @@ namespace wind
 			{
 				return !this->m_data;
 			}
-			
+
 			auto operator == (const iterator& it) const -> bool { return (this->m_data == it.m_data && this->m_offset == it.m_offset); }
-			
+
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
-			
+
 			auto operator ++() -> iterator& { ++this->m_offset; return *this; }
-			
+
 			auto operator ++(int32_t) -> iterator { iterator tmp = *this; ++(*this); return tmp; }
 
 			auto get_data() -> reference_element_type
@@ -234,8 +232,6 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
 
 			const_iterator(const const_iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
@@ -281,8 +277,6 @@ namespace wind
 		private:
 			reverse_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			reverse_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
 
 			reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
@@ -335,8 +329,6 @@ namespace wind
 		private:
 			const_reverse_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_reverse_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
 
 			const_reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}

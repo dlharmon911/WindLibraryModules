@@ -20,7 +20,7 @@ namespace wind
 		export auto to_lower(const string_t& string) -> string_t;
 	}
 
-	export class string_t : public class_t<string_t>
+	export class string_t
 	{
 	public:
 		static constexpr size_t npos = -1;
@@ -38,10 +38,10 @@ namespace wind
 			auto operator = (const codepoint_t& ref)->const codepoint_t&;
 			auto get_string() -> ALLEGRO::USTRING&;
 			auto get_string() const ->const ALLEGRO::USTRING&;
-			auto get_offset() const -> int32_t;
+			auto get_offset() const->int32_t;
 			auto set_offset(int32_t offset) -> void;
-			auto get_codepoint() const -> uchar_t;
-			auto get_size() const -> size_t;
+			auto get_codepoint() const->uchar_t;
+			auto get_size() const->size_t;
 			auto set_codepoint(uchar_t codepoint) -> size_t;
 			auto operator = (uchar_t codepoint) ->const codepoint_t&;
 			auto operator == (const codepoint_t& codepoint) const -> bool;
@@ -51,7 +51,6 @@ namespace wind
 			ALLEGRO::USTRING m_string;
 			int32_t m_offset;
 		};
-
 
 		string_t();
 		string_t(const ALLEGRO::USTRING& string);
@@ -76,9 +75,9 @@ namespace wind
 		virtual ~string_t();
 
 		auto assign(const ALLEGRO::USTRING& string) -> string_t&;
-		auto assign(const std::string& string)->string_t&;
-		auto assign(const string_t& string)->string_t&;
-		auto assign(const char* string)->string_t&;
+		auto assign(const std::string& string) -> string_t&;
+		auto assign(const string_t& string) -> string_t&;
+		auto assign(const char* string) -> string_t&;
 		auto assign(std::initializer_list<uchar_t> il) -> string_t&;
 		template <class InputIterator> auto assign(InputIterator first, InputIterator last) -> string_t&
 		{
@@ -104,24 +103,23 @@ namespace wind
 		auto operator == (const char* s) const -> bool;
 		auto operator != (const char* s) const -> bool;
 
-
 		auto c_str() const -> const char*;
 		explicit operator const char* () const;
 
 		auto u_str() const -> const ALLEGRO::USTRING&;
-		auto u_str()->ALLEGRO::USTRING&;
+		auto u_str() -> ALLEGRO::USTRING&;
 
 		operator const ALLEGRO::USTRING& () const;
 		operator ALLEGRO::USTRING& ();
 
-		auto size() const -> size_t;
-		auto length() const -> size_t;
+		auto size() const->size_t;
+		auto length() const->size_t;
 		auto empty() const -> bool;
 		auto clear() -> void;
 
-		auto substr(size_t pos = 0, size_t count = npos) const -> string_t;
+		auto substr(size_t pos = 0, size_t count = npos) const->string_t;
 
-		auto operator[] (size_t pos) ->codepoint_t;
+		auto operator[] (size_t pos)->codepoint_t;
 		auto operator[] (size_t pos) const -> const codepoint_t;
 		auto at(size_t pos) -> codepoint_t;
 		auto at(size_t pos) const -> const codepoint_t;
@@ -368,43 +366,43 @@ namespace wind
 		auto begin() -> iterator;
 		auto end() -> iterator;
 		auto cbegin() const->const_iterator;
-		auto cend() const ->const_iterator;
-		auto rbegin()->reverse_iterator;
-		auto rend()->reverse_iterator;
+		auto cend() const->const_iterator;
+		auto rbegin() -> reverse_iterator;
+		auto rend() -> reverse_iterator;
 		auto crbegin() const->const_reverse_iterator;
 		auto crend() const->const_reverse_iterator;
 
-		auto append(const string_t& rhs)->string_t&;
-		auto append(const std::string& rhs)->string_t&;
-		auto append(const char* rhs)->string_t&;
-		auto append(uchar_t rhs)->string_t&;
-		auto append(const std::initializer_list<uchar_t> il)->string_t&;
+		auto append(const string_t& rhs) -> string_t&;
+		auto append(const std::string& rhs) -> string_t&;
+		auto append(const char* rhs) -> string_t&;
+		auto append(uchar_t rhs) -> string_t&;
+		auto append(const std::initializer_list<uchar_t> il) -> string_t&;
 		template <class InputIterator>
 		auto append(InputIterator first, InputIterator last) -> string_t&
 		{
 			return this->append(string_t(first, last));
 		}
 
-		auto prepend(const string_t& rhs)->string_t&;
-		auto prepend(const std::string& rhs)->string_t&;
-		auto prepend(const char* rhs)->string_t&;
-		auto prepend(uchar_t rhs)->string_t&;
-		auto prepend(const std::initializer_list<uchar_t> il)->string_t&;
+		auto prepend(const string_t& rhs) -> string_t&;
+		auto prepend(const std::string& rhs) -> string_t&;
+		auto prepend(const char* rhs) -> string_t&;
+		auto prepend(uchar_t rhs) -> string_t&;
+		auto prepend(const std::initializer_list<uchar_t> il) -> string_t&;
 		template <class InputIterator>
 		auto prepend(InputIterator first, InputIterator last) -> string_t&
 		{
 			return this->prepend(string_t(first, last));
 		}
 
-		auto compare(const string_t& rhs) const -> int32_t;
+		auto compare(const string_t& rhs) const->int32_t;
 		auto compare(const std::string& rhs) const->int32_t;
 		auto compare(const char* rhs) const->int32_t;
 
-		auto insert(size_t pos, const string_t& rhs)->string_t&;
-		auto insert(size_t pos, const std::string& rhs)->string_t&;
-		auto insert(size_t pos, const char* rhs)->string_t&;
-		auto insert(size_t pos, uchar_t rhs)->string_t&;
-		auto insert(size_t pos, const std::initializer_list<uchar_t> il)->string_t&;
+		auto insert(size_t pos, const string_t& rhs) -> string_t&;
+		auto insert(size_t pos, const std::string& rhs) -> string_t&;
+		auto insert(size_t pos, const char* rhs) -> string_t&;
+		auto insert(size_t pos, uchar_t rhs) -> string_t&;
+		auto insert(size_t pos, const std::initializer_list<uchar_t> il) -> string_t&;
 		template <class InputIterator>
 		auto insert(iterator p, InputIterator first, InputIterator last) -> iterator
 		{
@@ -415,10 +413,10 @@ namespace wind
 			return iterator(this->m_data, offset);
 		}
 
-		auto erase(size_t pos = 0, size_t length = string_t::npos)->string_t&;
-		auto replace(size_t pos, size_t length, const string_t& rhs)->string_t&;
-		auto replace(size_t pos, size_t length, const std::string& rhs)->string_t&;
-		auto replace(size_t pos, size_t length, const char* rhs)->string_t&;
+		auto erase(size_t pos = 0, size_t length = string_t::npos) -> string_t&;
+		auto replace(size_t pos, size_t length, const string_t& rhs) -> string_t&;
+		auto replace(size_t pos, size_t length, const std::string& rhs) -> string_t&;
+		auto replace(size_t pos, size_t length, const char* rhs) -> string_t&;
 		auto starts_with(const string_t& rhs) const->bool;
 		auto starts_with(const std::string& rhs) const->bool;
 		auto starts_with(const char* rhs) const->bool;
@@ -477,31 +475,36 @@ namespace wind
 
 	namespace string
 	{
-		export auto to_string(const char* format, ...)->string_t;
-		export auto create(uchar_t c, size_t n)->string_t;
-		export auto to_lower(const string_t& string)->string_t;
-		export auto to_upper(const string_t& string)->string_t;
+		export auto to_string(const char* format, ...) -> string_t;
+		export auto create(uchar_t c, size_t n) -> string_t;
+		export auto to_lower(const string_t& string) -> string_t;
+		export auto to_upper(const string_t& string) -> string_t;
 		export auto fuse(const std::vector<string_t> vector, char separator) -> string_t;
 		export auto separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t;
 
-		export template <typename T> inline auto to_string(const T& value) -> string_t
-		{
-			string_t string;
-			std::stringstream stream;
+		export template <typename T> inline auto to_string(T value) -> string_t = delete;
+		export template <> auto to_string(bool value) -> string_t;
+		export template <> auto to_string(int32_t value) -> string_t;
+		export template <> auto to_string(uint32_t value) -> string_t;
+		export template <> auto to_string(int64_t value) -> string_t;
+		export template <> auto to_string(uint64_t value) -> string_t;
+		export template <> auto to_string(float value) -> string_t;
+		export template <> auto to_string(double value) -> string_t;
+		export template <> auto to_string(const char* value) -> string_t;
 
-			stream << value;
-
-			string.assign(stream.str());
-
-			return string;
-		}
-
-		export template <> auto to_string(const bool& value) -> string_t;
-		export template <> auto to_string(const string_t& value) -> string_t;
+		export template <typename T> inline auto from_string(const string_t& string) -> T = delete;
+		export template <> auto from_string(const string_t& string) -> bool;
+		export template <> auto from_string(const string_t& string) -> int32_t;
+		export template <> auto from_string(const string_t& string) -> uint32_t;
+		export template <> auto from_string(const string_t& string) -> int64_t;
+		export template <> auto from_string(const string_t& string) -> uint64_t;
+		export template <> auto from_string(const string_t& string) -> float;
+		export template <> auto from_string(const string_t& string) -> double;
+		export template <> auto from_string(const string_t& string) -> const char*;
 	}
 }
 
-export auto operator + (const wind::string_t& lhs, const wind::string_t& rhs) -> wind::string_t;
+export auto operator + (const wind::string_t& lhs, const wind::string_t& rhs)->wind::string_t;
 export auto operator + (const wind::string_t& lhs, const std::string& rhs)->wind::string_t;
 export auto operator + (const wind::string_t& lhs, const char* rhs)->wind::string_t;
 export auto operator + (const wind::string_t& lhs, wind::uchar_t rhs)->wind::string_t;

@@ -287,12 +287,12 @@ namespace wind
 		return this->m_data;
 	}
 
-	string_t::operator const ALLEGRO::USTRING&() const
+	string_t::operator const ALLEGRO::USTRING& () const
 	{
 		return this->m_data;
 	}
 
-	string_t::operator ALLEGRO::USTRING&()
+	string_t::operator ALLEGRO::USTRING& ()
 	{
 		return this->m_data;
 	}
@@ -709,7 +709,6 @@ namespace wind
 			return rv;
 		}
 
-
 		auto create(uchar_t c, size_t n) -> string_t
 		{
 			ALLEGRO::USTRING u = al::ustr_new("");
@@ -782,16 +781,86 @@ namespace wind
 			return vector.size();
 		}
 
-		template <> auto to_string(const bool& value) -> string_t
+		template <> auto to_string(bool value) -> string_t
 		{
 			string_t string = (value ? "true" : "false");
 
 			return string;
 		}
 
-		template <> auto to_string(const string_t& value) -> string_t
+		template <> auto to_string(int32_t value) -> string_t
 		{
-			return value;
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(uint32_t value) -> string_t
+		{
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(int64_t value) -> string_t
+		{
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(uint64_t value) -> string_t
+		{
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(float value) -> string_t
+		{
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(double value) -> string_t
+		{
+			return string_t(std::to_string(value));
+		}
+
+		template <> auto to_string(const char* value) -> string_t
+		{
+			return string_t(value);
+		}
+
+		template <> auto from_string(const string_t& string) -> bool
+		{
+			return (string::to_lower(string) == "true");
+		}
+
+		template <> auto from_string(const string_t& string) -> int32_t
+		{
+			return std::stol(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> uint32_t
+		{
+			return std::stoul(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> int64_t
+		{
+			return std::stoll(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> uint64_t
+		{
+			return std::stoull(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> float
+		{
+			return std::stof(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> double
+		{
+			return std::stod(string.c_str());
+		}
+
+		template <> auto from_string(const string_t& string) -> const char*
+		{
+			return string.c_str();
 		}
 	}
 }
@@ -858,4 +927,3 @@ auto operator + (char lhs, const wind::string_t& rhs) -> wind::string_t
 	rv.append(rhs);
 	return rv;
 }
-

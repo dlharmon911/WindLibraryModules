@@ -24,14 +24,14 @@ namespace wind
 	map_t::map_t() : m_data(), m_size({ 0, 0 }) {}
 
 	map_t::map_t(size_t width, size_t height) : m_data(std::make_shared<map_t::element_type[]>(width* height)), m_size(width, height) {}
-	
-	map_t::map_t(ALLEGRO::SIZE<size_t> size) : m_data(std::make_shared<map_t::element_type[]>(size.width * size.height)), m_size(size) {}
+
+	map_t::map_t(ALLEGRO::SIZE<size_t> size) : m_data(std::make_shared<map_t::element_type[]>(size.width* size.height)), m_size(size) {}
 
 	map_t::map_t(const map_t& map) : m_data(map.m_data), m_size(map.m_size) {}
-	
+
 	map_t::~map_t() {}
-	
-	map_t& map_t::operator = (const map_t& map)
+
+	auto map_t::operator = (const map_t& map) -> map_t&
 	{
 		this->m_data = map.m_data;
 
@@ -43,13 +43,13 @@ namespace wind
 		return (bool)this->m_data;
 	}
 
-	void map_t::clear()
+	auto map_t::clear() -> void
 	{
 		this->m_data.reset();
 		this->m_size = { 0,0 };
 	}
 
-	bool map_t::reset(size_t width, size_t height)
+	auto map_t::reset(size_t width, size_t height) -> bool
 	{
 		this->m_size = { 0, 0 };
 
@@ -62,66 +62,66 @@ namespace wind
 		return (bool)this->m_data;
 	}
 
-	bool map_t::reset(ALLEGRO::SIZE<size_t> size)
+	auto map_t::reset(const ALLEGRO::SIZE<size_t>& size) -> bool
 	{
 		return this->reset(size.width, size.height);
 	}
 
-	void* map_t::data()
+	auto map_t::data() -> void*
 	{
 		return this->m_data.get();
 	}
 
-	const void* map_t::data() const
+	auto map_t::data() const -> const void*
 	{
 		return this->m_data.get();
 	}
 
-	const ALLEGRO::SIZE<size_t>& map_t::size() const
+	auto map_t::size() const -> const ALLEGRO::SIZE<size_t>&
 	{
 		return this->m_size;
 	}
-	
-	map_t::reference_element_type map_t::at(size_t index)
+
+	auto map_t::at(size_t index) -> map_t::reference_element_type
 	{
 		ALLEGRO::ASSERT(index < (this->m_size.width * this->m_size.height));
 		return this->m_data.get()[index];
 	}
-	
-	map_t::const_reference_element_type map_t::at(size_t index) const
+
+	auto map_t::at(size_t index) const -> map_t::const_reference_element_type
 	{
 		ALLEGRO::ASSERT(index < (this->m_size.width * this->m_size.height));
 		return this->m_data.get()[index];
 	}
-	
-	map_t::reference_element_type map_t::operator [](size_t index)
+
+	auto map_t::operator [](size_t index) -> map_t::reference_element_type
 	{
 		ALLEGRO::ASSERT(index < (this->m_size.width * this->m_size.height));
 		return this->m_data.get()[index];
 	}
-	
-	map_t::const_reference_element_type map_t::operator [](size_t index) const
+
+	auto map_t::operator [](size_t index) const -> map_t::const_reference_element_type
 	{
 		ALLEGRO::ASSERT(index < (this->m_size.width * this->m_size.height));
 		return this->m_data.get()[index];
 	}
-	
-	map_t::iterator map_t::begin()
+
+	auto map_t::begin() -> map_t::iterator
 	{
 		return iterator(this->m_data, 0);
 	}
-	
-	map_t::iterator map_t::end()
+
+	auto map_t::end() -> map_t::iterator
 	{
 		return iterator(this->m_data, this->m_size.width * this->m_size.height);
 	}
 
-	map_t::const_iterator map_t::cbegin()
+	auto map_t::cbegin() const -> map_t::const_iterator
 	{
 		return const_iterator(this->m_data, 0);
 	}
 
-	map_t::const_iterator map_t::cend()
+	auto map_t::cend() const -> map_t::const_iterator
 	{
 		return const_iterator(this->m_data, this->m_size.width * this->m_size.height);
 	}

@@ -7,6 +7,9 @@ import <type_traits>;
 import allegro;
 import allegro.font_addon;
 
+export using word_t = uint16_t;
+export using byte_t = uint8_t;
+
 namespace wind
 {
 	export template<typename T> struct add_pointer { using type = typename T*; };
@@ -20,18 +23,8 @@ namespace wind
 	export template<typename T> using add_const_reference_t = typename add_const_reference<T>::type;
 	export template<typename T> using add_const_t = typename add_const<T>::type;
 
-	export template <typename T>
-	class class_t
+	export constexpr int32_t power_2(int32_t value)
 	{
-	public:
-		using type = T;
-		using pointer_type = add_pointer_t<type>;
-		using const_pointer_type = add_pointer_t<add_const_t<type>>;
-		using reference_type = add_reference_t<type>;
-		using const_reference_type = add_reference_t<add_const_t<type>>;
-
-		class_t() {}
-		virtual ~class_t() {}
-	};
+		return (1 << value);
+	}
 }
-

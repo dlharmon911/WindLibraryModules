@@ -1,6 +1,7 @@
 module wind;
 
 import <cstdint>;
+import <array>;
 import allegro;
 import allegro.primitives_addon;
 import :base;
@@ -11,7 +12,7 @@ namespace wind
 {
 	namespace theme
 	{
-		uint32_t colors[theme::_count] =
+		std::array<uint32_t, theme::_count> colors
 		{
 			0xd6d3ceff,
 			0xffffffff,
@@ -28,7 +29,7 @@ namespace wind
 	{
 		namespace border
 		{
-			void draw(ALLEGRO::POINT <float>point, ALLEGRO::SIZE<float> dim, frame::border::type type)
+			auto draw(ALLEGRO::POINT <float>point, ALLEGRO::SIZE<float> dim, frame::border::type type) -> void
 			{
 				static ALLEGRO::POINT<float> point1 = { 0.0f, 0.0f };
 				static ALLEGRO::POINT<float> point2 = { 0.0f, 0.0f };
@@ -53,28 +54,27 @@ namespace wind
 
 				case type::workspace:
 				{
-					al::draw_rectangle({point1.x, point1.y}, {point2.x, point2.y}, border_normal, 1.0f);
-					al::draw_rectangle({point1.x + 1.0f, point1.y + 1.0f}, {point2.x - 1.0f, point2.y - 1.0f}, border_dark, 1.0f);
-
+					al::draw_rectangle({ point1.x, point1.y }, { point2.x, point2.y }, border_normal, 1.0f);
+					al::draw_rectangle({ point1.x + 1.0f, point1.y + 1.0f }, { point2.x - 1.0f, point2.y - 1.0f }, border_dark, 1.0f);
 				} break;
 
 				case type::sunken:
 				{
-					al::draw_line({point1.x, point1.y}, {point1.x, point2.y - 0.5f}, border_dark, 1.0f);
-					al::draw_line({point1.x, point1.y}, {point2.x - 0.5f, point1.y}, border_dark, 1.0f);
-					al::draw_line({point1.x + 1.0f, point1.y + 1.0f}, {point2.x - 2.0f, point1.y + 1.0f}, border_normal, 1.0f);
-					al::draw_line({point1.x + 1.0f, point1.y + 1.0f}, {point1.x + 1.0f, point2.y - 2.0f}, border_normal, 1.0f);
-					al::draw_line({point1.x, point2.y - 1.0f}, {point2.x - 1.0f, point2.y - 1.0f}, border_light, 1.0f);
-					al::draw_line({point2.x - 1.0f, point1.y}, {point2.x - 1.0f, point2.y}, border_light, 1.0f);
+					al::draw_line({ point1.x, point1.y }, { point1.x, point2.y - 0.5f }, border_dark, 1.0f);
+					al::draw_line({ point1.x, point1.y }, { point2.x - 0.5f, point1.y }, border_dark, 1.0f);
+					al::draw_line({ point1.x + 1.0f, point1.y + 1.0f }, { point2.x - 2.0f, point1.y + 1.0f }, border_normal, 1.0f);
+					al::draw_line({ point1.x + 1.0f, point1.y + 1.0f }, { point1.x + 1.0f, point2.y - 2.0f }, border_normal, 1.0f);
+					al::draw_line({ point1.x, point2.y - 1.0f }, { point2.x - 1.0f, point2.y - 1.0f }, border_light, 1.0f);
+					al::draw_line({ point2.x - 1.0f, point1.y }, { point2.x - 1.0f, point2.y }, border_light, 1.0f);
 				} break;
 
 				case type::ridge:
 				{
-					al::draw_line({point1.x, point2.y - 1.0f}, {point2.x - 1.0f, point2.y - 1.0f}, border_normal, 1.0f);
-					al::draw_line({point2.x - 1.0f, point1.y}, {point2.x - 1.0f, point2.y}, border_normal, 1.0f);
-					al::draw_line({point1.x + 1.0f, point1.y + 1.0f}, {point2.x - 2.0f, point1.y + 1.0f}, border_normal, 1.0f);
-					al::draw_line({point1.x + 1.0f, point1.y + 1.0f}, {point1.x + 1.0f, point2.y - 2.0f}, border_normal, 1.0f);
-					al::draw_rectangle({point1.x, point1.y}, {point2.x - 2.0f, point2.y - 2.0f}, border_light, 1.0f);
+					al::draw_line({ point1.x, point2.y - 1.0f }, { point2.x - 1.0f, point2.y - 1.0f }, border_normal, 1.0f);
+					al::draw_line({ point2.x - 1.0f, point1.y }, { point2.x - 1.0f, point2.y }, border_normal, 1.0f);
+					al::draw_line({ point1.x + 1.0f, point1.y + 1.0f }, { point2.x - 2.0f, point1.y + 1.0f }, border_normal, 1.0f);
+					al::draw_line({ point1.x + 1.0f, point1.y + 1.0f }, { point1.x + 1.0f, point2.y - 2.0f }, border_normal, 1.0f);
+					al::draw_rectangle({ point1.x, point1.y }, { point2.x - 2.0f, point2.y - 2.0f }, border_light, 1.0f);
 				} break;
 
 				case type::groove:
@@ -95,7 +95,7 @@ namespace wind
 			}
 		}
 
-		void draw(ALLEGRO::POINT<float> point, ALLEGRO::SIZE<float> dim, frame::type type, frame::border::type border)
+		auto draw(ALLEGRO::POINT<float> point, ALLEGRO::SIZE<float> dim, frame::type type, frame::border::type border) -> void
 		{
 			static ALLEGRO::POINT<float> point1 = { 0.0f, 0.0f };
 			static ALLEGRO::POINT<float> point2 = { 0.0f, 0.0f };

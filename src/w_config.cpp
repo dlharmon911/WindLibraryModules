@@ -12,7 +12,7 @@ namespace wind
 {
 	namespace config
 	{
-		int32_t read(const string_t& filename, dson_t& config_file)
+		auto read(const string_t& filename, dson_t& config_file) -> int32_t
 		{
 			dson_t manifest;
 
@@ -77,7 +77,7 @@ namespace wind
 			return 0;
 		}
 
-		int32_t write(const string_t& filename, dson_t& config_file)
+		auto write(const string_t& filename, dson_t& config_file) -> int32_t
 		{
 			for (auto i = config_file.begin(); i != config_file.end(); ++i)
 			{
@@ -105,7 +105,7 @@ namespace wind
 			return 0;
 		}
 
-		int32_t expand_string(const dson_t& config_file, const string_t& name, string_t& output)
+		auto expand_string(const dson_t& config_file, const string_t& name, string_t& output) -> int32_t
 		{
 			bool has_shortcut = false;
 			size_t i = 0;
@@ -160,7 +160,7 @@ namespace wind
 			return 0;
 		}
 
-		string_t get_content(dson_t& config_file, const string_t& name, const string_t& default_value)
+		auto get_content(dson_t& config_file, const string_t& name, const string_t& default_value) -> string_t
 		{
 			string_t expansion;
 
@@ -183,46 +183,46 @@ namespace wind
 			return expansion;
 		}
 
-		void set_content(dson_t& config_file, const string_t& name, const string_t& value)
+		auto set_content(dson_t& config_file, const string_t& name, const string_t& value) -> void
 		{
 			config_file.get_property(name).set_content(value);
 		}
 
 		template <>
-		int32_t get_as(dson_t& config_file, const string_t& name, const int32_t default_value)
+		auto get_as(dson_t& config_file, const string_t& name, const int32_t default_value) -> int32_t
 		{
 			string_t str = config::get_content(config_file, name, std::to_string(default_value));
 			return std::atoi(str.c_str());
 		}
 
 		template <>
-		double get_as(dson_t& config_file, const string_t& name, const double default_value)
+		auto get_as(dson_t& config_file, const string_t& name, const double default_value) -> double
 		{
 			string_t str = config::get_content(config_file, name, std::to_string(default_value));
 			return std::atof(str.c_str());
 		}
 
 		template <>
-		bool get_as(dson_t& config_file, const string_t& name, const bool default_value)
+		auto get_as(dson_t& config_file, const string_t& name, const bool default_value) -> bool
 		{
 			string_t str = config::get_content(config_file, name, (default_value ? "true" : "false"));
 			return string::to_lower(str) == "true";
 		}
 
 		template <>
-		void set_as(dson_t& config_file, const string_t& name, int32_t value)
+		auto set_as(dson_t& config_file, const string_t& name, int32_t value) -> void
 		{
 			config::set_content(config_file, name, std::to_string(value));
 		}
 
 		template <>
-		void set_as(dson_t& config_file, const string_t& name, double value)
+		auto set_as(dson_t& config_file, const string_t& name, double value) -> void
 		{
 			config::set_content(config_file, name, std::to_string(value));
 		}
 
 		template <>
-		void set_as(dson_t& config_file, const string_t& name, bool value)
+		auto set_as(dson_t& config_file, const string_t& name, bool value) -> void
 		{
 			config::set_content(config_file, name, string_t(value ? "true" : "false"));
 		}

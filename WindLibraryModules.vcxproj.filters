@@ -387,6 +387,33 @@
     <ClCompile Include="modules\w_dialog_widget_button.ixx">
       <Filter>Module Files\Wind Module Files\Partition Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\AllegroLibraryModule\modules\allegro\a_opengl.ixx">
+      <Filter>Module Files\Allegro Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_dialog_base.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_word.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_value.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_ninepatch.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_flag.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_dialog_widget_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_ninepatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_value.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

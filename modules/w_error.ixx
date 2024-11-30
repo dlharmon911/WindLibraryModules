@@ -6,20 +6,20 @@ import :string;
 
 namespace wind
 {
-	export class error_t : public class_t<error_t>
+	export class error_t
 	{
 	public:
 		error_t();
 		error_t(const string_t& message, const string_t& filename = string_t(), int32_t line = 0, const string_t& function = string_t());
 		error_t(const error_t& error);
 		~error_t();
-		auto operator = (const error_t& error) -> error_t&;
+		auto operator = (const error_t& error)->error_t&;
 
 		auto get_message() const -> const string_t&;
 		auto set_message(const string_t& message) -> void;
 		auto get_filename() const -> const string_t&;
 		auto set_filename(const string_t& filename) -> void;
-		auto get_line() const -> int32_t;
+		auto get_line() const->int32_t;
 		auto set_line(int32_t line) -> void;
 		auto get_function() const -> const string_t&;
 		auto set_function(const string_t& function) -> void;

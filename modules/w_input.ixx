@@ -12,11 +12,11 @@ namespace WIND
 
 namespace wind
 {
-	export typedef struct button_state_t
+	export using button_state_t = struct button_state_tag_t
 	{
-		bool m_is_pressed;
-		bool m_was_pressed;
-	} button_state_t;
+		bool m_is_pressed{ false };
+		bool m_was_pressed{ false };
+	};
 
 	export auto set_mouse_pressed(int32_t button) -> void;
 	export auto set_mouse_released(int32_t button) -> void;
@@ -27,11 +27,9 @@ namespace wind
 	export auto get_mouse_position() -> const ALLEGRO::POINT<int32_t>&;
 	export auto get_mouse_wheel() -> const ALLEGRO::POINT<int32_t>&;
 
-
 	export auto set_keyboard_pressed(int32_t key) -> void;
 	export auto set_keyboard_released(int32_t key) -> void;
 	export auto get_keyboard_state(int32_t key) -> const button_state_t&;
 
 	export auto input_acknowledge() -> void;
 }
-

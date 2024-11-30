@@ -64,7 +64,7 @@ import :string;
 
 namespace wind
 {
-	export class dson_t : public class_t<dson_t>
+	export class dson_t
 	{
 	public:
 		using element_type = dson_t;
@@ -88,16 +88,16 @@ namespace wind
 		auto get_content(const size_t nItem = 0) const -> const string_t;
 		auto set_content(const string_t& sString, const size_t nItem = 0) -> void;
 
-		auto get_content_count() const -> size_t;
-		auto get_children_count() const -> size_t;
+		auto get_content_count() const->size_t;
+		auto get_children_count() const->size_t;
 		auto contains(const string_t& sName) const -> bool;
 		auto get_property(const string_t& name) -> reference_type;
-		auto get_property(const string_t& name) const -> const_reference_type;
+		auto get_property(const string_t& name) const->const_reference_type;
 		auto get_indexed_property(const string_t& name, const size_t nIndex) -> reference_type;
 		auto get_child(const string_t& name) -> reference_type;
 		auto get_child(const string_t& name) const->const_reference_type;
-		auto operator[](const string_t& name) -> reference_type;
-		auto operator[](const string_t& name) const -> const_reference_type;
+		auto operator[](const string_t& name)->reference_type;
+		auto operator[](const string_t& name) const->const_reference_type;
 		auto add_child(const string_t& name, const dson_t& dson) -> void;
 		auto has_content() const -> bool;
 		auto has_children() const -> bool;
@@ -110,8 +110,6 @@ namespace wind
 		class iterator
 		{
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			iterator() = default;
 			iterator(object_vector_t::iterator it) : m_it(it) {}
 
@@ -130,8 +128,6 @@ namespace wind
 		class const_iterator
 		{
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_iterator() = default;
 			const_iterator(object_vector_t::const_iterator it) : m_it(it) {}
 
@@ -141,16 +137,16 @@ namespace wind
 			auto operator ++ () -> const_iterator& { ++this->m_it; return *this; }
 			auto operator ++ (int32_t) -> const_iterator { const_iterator tmp = *this; ++(*this); return tmp; }
 			auto operator -> () const -> const_pointer_type const { return &this->m_it->second; }
-			auto operator * () const -> const_reference_type const { return this->m_it->second;}
+			auto operator * () const -> const_reference_type const { return this->m_it->second; }
 
 		private:
 			object_vector_t::const_iterator m_it;
 		};
 
 		auto begin() -> iterator;
-		auto end()->iterator;
-		auto cbegin() const -> const_iterator;
-		auto cend() const -> const_iterator;
+		auto end() -> iterator;
+		auto cbegin() const->const_iterator;
+		auto cend() const->const_iterator;
 
 	protected:
 		bool m_bIsComment = false;

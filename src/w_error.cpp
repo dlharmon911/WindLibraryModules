@@ -16,7 +16,7 @@ namespace wind
 
 	error_t::~error_t() {}
 
-	error_t& error_t::operator = (const error_t& error)
+	auto error_t::operator = (const error_t& error) -> error_t&
 	{
 		this->m_message = error.m_message;
 		this->m_filename = error.m_filename;
@@ -24,45 +24,44 @@ namespace wind
 		this->m_function = error.m_function;
 
 		return *this;
-
 	}
 
-	const string_t& error_t::get_message() const
+	auto error_t::get_message() const -> const string_t&
 	{
 		return this->m_message;
 	}
 
-	void error_t::set_message(const string_t& message)
+	auto error_t::set_message(const string_t& message) -> void
 	{
 		this->m_message = message;
 	}
 
-	const string_t& error_t::get_filename() const
+	auto error_t::get_filename() const -> const string_t&
 	{
 		return this->m_filename;
 	}
 
-	void error_t::set_filename(const string_t& filename)
+	auto error_t::set_filename(const string_t& filename) -> void
 	{
 		this->m_filename = filename;
 	}
 
-	int32_t error_t::get_line() const
+	auto error_t::get_line() const -> int32_t
 	{
 		return this->m_line;
 	}
 
-	void error_t::set_line(int32_t line)
+	auto error_t::set_line(int32_t line) -> void
 	{
 		this->m_line = line;
 	}
 
-	const string_t& error_t::get_function() const
+	auto error_t::get_function() const -> const string_t&
 	{
 		return this->m_function;
 	}
 
-	void error_t::set_function(const string_t& function)
+	auto error_t::set_function(const string_t& function) -> void
 	{
 		this->m_function = function;
 	}
@@ -71,32 +70,32 @@ namespace wind
 	{
 		std::vector<error_t> error_list;
 
-		void clear()
+		auto clear() -> void
 		{
 			error_list.clear();
 		}
 
-		void push(const string_t& message, const string_t& filename, int32_t line, const string_t& function)
+		auto push(const string_t& message, const string_t& filename, int32_t line, const string_t& function) -> void
 		{
 			error_list.push_back(error_t(message, filename, line, function));
 		}
 
-		void push(const error_t& error)
+		auto push(const error_t& error) -> void
 		{
 			error_list.push_back(error);
 		}
 
-		const error_t peek()
+		auto peek() -> const error_t
 		{
 			return error_list.back();
 		}
 
-		void pop()
+		auto pop() -> void
 		{
 			error_list.pop_back();
 		}
 
-		size_t count()
+		auto count() -> size_t
 		{
 			return error_list.size();
 		}

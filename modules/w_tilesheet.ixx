@@ -11,7 +11,7 @@ import :string;
 
 namespace wind
 {
-	export class tilesheet_t : public class_t<tilesheet_t>
+	export class tilesheet_t
 	{
 	public:
 		using element_type = ALLEGRO::BITMAP;
@@ -24,15 +24,15 @@ namespace wind
 		tilesheet_t(const std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size);
 		tilesheet_t(const tilesheet_t& tilesheet);
 		~tilesheet_t();
-		auto operator = (const tilesheet_t& tilesheet) -> reference_type;
+		auto operator = (const tilesheet_t& tilesheet)->wind::add_reference_t<tilesheet_t>;
 		auto clear() -> void;
-		auto count() const -> size_t;
+		auto count() const->size_t;
 		auto is_empty() const -> bool;
-		auto tile_size() const -> const ALLEGRO::SIZE<size_t>&;
+		auto tile_size() const->wind::add_reference_t <const ALLEGRO::SIZE<size_t>>;
 		auto at(size_t index) -> reference_element_type;
 		auto at(size_t index) const->const_reference_element_type;
 		auto operator [](size_t index)->reference_element_type;
-		auto operator [](size_t index) const ->const_reference_element_type;
+		auto operator [](size_t index) const->const_reference_element_type;
 
 		class iterator
 		{
@@ -108,8 +108,8 @@ namespace wind
 		auto cend() const->const_iterator;
 		auto rbegin() -> reverse_iterator;
 		auto rend() -> reverse_iterator;
-		auto crbegin() const->const_reverse_iterator;
-		auto crend() const->const_reverse_iterator;
+		auto crbegin() const -> const_reverse_iterator;
+		auto crend() const -> const_reverse_iterator;
 
 	private:
 		std::vector<element_type> m_bitmaps{};

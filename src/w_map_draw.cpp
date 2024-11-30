@@ -10,7 +10,7 @@ namespace wind
 	{
 		namespace cell
 		{
-			void draw(const map::cell_t& cell, const tilemap_t& tilemap, const ALLEGRO::POINT<size_t>& position)
+			auto draw(const map::cell_t& cell, const tilemap_t& tilemap, const ALLEGRO::POINT<size_t>& position) -> void
 			{
 				for (size_t layer = 0; layer < WIND::MAP::CELL::LAYER_COUNT; ++layer)
 				{
@@ -23,7 +23,7 @@ namespace wind
 			}
 		}
 
-		void draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, ALLEGRO::POINT<size_t> position)
+		auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, const ALLEGRO::POINT<size_t>& position) -> void
 		{
 			const ALLEGRO::SIZE<size_t>& map_size{ map.size() };
 			const ALLEGRO::SIZE<size_t>& camera_size{ camera.get_size() };
@@ -36,7 +36,7 @@ namespace wind
 
 			al::set_clipping_rectangle({ position.x, position.y, camera.get_size().width * tile_size.width, camera.get_size().height * tile_size.height });
 
-			for (size_t j = 0; j < (camera_size.height + (camera.get_shift().x ? 1 : 0 )); ++j)
+			for (size_t j = 0; j < (camera_size.height + (camera.get_shift().x ? 1 : 0)); ++j)
 			{
 				for (size_t i = 0; i < (camera_size.width + (camera.get_shift().y ? 1 : 0)); ++i)
 				{

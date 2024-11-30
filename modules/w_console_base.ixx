@@ -29,7 +29,7 @@ namespace WIND
 		namespace SPRITE
 		{
 			export inline constexpr size_t CHARACTER_COUNT = 4;
-			
+
 			namespace DRAW_FLAGS
 			{
 				export inline constexpr int32_t FLIP_NONE = 0;
@@ -42,12 +42,12 @@ namespace WIND
 
 namespace wind
 {
-	export typedef struct console_data_t console_data_t;
+	export using console_data_t = struct console_data_tag_t;
 	export using console_t = std::shared_ptr<console_data_t>;
 
 	namespace console
 	{
-		export typedef struct font_data_t font_data_t;
+		export using font_data_t = struct font_data_tag_t;
 		export using font_t = std::shared_ptr<font_data_t>;
 		export using cursor_t = ALLEGRO::POINT<int32_t>;
 		export using rgba_t = uint32_t;
@@ -55,20 +55,20 @@ namespace wind
 
 		namespace sprite
 		{
-			export typedef struct layer_data_t
+			export using layer_data_t = struct layer_data_tag_t
 			{
 				int8_t m_color;
 				uint8_t m_character[WIND::CONSOLE::SPRITE::CHARACTER_COUNT];
-			} layer_data_t;
+			};
 			export using layer_t = std::shared_ptr<layer_data_t>;
 		}
 
-		export typedef struct sprite_data_t
+		export using sprite_data_t = struct sprite_data_tag_t
 		{
 			sprite::layer_t m_layers{ nullptr };
 			int32_t m_begin{ 0 };
 			int32_t m_end{ 0 };
-		} sprite_data_t;
+		};
 		export using sprite_t = std::shared_ptr<sprite_data_t>;
 	}
 }

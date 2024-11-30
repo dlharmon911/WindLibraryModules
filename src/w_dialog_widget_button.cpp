@@ -44,5 +44,4 @@ namespace wind
 	{
 		return 0;
 	}
-
 }

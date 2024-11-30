@@ -9,7 +9,7 @@ import :tilesheet;
 
 namespace wind
 {
-	export class tilemap_t : public class_t<tilemap_t>
+	export class tilemap_t
 	{
 	public:
 		using element_type = tilesheet_t;
@@ -26,14 +26,14 @@ namespace wind
 		tilemap_t(ALLEGRO::SIZE<int32_t> tilesize);
 		tilemap_t(const tilemap_t& tilemap);
 		~tilemap_t();
-		auto operator = (const tilemap_t& tilemap) ->tilemap_t&;
+		auto operator = (const tilemap_t& tilemap)->tilemap_t&;
 
 		auto data() -> void*;
 		auto data() const -> const void*;
 
 		auto clear() -> void;
 
-		auto get_count() const ->size_t;
+		auto get_count() const->size_t;
 		auto is_empty() const -> bool;
 
 		auto push_back(reference_element_type tilemap) -> void;
@@ -43,9 +43,9 @@ namespace wind
 		auto set_tile_size(ALLEGRO::SIZE<int32_t> tilesize) -> void;
 
 		auto at(size_t index) -> reference_element_type;
-		auto at(size_t index) const ->const_reference_element_type;
+		auto at(size_t index) const->const_reference_element_type;
 		auto operator [](size_t index)->reference_element_type;
-		auto operator [](size_t index) const ->const_reference_element_type;
+		auto operator [](size_t index) const->const_reference_element_type;
 
 		class iterator
 		{
@@ -81,10 +81,10 @@ namespace wind
 			vector_type::const_iterator m_it;
 		};
 
-		auto begin()-> iterator;
-		auto end()-> iterator;
-		auto cbegin()->const_iterator;
-		auto cend()->const_iterator;
+		auto begin() -> iterator;
+		auto end() -> iterator;
+		auto cbegin() const-> const_iterator;
+		auto cend() const-> const_iterator;
 
 	private:
 		vector_type m_sheets;
@@ -93,7 +93,7 @@ namespace wind
 
 	namespace tilemap
 	{
-		export class tile_t : public class_t<tile_t>
+		export class tile_t
 		{
 		public:
 			tile_t();
@@ -102,7 +102,7 @@ namespace wind
 			tile_t(uint32_t tile);
 			~tile_t();
 			auto operator = (const tile_t& tile)->tile_t&;
-			auto operator = (uint32_t tile) -> tile_t&;
+			auto operator = (uint32_t tile)->tile_t&;
 			auto operator == (const tile_t& tile) -> bool;
 			auto operator == (uint32_t tile) -> bool;
 			auto operator != (const tile_t& tile) -> bool;
@@ -112,7 +112,7 @@ namespace wind
 			auto set_tilesheet(uint32_t tilesheet) -> void;
 			auto get_tilesheet() const->uint32_t;
 			auto set_index(uint32_t index) -> void;
-			auto get_index() const -> uint32_t;
+			auto get_index() const->uint32_t;
 
 		private:
 			union _tile

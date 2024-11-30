@@ -10,65 +10,64 @@ namespace wind
 	namespace map
 	{
 		cell_t::cell_t() : m_data() {}
-		
+
 		cell_t::cell_t(const cell_t& cell) : m_data(cell.m_data) {}
 
 		cell_t::~cell_t() {}
 
-		cell_t& cell_t::operator = (const cell_t& cell)
+		auto cell_t::operator = (const cell_t& cell) -> cell_t&
 		{
 			this->m_data = cell.m_data;
 
 			return *this;
 		}
 
-		cell_t::reference_element_type cell_t::at(size_t index)
+		auto cell_t::at(size_t index) -> cell_t::reference_element_type
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::const_reference_element_type cell_t::at(size_t index) const
+		auto cell_t::at(size_t index) const -> cell_t::const_reference_element_type
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::reference_element_type cell_t::operator [](size_t index)
+		auto cell_t::operator [](size_t index) -> cell_t::reference_element_type
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::const_reference_element_type cell_t::operator [](size_t index) const
+		auto cell_t::operator [](size_t index) const -> cell_t::const_reference_element_type
 		{
 			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
 
 			return this->m_data[index];
 		}
 
-		cell_t::iterator cell_t::begin()
+		auto cell_t::begin() -> cell_t::iterator
 		{
 			return iterator(this->m_data.begin());
 		}
 
-		cell_t::iterator cell_t::end()
+		auto cell_t::end() -> cell_t::iterator
 		{
 			return iterator(this->m_data.end());
 		}
 
-		cell_t::const_iterator cell_t::cbegin()
+		auto cell_t::cbegin() -> cell_t::const_iterator
 		{
 			return const_iterator(this->m_data.cbegin());
 		}
 
-		cell_t::const_iterator cell_t::cend()
+		auto cell_t::cend() -> cell_t::const_iterator
 		{
 			return const_iterator(this->m_data.cend());
 		}
-
 	}
 }

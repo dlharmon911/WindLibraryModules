@@ -7,12 +7,12 @@ import :string;
 
 namespace wind
 {
-	bool is_hex(int32_t c)
+	auto is_hex(int32_t c) -> bool
 	{
 		return ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'));
 	}
 
-	uint32_t hex_from_string(const string_t& string)
+	auto hex_from_string(const string_t& string) -> uint32_t
 	{
 		size_t index = 0;
 		uint32_t rv = 0;
@@ -27,7 +27,7 @@ namespace wind
 		return rv;
 	}
 
-	string_t hex_to_string(uint32_t value, const string_t& prefix, int32_t string_size)
+	auto hex_to_string(uint32_t value, const string_t& prefix, int32_t string_size) -> string_t
 	{
 		string_t rv = hex_to_string(value);
 
@@ -42,7 +42,7 @@ namespace wind
 		return rv;
 	}
 
-	string_t hex_to_string(uint32_t value)
+	auto hex_to_string(uint32_t value) -> string_t
 	{
 		string_t rv{};
 
@@ -59,7 +59,7 @@ namespace wind
 		return rv;
 	}
 
-	uint32_t hex_from_char(int32_t c)
+	auto hex_from_char(int32_t c) -> uint32_t
 	{
 		uint32_t out = 0;
 
@@ -85,7 +85,7 @@ namespace wind
 		return out;
 	}
 
-	char hex_to_char(uint32_t v)
+	auto hex_to_char(uint32_t v) -> char
 	{
 		int32_t out = 0;
 

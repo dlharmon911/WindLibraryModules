@@ -1,6 +1,5 @@
 module;
 
-
 export module wind;
 
 export import allegro;
@@ -18,6 +17,7 @@ export import :dialog.widget;
 export import :dson;
 export import :error;
 export import :file;
+export import :flag;
 export import :frame;
 export import :hex;
 export import :input;
@@ -25,12 +25,15 @@ export import :json;
 export import :map;
 export import :math;
 export import :memory;
+export import :ninepatch;
 export import :path;
 export import :string;
 export import :system;
 export import :tilemap;
 export import :tilesheet;
+export import :value;
 export import :vector;
+export import :word;
 
 namespace wind
 {
@@ -62,4 +65,3 @@ namespace wind
 		return rv;
 	}
 }
-

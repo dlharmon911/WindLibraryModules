@@ -51,13 +51,13 @@ namespace wind
 			namespace background
 			{
 				export auto set(console_t& console, size_t index) -> void;
-				export auto get(const console_t& console)->size_t;
+				export auto get(const console_t& console) -> size_t;
 			}
 
 			namespace foreground
 			{
 				export auto set(console_t& console, size_t index) -> void;
-				export auto get(const console_t& console)->size_t;
+				export auto get(const console_t& console) -> size_t;
 			}
 		}
 

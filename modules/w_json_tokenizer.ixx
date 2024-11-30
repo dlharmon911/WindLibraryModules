@@ -35,26 +35,26 @@ namespace WIND
 		{
 			export enum
 			{
-				CHAR_OBJECT_START = 0x7b,		// {
-				CHAR_OBJECT_END = 0x7d,			// }
-				CHAR_ARRAY_START = 0x5b,		// [
-				CHAR_ARRAY_END = 0x5d,			// ]
-				CHAR_COLON = 0x3a,				// :
-				CHAR_COMMA = 0x2c,				// ,
-				CHAR_BACK_SLASH = 0x5c,			// \ 
-				CHAR_FORWARD_SLASH = 0x2f,		// / 
-				CHAR_QUOTATION = 0x22,			// "
-				CHAR_MINUS = 0x2d,				// -
-				CHAR_PLUS = 0x2b,				// +
-				CHAR_DECIMAL = 0x2e,			// .
-				CHAR_E_UPPER = 0x45,			// E
-				CHAR_E_LOWER = 0x65,			// e
-				CHAR_SPACE = 0x20,				// space
-				CHAR_TAB = 0x09,				// tab
-				CHAR_NEW_LINE = 0x0a,			// new line
-				CHAR_CARRIAGE_RETURN = 0x0d,	// carriage return
-				CHAR_BACKSPACE = 0x08,			// backspace
-				CHAR_FORMFEED = 0x0c			// formfeed
+				CHAR_OBJECT_START = 0x7b,
+				CHAR_OBJECT_END = 0x7d,
+				CHAR_ARRAY_START = 0x5b,
+				CHAR_ARRAY_END = 0x5d,
+				CHAR_COLON = 0x3a,
+				CHAR_COMMA = 0x2c,
+				CHAR_BACK_SLASH = 0x5c,
+				CHAR_FORWARD_SLASH = 0x2f,
+				CHAR_QUOTATION = 0x22,
+				CHAR_MINUS = 0x2d,
+				CHAR_PLUS = 0x2b,
+				CHAR_DECIMAL = 0x2e,
+				CHAR_E_UPPER = 0x45,
+				CHAR_E_LOWER = 0x65,
+				CHAR_SPACE = 0x20,
+				CHAR_TAB = 0x09,
+				CHAR_NEW_LINE = 0x0a,
+				CHAR_CARRIAGE_RETURN = 0x0d,
+				CHAR_BACKSPACE = 0x08,
+				CHAR_FORMFEED = 0x0c
 			};
 		}
 	}
@@ -62,17 +62,17 @@ namespace WIND
 
 namespace wind
 {
-	export class json_token_t : public class_t<json_token_t>
+	export class json_token_t
 	{
 	public:
 		json_token_t();
 		json_token_t(int32_t type, const string_t& str);
 		json_token_t(const json_token_t& token);
 		~json_token_t();
-		auto operator = (const json_token_t& token) ->json_token_t&;
+		auto operator = (const json_token_t& token)->json_token_t&;
 		auto clear() -> void;
 		auto set_type(int32_t type) -> void;
-		auto get_type() const -> int32_t;
+		auto get_type() const->int32_t;
 		auto set_string(const string_t& str) -> void;
 		auto get_string() -> string_t&;
 		auto get_string() const -> const string_t&;
@@ -82,10 +82,8 @@ namespace wind
 		string_t m_ustring;
 	};
 
-
-
 	export template <typename iterator>
-	class json_tokenizer_t
+		class json_tokenizer_t
 	{
 	public:
 
@@ -278,7 +276,6 @@ namespace wind
 					}
 
 					str.append(v);
-
 				} break;
 				default:
 				{

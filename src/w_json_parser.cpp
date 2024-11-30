@@ -17,7 +17,7 @@ namespace wind
 	{
 		namespace string
 		{
-			string_t from_ustring(const string_t& ustring)
+			auto from_ustring(const string_t& ustring) -> string_t
 			{
 				string_t s;
 				int32_t pos = 0;
@@ -49,7 +49,6 @@ namespace wind
 							int32_t p = 0;
 						} break;
 						}
-
 					}
 
 					c = ustring[pos];
@@ -59,15 +58,15 @@ namespace wind
 			}
 		}
 
-		typedef struct PARSE_INFO
+		using parse_info_t = struct parse_info_tag_t
 		{
 			ALLEGRO::FILE m_file{};
 			int32_t m_tab{ 0 };
-		} PARSE_INFO;
+		};
 
 		namespace tab
 		{
-			int32_t write(PARSE_INFO& info)
+			auto write(parse_info_t& info) -> int32_t
 			{
 				for (int32_t i = 0; i < info.m_tab; ++i)
 				{
@@ -83,31 +82,31 @@ namespace wind
 
 		namespace value
 		{
-			int32_t parse(json_t& json, const_iterator_t& begin, const_iterator_t& end);
-			int32_t write(const json_t& json, PARSE_INFO& info);
+			auto parse(json_t& json, const_iterator_t& begin, const_iterator_t& end) -> int32_t;
+			auto write(const json_t& json, parse_info_t& info) -> int32_t;
 		}
 
 		namespace pair
 		{
-			int32_t parse(json_pair_t& pair, const_iterator_t& begin, const_iterator_t& end);
-			int32_t write(const json_pair_t& pair, PARSE_INFO& info);
+			auto parse(json_pair_t& pair, const_iterator_t& begin, const_iterator_t& end) -> int32_t;
+			auto write(const json_pair_t& pair, parse_info_t& info) -> int32_t;
 		}
 
 		namespace object
 		{
-			int32_t parse(json_object_t& object, const_iterator_t& begin, const_iterator_t& end);
-			int32_t write(const json_object_t& object, PARSE_INFO& info);
+			auto parse(json_object_t& object, const_iterator_t& begin, const_iterator_t& end) -> int32_t;
+			auto write(const json_object_t& object, parse_info_t& info) -> int32_t;
 		}
 
 		namespace array
 		{
-			int32_t parse(json_array_t& array, const_iterator_t& begin, const_iterator_t& end);
-			int32_t write(const json_array_t& array, PARSE_INFO& info);
+			auto parse(json_array_t& array, const_iterator_t& begin, const_iterator_t& end) -> int32_t;
+			auto write(const json_array_t& array, parse_info_t& info) -> int32_t;
 		}
 
 		namespace value
 		{
-			int32_t parse(json_t& json, const_iterator_t& begin, const_iterator_t& end)
+			auto parse(json_t& json, const_iterator_t& begin, const_iterator_t& end) -> int32_t
 			{
 				int32_t rv = 0;
 
@@ -177,11 +176,11 @@ namespace wind
 				return rv;
 			}
 
-			int32_t write(const json_t& json, PARSE_INFO& info)
+			auto write(const json_t& json, parse_info_t& info) -> int32_t
 			{
 				int32_t rv = 0;
 
-				switch (json.type())
+				switch (json.get_type())
 				{
 				case WIND::JSON::TYPE_NULL:
 				{
@@ -252,18 +251,15 @@ namespace wind
 				{
 					rv = array::write((json_array_t)json, info);
 				}break;
-				default:
-				{
-				} break;
 				}
 
 				return rv;
 			}
 
-			int32_t write(const json_t& json, const string_t& filename)
+			auto write(const json_t& json, const string_t& filename) -> int32_t
 			{
 				int32_t rv = 0;
-				PARSE_INFO info;
+				parse_info_t info;
 
 				info.m_file = ALLEGRO::FILE(al_fopen(filename.c_str(), "wb"), al_fclose);
 				info.m_tab = 0;
@@ -279,7 +275,7 @@ namespace wind
 
 		namespace pair
 		{
-			int32_t parse(json_pair_t& pair, const_iterator_t& begin, const_iterator_t& end)
+			auto parse(json_pair_t& pair, const_iterator_t& begin, const_iterator_t& end) -> int32_t
 			{
 				int32_t rv = 0;
 
@@ -320,7 +316,7 @@ namespace wind
 				return rv;
 			}
 
-			int32_t write(const json_pair_t& pair, PARSE_INFO& info)
+			auto write(const json_pair_t& pair, parse_info_t& info) -> int32_t
 			{
 				if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_QUOTATION) == EOF)
 				{
@@ -363,8 +359,8 @@ namespace wind
 					return -1;
 				}
 
-				if (pair.second.type() == WIND::JSON::TYPE_ARRAY ||
-					pair.second.type() == WIND::JSON::TYPE_OBJECT)
+				if (pair.second.get_type() == WIND::JSON::TYPE_ARRAY ||
+					pair.second.get_type() == WIND::JSON::TYPE_OBJECT)
 				{
 					if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_NEW_LINE) == EOF)
 					{
@@ -379,7 +375,7 @@ namespace wind
 
 		namespace object
 		{
-			int32_t parse(json_object_t& object, const_iterator_t& begin, const_iterator_t& end)
+			auto parse(json_object_t& object, const_iterator_t& begin, const_iterator_t& end) -> int32_t
 			{
 				int32_t rv = 0;
 
@@ -416,7 +412,6 @@ namespace wind
 						rv = -1;
 						break;
 					}
-
 				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE_COMMA);
 
 				if (rv == 0)
@@ -435,7 +430,7 @@ namespace wind
 				return rv;
 			}
 
-			int32_t write(const json_object_t& object, PARSE_INFO& info)
+			auto write(const json_object_t& object, parse_info_t& info) -> int32_t
 			{
 				size_t size = object.size();
 				size_t index = 0;
@@ -489,7 +484,6 @@ namespace wind
 							return -1;
 						}
 					}
-
 				}
 
 				if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_NEW_LINE) == EOF)
@@ -518,7 +512,7 @@ namespace wind
 
 		namespace array
 		{
-			int32_t parse(json_array_t& array, const_iterator_t& begin, const_iterator_t& end)
+			auto parse(json_array_t& array, const_iterator_t& begin, const_iterator_t& end) -> int32_t
 			{
 				int32_t rv = 0;
 
@@ -544,7 +538,6 @@ namespace wind
 					}
 
 					array.push_back(value);
-
 				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE_COMMA);
 
 				if (rv == 0)
@@ -563,7 +556,7 @@ namespace wind
 				return 0;
 			}
 
-			int32_t write(const json_array_t& array, PARSE_INFO& info)
+			auto write(const json_array_t& array, parse_info_t& info) -> int32_t
 			{
 				size_t size = array.size();
 				size_t index = 0;
@@ -595,8 +588,8 @@ namespace wind
 						return -1;
 					}
 
-					if (array[index].type() != WIND::JSON::TYPE_ARRAY &&
-						array[index].type() != WIND::JSON::TYPE_OBJECT)
+					if (array[index].get_type() != WIND::JSON::TYPE_ARRAY &&
+						array[index].get_type() != WIND::JSON::TYPE_OBJECT)
 					{
 						if (tab::write(info) < 0)
 						{
@@ -611,8 +604,6 @@ namespace wind
 						return -1;
 					}
 
-
-
 					++index;
 
 					if (index != size)
@@ -623,7 +614,6 @@ namespace wind
 							return -1;
 						}
 					}
-
 				} while (index < size);
 
 				if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_NEW_LINE) == EOF)
@@ -652,7 +642,7 @@ namespace wind
 
 		namespace file
 		{
-			int32_t parse(json_t& json, const string_t& filename)
+			auto parse(json_t& json, const string_t& filename) -> int32_t
 			{
 				ALLEGRO::FILE file;
 				int32_t rv = 0;
@@ -667,7 +657,7 @@ namespace wind
 		}
 		namespace string
 		{
-			int32_t parse(json_t& json, const string_t& string)
+			auto parse(json_t& json, const string_t& string) -> int32_t
 			{
 				return json_parser_t::parse<string_t::const_iterator>(json, string.cbegin(), string.cend());
 			}

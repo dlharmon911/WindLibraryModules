@@ -25,11 +25,11 @@ namespace wind
 		namespace value
 		{
 			auto parse(json_t& json, const_iterator_t& begin, const_iterator_t& end) -> int32_t;
-			auto write(const json_t& json, const string_t& filename)->int32_t;
+			auto write(const json_t& json, const string_t& filename) -> int32_t;
 		}
 
 		export template <typename iterator_t>
-		auto parse(json_t& json, iterator_t begin, iterator_t end) -> int32_t
+			auto parse(json_t& json, iterator_t begin, iterator_t end) -> int32_t
 		{
 			int32_t rv = 0;
 			vector_t tokens;
@@ -44,7 +44,7 @@ namespace wind
 
 				if (rv == 0)
 				{
-					if (json.type() != WIND::JSON::TYPE_OBJECT || json.type() == WIND::JSON::TYPE_ARRAY)
+					if (json.get_type() != WIND::JSON::TYPE_OBJECT || json.get_type() == WIND::JSON::TYPE_ARRAY)
 					{
 						json.clear();
 						rv = -1;
@@ -61,12 +61,12 @@ namespace wind
 
 		namespace file
 		{
-			export auto parse(json_t& json, const string_t& filename)->int32_t;
+			export auto parse(json_t& json, const string_t& filename) -> int32_t;
 		}
 
 		namespace string
 		{
-			export auto parse(json_t& json, const string_t& string)->int32_t;
+			export auto parse(json_t& json, const string_t& string) -> int32_t;
 		}
 	}
 }

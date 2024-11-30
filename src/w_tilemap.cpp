@@ -25,18 +25,18 @@ namespace wind
 	{
 	}
 
-	tilemap_t& tilemap_t::operator = (const tilemap_t& tilemap)
+	auto tilemap_t::operator = (const tilemap_t& tilemap) -> tilemap_t&
 	{
 		this->m_sheets = tilemap.m_sheets;
 		return *this;
 	}
 
-	void* tilemap_t::data()
+	auto tilemap_t::data() -> void*
 	{
 		return this->m_sheets.data();
 	}
 
-	const void* tilemap_t::data() const
+	auto tilemap_t::data() const -> const void*
 	{
 		return this->m_sheets.data();
 	}
@@ -46,72 +46,72 @@ namespace wind
 		this->m_sheets.push_back(tilemap);
 	}
 
-	void tilemap_t::pop_back()
+	auto tilemap_t::pop_back() -> void
 	{
 		this->m_sheets.pop_back();
 	}
 
-	void tilemap_t::clear()
+	auto tilemap_t::clear() -> void
 	{
 		this->m_sheets.clear();
 	}
 
-	size_t tilemap_t::get_count() const
+	auto tilemap_t::get_count() const -> size_t
 	{
 		return this->m_sheets.size();
 	}
 
-	bool tilemap_t::is_empty() const
+	auto tilemap_t::is_empty() const -> bool
 	{
 		return this->m_sheets.empty();
 	}
 
-	const ALLEGRO::SIZE<int32_t>& tilemap_t::get_tile_size() const
+	auto tilemap_t::get_tile_size() const -> const ALLEGRO::SIZE<int32_t>&
 	{
 		return this->m_tilesize;
 	}
 
-	void tilemap_t::set_tile_size(ALLEGRO::SIZE<int32_t> tilesize)
+	auto tilemap_t::set_tile_size(ALLEGRO::SIZE<int32_t> tilesize) -> void
 	{
 		this->m_tilesize = tilesize;
 	}
 
-	tilemap_t::reference_element_type tilemap_t::at(size_t index)
+	auto tilemap_t::at(size_t index) -> tilemap_t::reference_element_type
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::const_reference_element_type tilemap_t::at(size_t index) const
+	auto tilemap_t::at(size_t index) const -> tilemap_t::const_reference_element_type
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::reference_element_type tilemap_t::operator [](size_t index)
+	auto tilemap_t::operator [](size_t index) -> tilemap_t::reference_element_type
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::const_reference_element_type tilemap_t::operator [](size_t index) const
+	auto tilemap_t::operator [](size_t index) const -> tilemap_t::const_reference_element_type
 	{
 		return this->m_sheets[index];
 	}
 
-	tilemap_t::iterator tilemap_t::begin()
+	auto tilemap_t::begin() -> tilemap_t::iterator
 	{
 		return iterator(this->m_sheets.begin());
 	}
 
-	tilemap_t::iterator tilemap_t::end()
+	auto tilemap_t::end() -> tilemap_t::iterator
 	{
 		return iterator(this->m_sheets.end());
 	}
 
-	tilemap_t::const_iterator tilemap_t::cbegin()
+	auto tilemap_t::cbegin() const -> tilemap_t::const_iterator
 	{
 		return const_iterator(this->m_sheets.cbegin());
 	}
 
-	tilemap_t::const_iterator tilemap_t::cend()
+	auto tilemap_t::cend() const -> tilemap_t::const_iterator
 	{
 		return const_iterator(this->m_sheets.cend());
 	}

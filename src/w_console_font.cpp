@@ -28,16 +28,18 @@ namespace wind
 {
 	namespace console
 	{
-		typedef struct font_data_t
+		struct font_data_tag_t
 		{
 			size_t m_start{ 0 };
 			size_t m_count{ 0 };
 			ALLEGRO::BITMAP m_bitmap{};
 			vector_t<ALLEGRO::BITMAP> m_glyphs{};
-		} font_data_t;
+		};
 
-		const uint8_t default_font_data[256][WIND::CONSOLE::FONT_GLYPH_SIZE] =
-		{
+		using glyph_data_t = std::array<uint8_t, WIND::CONSOLE::FONT_GLYPH_SIZE>;
+
+		const std::array<glyph_data_t, (1 << 8)> default_font_data 
+		{ {
 			{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 			{ 0x7e, 0x81, 0xa5, 0x81, 0xbd, 0x99, 0x81, 0x7e},
 			{ 0x7e, 0xff, 0xdb, 0xff, 0xc3, 0xe7, 0xff, 0x7e},
@@ -294,12 +296,12 @@ namespace wind
 			{ 0x78, 0x0c, 0x38, 0x60, 0x7c, 0x00, 0x00, 0x00},
 			{ 0x00, 0x00, 0x3c, 0x3c, 0x3c, 0x3c, 0x00, 0x00},
 			{ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }
-		};
+		} };
 
-		bool convert_font_glyph_from_data(const uint8_t* data, ALLEGRO::BITMAP& glyph);
-		bool convert_font_glyph_to_data(const ALLEGRO::BITMAP& glyph, uint8_t* data);
+		auto convert_font_glyph_from_data(const uint8_t* data, ALLEGRO::BITMAP& glyph) -> bool;
+		auto convert_font_glyph_to_data(const ALLEGRO::BITMAP& glyph, uint8_t* data) -> bool;
 
-		int32_t create_font(font_t& font, const uint8_t* data, size_t count, int32_t start)
+		auto create_font(font_t& font, const uint8_t* data, size_t count, int32_t start) -> int32_t
 		{
 			size_t h = (count >> WIND::CONSOLE::FONT_GLYPH_SHIFT);
 			size_t w = WIND::CONSOLE::FONT_GLYPH_SIZE;
@@ -349,16 +351,16 @@ namespace wind
 			return 0;
 		}
 
-		font_t create_font_from_array(const uint8_t* data, size_t count, int32_t start);
+		auto create_font_from_array(const uint8_t* data, size_t count, int32_t start) -> font_t;
 
-		font_t create_font_default()
+		auto create_font_default() -> font_t
 		{
 			constexpr size_t size = (sizeof(default_font_data) / sizeof(uint8_t)) >> WIND::CONSOLE::FONT_GLYPH_SHIFT;
 
-			return create_font_from_array((uint8_t*)default_font_data, size, 0);
+			return create_font_from_array((uint8_t*)default_font_data.data(), size, 0);
 		}
 
-		font_t create_font_from_array(const uint8_t* data, size_t count, int32_t start)
+		auto create_font_from_array(const uint8_t* data, size_t count, int32_t start) -> font_t
 		{
 			font_t font = std::make_shared<font_data_t>();
 
@@ -373,7 +375,7 @@ namespace wind
 			return font;
 		}
 
-		bool save_font(const font_t& font, const wind::string_t& filename)
+		auto save_font(const font_t& font, const wind::string_t& filename) -> bool
 		{
 			ALLEGRO::ASSERT(font);
 
@@ -390,7 +392,7 @@ namespace wind
 			return rv;
 		}
 
-		bool save_font_f(ALLEGRO::FILE& file, const font_t& font)
+		auto save_font_f(ALLEGRO::FILE& file, const font_t& font) -> bool
 		{
 			ALLEGRO::ASSERT(file && font);
 
@@ -399,7 +401,7 @@ namespace wind
 
 			file << "{\n\t\"font\" :\n\t{\n";
 			file << "\t\t\"start\": ";
-			al::fprintf(file, "%lu", font->m_start); 
+			al::fprintf(file, "%lu", font->m_start);
 			file << ",\n";
 			file << "\t\t\"count\": ";
 			al::fprintf(file, "%lu", font->m_count);
@@ -447,28 +449,27 @@ namespace wind
 					file << '\n';
 				}
 
-
 				file << '\n';
 			}
 
 			file << "\t\t]\n\t}\n}\n\n";
-			
+
 			return true;
 		}
 
-		ALLEGRO::BITMAP& get_font_bitmap(font_t& font)
+		auto get_font_bitmap(font_t& font) -> ALLEGRO::BITMAP&
 		{
 			ALLEGRO::ASSERT(font);
 			return font->m_bitmap;
 		}
 
-		const ALLEGRO::BITMAP& get_font_bitmap(const font_t& font)
+		auto get_font_bitmap(const font_t& font) -> const ALLEGRO::BITMAP&
 		{
 			ALLEGRO::ASSERT(font);
 			return font->m_bitmap;
 		}
 
-		ALLEGRO::BITMAP& get_font_glyph(font_t& font, size_t index)
+		auto get_font_glyph(font_t& font, size_t index) -> ALLEGRO::BITMAP&
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
@@ -476,7 +477,7 @@ namespace wind
 			return font->m_glyphs[index - font->m_start];
 		}
 
-		const ALLEGRO::BITMAP& get_font_glyph(const font_t& font, size_t index)
+		auto get_font_glyph(const font_t& font, size_t index) -> const ALLEGRO::BITMAP&
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
@@ -484,7 +485,7 @@ namespace wind
 			return font->m_glyphs[index - font->m_start];
 		}
 
-		bool set_font_glyph(font_t& font, size_t index, const uint8_t* data)
+		auto set_font_glyph(font_t& font, size_t index, const uint8_t* data) -> bool
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
@@ -492,12 +493,12 @@ namespace wind
 			return convert_font_glyph_from_data(data, font->m_glyphs[index - font->m_start]);
 		}
 
-		bool set_font_glyph(font_t& font, size_t index, const wind::string_t& string)
+		auto set_font_glyph(font_t& font, size_t index, const wind::string_t& string) -> bool
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
 
-			uint8_t data[WIND::CONSOLE::FONT_GLYPH_SIZE] = {0, 0, 0, 0, 0, 0, 0, 0};
+			uint8_t data[WIND::CONSOLE::FONT_GLYPH_SIZE] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 			for (size_t i = 0; (i < string.length() && i < WIND::CONSOLE::FONT_GLYPH_SIZE); ++i)
 			{
@@ -507,7 +508,7 @@ namespace wind
 			return set_font_glyph(font, index, data);
 		}
 
-		void draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, uint8_t index)
+		auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, uint8_t index) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
@@ -515,7 +516,7 @@ namespace wind
 			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, point, 0);
 		}
 
-		void draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const wind::string_t& text)
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const wind::string_t& text) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			float w = text.length() << WIND::CONSOLE::FONT_GLYPH_SHIFT;
@@ -537,7 +538,7 @@ namespace wind
 			}
 		}
 
-		void draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const char* format, ...)
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const char* format, ...) -> void
 		{
 			va_list args;
 			int32_t len;
@@ -556,10 +557,9 @@ namespace wind
 			}
 
 			va_end(args);
-
 		}
 
-		bool convert_font_glyph_from_data(const uint8_t* data, ALLEGRO::BITMAP& glyph)
+		auto convert_font_glyph_from_data(const uint8_t* data, ALLEGRO::BITMAP& glyph) -> bool
 		{
 			bool rv = false;
 
@@ -584,7 +584,7 @@ namespace wind
 						for (int32_t i = 0; i < WIND::CONSOLE::FONT_GLYPH_SIZE; ++i)
 						{
 							float c = 0.0f;
-							
+
 							if (p & 0x1)
 							{
 								c = 1.0f;
@@ -607,7 +607,7 @@ namespace wind
 			return rv;
 		}
 
-		bool convert_font_glyph_to_data(const ALLEGRO::BITMAP& glyph, uint8_t* data)
+		auto convert_font_glyph_to_data(const ALLEGRO::BITMAP& glyph, uint8_t* data) -> bool
 		{
 			ALLEGRO::ASSERT((bool)glyph);
 

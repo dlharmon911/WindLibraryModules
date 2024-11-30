@@ -41,7 +41,7 @@ namespace WIND
 
 namespace wind
 {
-	export class datafile_t : public wind::class_t<datafile_t>
+	export class datafile_t
 	{
 	public:
 		using element_type = std::shared_ptr<void>;
@@ -95,8 +95,6 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			iterator(vector_t::iterator o, std::vector<object_info_t>::iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
@@ -119,8 +117,6 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			typedef std::ptrdiff_t difference_type;
-
 			const_iterator(vector_t::const_iterator o, std::vector<object_info_t>::const_iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
@@ -159,22 +155,22 @@ namespace wind
 			bool parse(const string_t& filename, datafile_t& datafile, const char sListSep);
 		}
 
-		typedef struct object_struct_t
+		struct object_struct_tag_t
 		{
 			int32_t m_type{ -1 };
 			size_t m_index{ 0 };
 			string_t m_name{};
 			std::shared_ptr<void> m_object{};
-		} object_struct_t;
+		};
 
-		export using object_t = object_struct_t;
+		export using object_t = object_struct_tag_t;
 
 		namespace object
 		{
 			class data_t;
 			bool datafile_parser(data_t& data, object_t& object);
 
-			export class data_t : public wind::class_t<data_t>
+			export class data_t
 			{
 			public:
 				data_t();

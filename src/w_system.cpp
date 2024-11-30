@@ -4,6 +4,7 @@ module;
 
 module wind;
 
+import std;
 import <string>;
 import <cstdint>;
 import allegro;
@@ -33,9 +34,40 @@ namespace wind
 {
 	namespace system
 	{
+		std::map<int32_t, display::option_t> m_display_options{};
+		int32_t m_display_flags{ ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE };
 		ALLEGRO::DISPLAY m_display{ nullptr };
 		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
 		ALLEGRO::BITMAP m_bitmap_buffer{ nullptr };
+
+		display::option_t null_display_option{ -1, 0 };
+
+		auto get_new_display_option(int32_t id) -> display::option_t&
+		{
+			auto i = m_display_options.find(id);
+
+			if (i == m_display_options.end())
+			{
+				return null_display_option;
+			}
+
+			return m_display_options[id];
+		}
+
+		auto set_new_display_option(int32_t id, const display::option_t& option) -> void
+		{
+			m_display_options[id] = { option.m_value, option.m_importance };
+		}
+
+		auto get_new_display_flags() -> int32_t
+		{
+			return system::m_display_flags;
+		}
+
+		auto set_new_display_flags(int32_t flags) -> void
+		{
+			system::m_display_flags = flags;
+		}
 
 		auto get_bitmap_buffer() -> wind::add_const_reference<ALLEGRO::BITMAP>::type
 		{
@@ -105,7 +137,7 @@ namespace wind
 
 		namespace dialog
 		{
-			auto update(wind::add_const_reference_t<std::shared_ptr<wind::dialog_t>> dialog) -> void
+			auto update(const std::shared_ptr<wind::dialog_t>& dialog) -> void
 			{
 				dialog->on_update();
 
@@ -115,7 +147,7 @@ namespace wind
 				}
 			}
 
-			auto render(wind::add_const_reference_t<std::shared_ptr<wind::dialog_t>> dialog) -> void
+			auto render(const std::shared_ptr<wind::dialog_t>& dialog) -> void
 			{
 				dialog->on_render();
 
@@ -132,10 +164,12 @@ namespace wind
 		m_timer(),
 		m_time_info({ 0.0, 0.0 }),
 		m_kill(false)
-	{}
+	{
+	}
 
 	system_t::~system_t()
-	{}
+	{
+	}
 
 	int32_t system_t::run(wind::add_const_reference_t<vector_t<wind::string_t>> args)
 	{
@@ -155,28 +189,25 @@ namespace wind
 
 	int32_t system_t::init(wind::add_const_reference_t<vector_t<wind::string_t>> args)
 	{
-		std::cout << "Initialization Begin" << std::endl;
+		std::cout << "Initialization Phase Begin" << "----------------------------------------\n";
 
-		if (!al::is_system_installed())
+		std::cout << "Initializing Allegro Library: ";
+		if (!al::init())
 		{
-			std::cout << "Initializing Allegro Library: ";
-			if (!al::init())
-			{
-				std::cout << "failed" << std::endl;
-				return -1;
-			}
-			std::cout << "pass" << std::endl;
+			std::cout << "failed\n";
+			return -1;
 		}
-	
+		std::cout << "pass\n";
+
 		if (!al::image_addon::is_initialized())
 		{
 			std::cout << "Initializing Image Addon: ";
 			if (!al::image_addon::init())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		if (!al::ttf_addon::is_initialized())
@@ -184,10 +215,10 @@ namespace wind
 			std::cout << "Initializing TTF Addon: ";
 			if (!al::ttf_addon::init())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		if (!al::font_addon::is_initialized())
@@ -195,10 +226,10 @@ namespace wind
 			std::cout << "Initializing Font Addon: ";
 			if (!al::font_addon::init())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		if (!al::primitives_addon::is_initialized())
@@ -206,19 +237,19 @@ namespace wind
 			std::cout << "Initializing Primitives Addon: ";
 			if (!al::primitives_addon::init())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		std::cout << "Initializing PhysFS Addon: ";
 		if (!PHYSFS_init(args[0].c_str()))
 		{
-			std::cout << "failed" << std::endl;
+			std::cout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass" << std::endl;
+		std::cout << "pass\n";
 
 #ifndef _DEBUG
 		// set the directory to the path of the exe
@@ -237,10 +268,10 @@ namespace wind
 			std::cout << "Initializing Mouse: ";
 			if (!al::install_mouse())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		if (!al::is_keyboard_installed())
@@ -248,23 +279,28 @@ namespace wind
 			std::cout << "Initializing Keyboard: ";
 			if (!al::install_keyboard())
 			{
-				std::cout << "failed" << std::endl;
+				std::cout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass" << std::endl;
+			std::cout << "pass\n";
 		}
 
 		std::cout << "Creating Display: ";
-		al::set_new_display_flags(ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE | ALLEGRO::DISPLAY_FLAG_PROGRAMMABLE_PIPELINE);
-		al::set_new_display_option(ALLEGRO::DISPLAY_OPTION_VSYNC, 2, ALLEGRO::DISPLAY_OPTION_IMPORTANCE_SUGGEST);
+		al::set_new_display_flags(system::m_display_flags);
+
+		for (auto i = system::m_display_options.cbegin(); i != system::m_display_options.cend(); ++i)
+		{
+			al::set_new_display_option(i->first, i->second.m_value, i->second.m_importance);
+		}
+
 		al::set_new_window_title(this->m_dialog->get_title().c_str());
 		system::m_display = al::create_display(WIND::DISPLAY_SIZE);
 		if (!system::m_display)
 		{
-			std::cout << "failed" << std::endl;
+			std::cout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass" << std::endl;
+		std::cout << "pass\n";
 		al::clear_to_color(wind::map_rgb_i(0xffffff));
 
 #ifdef _MSC_VER
@@ -285,32 +321,32 @@ namespace wind
 			icon2.reset();
 		}
 
-		std::cout << "Creating Doubld Buffer Bitmap: ";
+		std::cout << "Creating Double Buffer Bitmap: ";
 		system::m_bitmap_buffer = al::create_bitmap(al::get_display_dimensions(system::m_display));
 		if (!system::m_bitmap_buffer)
 		{
-			std::cout << "failed" << std::endl;
+			std::cout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass" << std::endl;
+		std::cout << "pass\n";
 
 		std::cout << "Creating Event Queue: ";
 		system::m_event_queue = al::create_event_queue();
 		if (!system::m_event_queue)
 		{
-			std::cout << "failed" << std::endl;
+			std::cout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass" << std::endl;
+		std::cout << "pass\n";
 
 		std::cout << "Creating Logic Timer: ";
 		this->m_timer = al::create_timer(1.0 / WIND::LOGIC_TIMING);
 		if (!this->m_timer)
 		{
-			std::cout << "failed" << std::endl;
+			std::cout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass" << std::endl;
+		std::cout << "pass\n";
 
 		al::register_event_source(system::m_event_queue, al::get_display_event_source(system::m_display));
 		al::register_event_source(system::m_event_queue, al::get_timer_event_source(this->m_timer));
@@ -324,52 +360,53 @@ namespace wind
 		this->m_time_info.m_elapsed = 0.0;
 		this->m_time_info.m_last_updated = al::get_time();
 
-		std::cout << "Initializing Application: \n";
+		std::cout << "Initializing Dialog: \n";
 		if (this->m_dialog->on_initialize(args) < 0)
 		{
-			std::cout << "Initialization failed" << std::endl;
+			std::cout << "Initialization failed\n";
 			return -1;
 		}
-		std::cout << "Initialization Complete" << std::endl << std::endl;
+		std::cout << "Dialog initialized\n" << "----------------------------------------" << "Initialization Phase Complete\n" << std::endl;
 
 		return 0;
 	}
 
 	void system_t::shutdown()
 	{
-		std::cout << std::endl << "Shutdown Begin" << std::endl;
+		std::cout << std::endl << "Termination Phase Begin\n";
 
-		std::cout << "Closing Application: ";
+		std::cout << "Terminating Dialog: \n";
 		this->m_dialog->on_shutdown();
+		std::cout << "Dialog Terminated\n";
 
 		if (this->m_timer)
 		{
 			al::stop_timer(m_timer);
 			this->m_timer.reset();
-			std::cout << "Timer Destroyed" << std::endl;
+			std::cout << "Timer Destroyed\n";
 		}
 
 		if (system::m_event_queue)
 		{
 			system::m_event_queue.reset();
-			std::cout << "Event Queue Destroyed" << std::endl;
+			std::cout << "Event Queue Destroyed\n";
 		}
 
 		if (system::m_bitmap_buffer)
 		{
 			system::m_bitmap_buffer.reset();
-			std::cout << "Double Buffer Destroyed" << std::endl;
+			std::cout << "Double Buffer Destroyed\n";
 		}
 
 		if (system::m_display)
 		{
 			system::m_display.reset();
-			std::cout << "Display Destroyed" << std::endl;
+			std::cout << "Display Destroyed\n";
 		}
 
 		PHYSFS_deinit();
 
-		std::cout << "Shutdown Complete" << std::endl << std::endl;
+		std::cout << "Termination Phase Complete\n" << std::endl;
 	}
 
 	void system_t::loop()
@@ -544,13 +581,6 @@ namespace wind
 
 					tick_count += static_cast<int32_t>(elapsed / WIND::TICK_SIZE);
 					elapsed -= static_cast<float>(tick_count * WIND::TICK_SIZE);
-
-					if (this->m_dialog->on_update())
-					{
-					}
-					else
-					{
-					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_RESIZE:
@@ -560,8 +590,8 @@ namespace wind
 					}
 					else
 					{
-					}                
-					
+					}
+
 					al::acknowledge_resize(system::m_display);
 				} break;
 
@@ -656,7 +686,4 @@ namespace wind
 
 		this->m_dialog->on_stop();
 	}
-
-
 }
-

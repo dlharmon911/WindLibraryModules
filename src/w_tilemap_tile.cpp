@@ -12,7 +12,7 @@ namespace wind
 	{
 		tile_t::tile_t() : m_tile({ 0 }) {}
 
-		tile_t::tile_t(const tile_t & tile) : m_tile(tile.m_tile) {}
+		tile_t::tile_t(const tile_t& tile) : m_tile(tile.m_tile) {}
 
 		tile_t::tile_t(uint32_t tilesheet, uint32_t index) : m_tile({ 0 })
 		{
@@ -25,64 +25,64 @@ namespace wind
 
 		tile_t::~tile_t() {}
 
-		tile_t& tile_t::operator = (const tile_t & tile)
+		auto tile_t::operator = (const tile_t& tile) -> tile_t&
 		{
 			this->m_tile = tile.m_tile;
 			return*this;
 		}
 
-		tile_t& tile_t::operator = (uint32_t tile)
+		auto tile_t::operator = (uint32_t tile) -> tile_t&
 		{
 			this->m_tile.m_data = tile;
 			return*this;
 		}
 
-		bool tile_t::operator == (const tile_t & tile)
+		auto tile_t::operator == (const tile_t& tile) -> bool
 		{
 			return this->m_tile.m_data == tile.m_tile.m_data;
 		}
 
-		bool tile_t::operator == (uint32_t tile)
+		auto tile_t::operator == (uint32_t tile) -> bool
 		{
 			return this->m_tile.m_data == tile;
 		}
 
-		bool tile_t::operator != (const tile_t & tile)
+		auto tile_t::operator != (const tile_t& tile) -> bool
 		{
 			return !(this->operator == (tile));
 		}
 
-		bool tile_t::operator != (uint32_t tile)
+		auto tile_t::operator != (uint32_t tile) -> bool
 		{
 			return !(this->operator == (tile));
 		}
 
-		void tile_t::set_data(uint32_t tile)
+		auto tile_t::set_data(uint32_t tile) -> void
 		{
 			this->m_tile.m_data = tile;
 		}
 
-		uint32_t tile_t::get_data() const
+		auto tile_t::get_data() const -> uint32_t
 		{
 			return this->m_tile.m_data;
 		}
 
-		void tile_t::set_tilesheet(uint32_t tilesheet)
+		auto tile_t::set_tilesheet(uint32_t tilesheet) -> void
 		{
 			this->m_tile.m_tilesheet = tilesheet;
 		}
 
-		uint32_t tile_t::get_tilesheet() const
+		auto tile_t::get_tilesheet() const -> uint32_t
 		{
 			return this->m_tile.m_tilesheet;
 		}
 
-		void tile_t::set_index(uint32_t index)
+		auto tile_t::set_index(uint32_t index) -> void
 		{
 			this->m_tile.m_index = index;
 		}
 
-		uint32_t tile_t::get_index() const
+		auto tile_t::get_index() const -> uint32_t
 		{
 			return this->m_tile.m_index;
 		}

@@ -17,9 +17,8 @@ import :color;
 
 namespace wind
 {
-	typedef struct console_data_t
+	struct console_data_tag_t
 	{
-		console::cursor_t m_cursor = { 0.0f, 0.0f };
 		size_t m_background{ 0 };
 		size_t m_foreground{ 15 };
 		ALLEGRO::SIZE<size_t> m_size = { 0,0 };
@@ -27,11 +26,12 @@ namespace wind
 		std::shared_ptr<uint8_t> m_data{ nullptr };
 		console::palette_t m_palette{};
 		console::font_t m_font{ nullptr };
-	} console_data_t;
+		console::cursor_t m_cursor = { 0.0f, 0.0f };
+	};
 
 	namespace console
 	{
-		console_t create(const font_t& font, ALLEGRO::SIZE<size_t> size)
+		auto create(const font_t& font, ALLEGRO::SIZE<size_t> size) -> console_t
 		{
 			console_t console = std::make_shared<console_data_t>();
 
@@ -89,22 +89,22 @@ namespace wind
 			return console;
 		}
 
-		size_t get_width(const console_t& console)
+		auto get_width(const console_t& console) -> size_t
 		{
 			return console->m_size.width;
 		}
 
-		size_t get_height(const console_t& console)
+		auto get_height(const console_t& console) -> size_t
 		{
 			return console->m_size.height;
 		}
 
-		ALLEGRO::SIZE<size_t>& get_size(const console_t& console)
+		auto get_size(const console_t& console) -> ALLEGRO::SIZE<size_t>&
 		{
 			return console->m_size;
 		}
 
-		void clear(console_t& console)
+		auto clear(console_t& console) -> void
 		{
 			static ALLEGRO::BITMAP target{ nullptr };
 
@@ -128,7 +128,7 @@ namespace wind
 
 		namespace gfx
 		{
-			void draw(const console_t& console, const ALLEGRO::POINT<int32_t>& point)
+			auto draw(const console_t& console, const ALLEGRO::POINT<int32_t>& point) -> void
 			{
 				al::draw_bitmap(console->m_bitmap, point);
 			}
@@ -136,12 +136,12 @@ namespace wind
 
 		namespace cursor
 		{
-			const cursor_t& get(const console_t& console)
+			auto get(const console_t& console) -> const cursor_t&
 			{
 				return console->m_cursor;
 			}
 
-			void set(console_t& console, const cursor_t& cursor)
+			auto set(console_t& console, const cursor_t& cursor) -> void
 			{
 				console->m_cursor = cursor;
 			}
@@ -149,7 +149,7 @@ namespace wind
 
 		namespace bitmap
 		{
-			ALLEGRO::BITMAP& get(console_t& console)
+			auto get(console_t& console) -> ALLEGRO::BITMAP&
 			{
 				return console->m_bitmap;
 			}
@@ -157,17 +157,17 @@ namespace wind
 
 		namespace font
 		{
-			void set(console_t& console, font_t& font)
+			auto set(console_t& console, font_t& font) -> void
 			{
 				console->m_font = font;
 			}
 
-			const font_t& get(const console_t& console)
+			auto get(const console_t& console) -> const font_t&
 			{
 				return console->m_font;
 			}
 
-			font_t& get(console_t& console)
+			auto get(console_t& console) -> font_t&
 			{
 				return console->m_font;
 			}
@@ -175,7 +175,7 @@ namespace wind
 
 		namespace palette
 		{
-			void set(console_t& console, size_t index, uint32_t rgba)
+			auto set(console_t& console, size_t index, uint32_t rgba) -> void
 			{
 				if (index >= 0 && index < WIND::CONSOLE::PALETTE::SIZE)
 				{
@@ -183,7 +183,7 @@ namespace wind
 				}
 			}
 
-			void set(console_t& console, const palette_t& palette)
+			auto set(console_t& console, const palette_t& palette) -> void
 			{
 				for (size_t index = 0; index < WIND::CONSOLE::PALETTE::SIZE; ++index)
 				{
@@ -191,7 +191,7 @@ namespace wind
 				}
 			}
 
-			uint32_t get(const console_t& console, size_t index)
+			auto get(const console_t& console, size_t index) -> uint32_t
 			{
 				if (index >= 0 && index < WIND::CONSOLE::PALETTE::SIZE)
 				{
@@ -200,19 +200,19 @@ namespace wind
 				return -1;
 			}
 
-			const palette_t& get(const console_t& console)
+			auto get(const console_t& console) -> const palette_t&
 			{
 				return console->m_palette;
 			}
 
-			palette_t& get(console_t& console)
+			auto get(console_t& console) -> palette_t&
 			{
 				return console->m_palette;
 			}
 
 			namespace background
 			{
-				void set(console_t& console, size_t index)
+				auto set(console_t& console, size_t index) -> void
 				{
 					if (index >= 0 && index < WIND::CONSOLE::PALETTE::SIZE)
 					{
@@ -220,7 +220,7 @@ namespace wind
 					}
 				}
 
-				size_t get(const console_t& console)
+				auto get(const console_t& console) -> size_t
 				{
 					return console->m_background;
 				}
@@ -228,7 +228,7 @@ namespace wind
 
 			namespace foreground
 			{
-				void set(console_t& console, size_t index)
+				auto set(console_t& console, size_t index) -> void
 				{
 					if (index >= 0 && index < WIND::CONSOLE::PALETTE::SIZE)
 					{
@@ -236,7 +236,7 @@ namespace wind
 					}
 				}
 
-				size_t get(const console_t& console)
+				auto get(const console_t& console) -> size_t
 				{
 					return console->m_foreground;
 				}
@@ -247,7 +247,7 @@ namespace wind
 		{
 			namespace gfx
 			{
-				void draw(console_t& console, uint8_t c)
+				auto draw(console_t& console, uint8_t c) -> void
 				{
 					static ALLEGRO::BITMAP target{ nullptr };
 					static ALLEGRO::POINT<float> point{ 0.0f, 0.0f };
@@ -284,12 +284,12 @@ namespace wind
 		{
 			namespace gfx
 			{
-				void draw(console_t& console, const sprite_t& sprite, const ALLEGRO::POINT<int32_t>& point, int32_t flags)
+				auto draw(console_t& console, const sprite_t& sprite, const ALLEGRO::POINT<int32_t>& point, int32_t flags) -> void
 				{
 					draw(console, sprite->m_layers, sprite->m_begin, sprite->m_end, point, flags);
 				}
 
-				void draw(console_t& console, const layer_t& layers, int32_t begin, int32_t end, const ALLEGRO::POINT<int32_t>& point, int32_t flags)
+				auto draw(console_t& console, const layer_t& layers, int32_t begin, int32_t end, const ALLEGRO::POINT<int32_t>& point, int32_t flags) -> void
 				{
 					static ALLEGRO::BITMAP target{ nullptr };
 					static ALLEGRO::TRANSFORM backup{};

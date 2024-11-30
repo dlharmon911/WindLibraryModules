@@ -11,13 +11,13 @@ export constexpr int32_t EOF = -1;
 
 namespace wind
 {
-	export class file_iterator_t : public class_t<file_iterator_t>
+	export class file_iterator_t
 	{
 	public:
 		file_iterator_t() : m_data(), m_c(EOF) {}
-		
+
 		file_iterator_t(const ALLEGRO::FILE& file) : m_data(file), m_c(EOF) {}
-		
+
 		file_iterator_t(const file_iterator_t& it) : m_data(it.m_data), m_c(it.m_c) {}
 
 		~file_iterator_t() {}
@@ -72,7 +72,6 @@ namespace wind
 			if (file)
 			{
 				al::fseek(file, 0, ALLEGRO::FILE_SEEK_SET);
-				
 			}
 
 			file_iterator_t it{ file };
@@ -93,24 +92,23 @@ namespace wind
 	};
 }
 
-export auto operator << (ALLEGRO::FILE& stream, const wind::string_t& value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, const char* value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, int8_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, uint8_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, int16_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, uint16_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, int32_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, uint32_t value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, float value) -> ALLEGRO::FILE&;
-export auto operator << (ALLEGRO::FILE& stream, double value) -> ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, const wind::string_t& value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, const char* value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, int8_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, uint8_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, int16_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, uint16_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, int32_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, uint32_t value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, float value)->ALLEGRO::FILE&;
+export auto operator << (ALLEGRO::FILE& stream, double value)->ALLEGRO::FILE&;
 
-
-export auto operator >> (ALLEGRO::FILE& stream, wind::string_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, int8_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, uint8_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, int16_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, uint16_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, int32_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, uint32_t& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, float& value) -> ALLEGRO::FILE&;
-export auto operator >> (ALLEGRO::FILE& stream, double& value) -> ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, wind::string_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, int8_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, uint8_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, int16_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, uint16_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, int32_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, uint32_t& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, float& value)->ALLEGRO::FILE&;
+export auto operator >> (ALLEGRO::FILE& stream, double& value)->ALLEGRO::FILE&;
