@@ -272,10 +272,6 @@
     <ClCompile Include="src\w_config.cpp" />
     <ClCompile Include="src\w_console.cpp" />
     <ClCompile Include="src\w_console_font.cpp" />
-    <ClCompile Include="src\w_dialog.cpp" />
-    <ClCompile Include="src\w_dialog_widget.cpp" />
-    <ClCompile Include="src\w_dialog_widget_base.cpp" />
-    <ClCompile Include="src\w_dialog_widget_button.cpp" />
     <ClCompile Include="src\w_dson.cpp" />
     <ClCompile Include="src\w_error.cpp" />
     <ClCompile Include="src\w_file.cpp" />
