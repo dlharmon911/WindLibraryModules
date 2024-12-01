@@ -423,7 +423,7 @@
     <ClCompile Include="modules\w_log.ixx">
       <Filter>Module Files\Wind Module Files\Partition Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\log.cpp">
+    <ClCompile Include="src\w_log.cpp">
       <Filter>Source Files\Partition Files</Filter>
     </ClCompile>
   </ItemGroup>

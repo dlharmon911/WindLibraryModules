@@ -13,7 +13,7 @@ namespace WIND
 	{
 		namespace TYPE
 		{
-			enum
+			export enum
 			{
 				TEXT,
 				HTML
@@ -42,8 +42,9 @@ namespace wind
 		~log_t();
 		auto operator = (const log_t& log) -> log_t&;
 		auto open(const wind::string_t& filename, int32_t type = WIND::LOG::TYPE::TEXT) -> void;
-		auto close() -> void;
+		auto reset() -> void;
 		auto is_open() const -> bool;
+		auto operator<< (auto (*manipulator)(log_t& log)->log_t&)->log_t&;
 		auto operator<< (bool value) -> log_t&;
 		auto operator<< (short value) -> log_t&;
 		auto operator<< (unsigned short value) -> log_t&;
@@ -54,7 +55,10 @@ namespace wind
 		auto operator<< (float value) -> log_t&;
 		auto operator<< (double value) -> log_t&;
 		auto operator<< (long double value) -> log_t&;
+		auto operator<< (const char* string)->log_t&;
+		auto operator<< (const wind::string_t& string)->log_t&;
 		auto putc(int32_t c) -> log_t&;
+		auto puts(const char* string) -> log_t&;
 		auto puts(const wind::string_t& string) -> log_t&;
 		auto write(const char* s, size_t n) -> log_t&;
 		auto flush() -> log_t&;
@@ -64,4 +68,5 @@ namespace wind
 
 	auto endl(log_t& log)->log_t&;
 
+	export extern log_t lout;
 }

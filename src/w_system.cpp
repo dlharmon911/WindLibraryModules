@@ -32,6 +32,8 @@ namespace WIND
 
 namespace wind
 {
+	log_t lout{};
+
 	namespace system
 	{
 		std::map<int32_t, display::option_t> m_display_options{};
@@ -78,7 +80,7 @@ namespace wind
 			return system::m_event_queue;
 		}
 
-		auto timestamp() -> wind::string_t
+		auto timestamp() -> string_t
 		{
 			char buffer[1024];
 			struct tm local;
@@ -169,83 +171,93 @@ namespace wind
 	{
 		int32_t rv = 0;
 
+		if (!al::init())
+		{
+			return -1;
+		}
+
+		lout.open("logs\\output.txt");
+
+		lout << "---------------------------------------\n" <<
+			" Log opened: " << wind::system::timestamp() << "\n" <<
+			"---------------------------------------" << wind::endl;
+
 		if (this->m_dialog)
 		{
 			if ((rv = this->init(args)) == 0)
 			{
 				this->loop();
 			}
+
 			this->shutdown();
 		}
+
+		lout << "\n---------------------------------------\n" <<
+			" Log closed: " << wind::system::timestamp() << "\n" <<
+			"---------------------------------------" << wind::endl;
+		lout.reset();
 
 		return rv;
 	}
 
 	int32_t system_t::init(wind::add_const_reference_t<array_t<wind::string_t>> args)
 	{
-		std::cout << "Initialization Phase Begin" << "----------------------------------------\n";
 
-		std::cout << "Initializing Allegro Library: ";
-		if (!al::init())
-		{
-			std::cout << "failed\n";
-			return -1;
-		}
-		std::cout << "pass\n";
+		wind::lout << "Initialization Phase Begin" << "\n----------------------------------------\n";
 
 		if (!al::image_addon::is_initialized())
 		{
-			std::cout << "Initializing Image Addon: ";
+			wind::lout << "Initializing Image Addon: ";
 			if (!al::image_addon::init())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 		if (!al::ttf_addon::is_initialized())
 		{
-			std::cout << "Initializing TTF Addon: ";
+			wind::lout << "Initializing TTF Addon: ";
 			if (!al::ttf_addon::init())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 		if (!al::font_addon::is_initialized())
 		{
-			std::cout << "Initializing Font Addon: ";
+			wind::lout << "Initializing Font Addon: ";
 			if (!al::font_addon::init())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 		if (!al::primitives_addon::is_initialized())
 		{
-			std::cout << "Initializing Primitives Addon: ";
+			wind::lout << "Initializing Primitives Addon: ";
 			if (!al::primitives_addon::init())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 		if (!al::physfs_addon::is_initialized())
 		{
-			std::cout << "Initializing PhysFS Addon: ";
+			wind::lout << "Initializing PhysFS Addon: ";
 			if (!al::physfs_addon::init(args[0].c_str()))
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 #ifndef _DEBUG
@@ -262,27 +274,27 @@ namespace wind
 
 		if (!al::is_mouse_installed())
 		{
-			std::cout << "Initializing Mouse: ";
+			wind::lout << "Initializing Mouse: ";
 			if (!al::install_mouse())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
 		if (!al::is_keyboard_installed())
 		{
-			std::cout << "Initializing Keyboard: ";
+			wind::lout << "Initializing Keyboard: ";
 			if (!al::install_keyboard())
 			{
-				std::cout << "failed\n";
+				wind::lout << "failed\n";
 				return -1;
 			}
-			std::cout << "pass\n";
+			wind::lout << "pass\n";
 		}
 
-		std::cout << "Creating Display: ";
+		wind::lout << "Creating Display: ";
 		al::set_new_display_flags(system::m_display_flags);
 
 		for (auto i = system::m_display_options.cbegin(); i != system::m_display_options.cend(); ++i)
@@ -294,10 +306,10 @@ namespace wind
 		system::m_display = al::create_display(WIND::DISPLAY_SIZE);
 		if (!system::m_display)
 		{
-			std::cout << "failed\n";
+			wind::lout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass\n";
+		wind::lout << "pass\n";
 		al::clear_to_color(wind::map_rgb_i(0xffffff));
 
 #ifdef _MSC_VER
@@ -318,23 +330,23 @@ namespace wind
 			icon2.reset();
 		}
 
-		std::cout << "Creating Event Queue: ";
+		wind::lout << "Creating Event Queue: ";
 		system::m_event_queue = al::create_event_queue();
 		if (!system::m_event_queue)
 		{
-			std::cout << "failed\n";
+			wind::lout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass\n";
+		wind::lout << "pass\n";
 
-		std::cout << "Creating Logic Timer: ";
+		wind::lout << "Creating Logic Timer: ";
 		this->m_timer = al::create_timer(1.0 / WIND::LOGIC_TIMING);
 		if (!this->m_timer)
 		{
-			std::cout << "failed\n";
+			wind::lout << "failed\n";
 			return -1;
 		}
-		std::cout << "pass\n";
+		wind::lout << "pass\n";
 
 		al::register_event_source(system::m_event_queue, al::get_display_event_source(system::m_display));
 		al::register_event_source(system::m_event_queue, al::get_timer_event_source(this->m_timer));
@@ -348,47 +360,49 @@ namespace wind
 		this->m_time_info.m_elapsed = 0.0;
 		this->m_time_info.m_last_updated = al::get_time();
 
-		std::cout << "Initializing Dialog: \n";
+		wind::lout << "Initializing Dialog: \n";
 		if (this->m_dialog->on_initialize(args) < 0)
 		{
-			std::cout << "Initialization failed\n";
+			wind::lout << "Initialization failed\n";
 			return -1;
 		}
-		std::cout << "Dialog initialized\n" << "----------------------------------------" << "Initialization Phase Complete\n" << std::endl;
+		wind::lout << "Dialog initialized\n----------------------------------------\n" << "Initialization Phase Complete\n" << wind::endl;
 
 		return 0;
 	}
 
 	void system_t::shutdown()
 	{
-		std::cout << std::endl << "Termination Phase Begin\n";
+		wind::lout << wind::endl << "Termination Phase Begin\n";
 
-		std::cout << "Terminating Dialog: \n";
+		wind::lout << "Terminating Dialog: \n";
 		this->m_dialog->on_shutdown();
-		std::cout << "Dialog Terminated\n";
+		wind::lout << "Dialog Terminated\n";
 
 		if (this->m_timer)
 		{
 			al::stop_timer(m_timer);
 			this->m_timer.reset();
-			std::cout << "Timer Destroyed\n";
+			wind::lout << "Timer Destroyed\n";
 		}
 
 		if (system::m_event_queue)
 		{
 			system::m_event_queue.reset();
-			std::cout << "Event Queue Destroyed\n";
+			wind::lout << "Event Queue Destroyed\n";
 		}
 
 		if (system::m_display)
 		{
 			system::m_display.reset();
-			std::cout << "Display Destroyed\n";
+			wind::lout << "Display Destroyed\n";
 		}
 
 		al::physfs_addon::shutdown();
 
-		std::cout << "Termination Phase Complete\n" << std::endl;
+		wind::lout << "Termination Phase Complete\n" << wind::endl;
+
+		lout.reset();
 	}
 
 	void system_t::loop()

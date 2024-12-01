@@ -23,6 +23,7 @@ export import :frame;
 export import :hex;
 export import :input;
 export import :json;
+export import :log;
 export import :map;
 export import :math;
 export import :matrix;
