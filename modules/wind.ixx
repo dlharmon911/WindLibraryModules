@@ -4,6 +4,7 @@ export module wind;
 
 export import allegro;
 
+export import :array;
 export import :base;
 export import :bitmap;
 export import :box;
@@ -24,6 +25,7 @@ export import :input;
 export import :json;
 export import :map;
 export import :math;
+export import :matrix;
 export import :memory;
 export import :ninepatch;
 export import :path;
@@ -32,7 +34,7 @@ export import :system;
 export import :tilemap;
 export import :tilesheet;
 export import :value;
-export import :vector;
+export import :vector3d;
 export import :word;
 
 namespace wind
@@ -40,7 +42,7 @@ namespace wind
 	export template <typename T> int32_t run(int32_t argc, char** argv)
 	{
 		int32_t rv = 0;
-		wind::vector_t<wind::string_t> args(argc);
+		wind::array_t<wind::string_t> args(argc);
 
 		for (int32_t i = 0; i < argc; ++i)
 		{

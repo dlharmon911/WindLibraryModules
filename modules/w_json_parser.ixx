@@ -18,9 +18,9 @@ namespace wind
 	namespace json_parser_t
 	{
 		export using token_t = json_token_t;
-		export using vector_t = std::vector<token_t>;
-		export using iterator_t = vector_t::iterator;
-		export using const_iterator_t = vector_t::const_iterator;
+		export using array_t = std::vector<token_t>;
+		export using iterator_t = array_t::iterator;
+		export using const_iterator_t = array_t::const_iterator;
 
 		namespace value
 		{
@@ -32,7 +32,7 @@ namespace wind
 			auto parse(json_t& json, iterator_t begin, iterator_t end) -> int32_t
 		{
 			int32_t rv = 0;
-			vector_t tokens;
+			array_t tokens;
 			size_t count = json_tokenizer_t<iterator_t>::tokenize(tokens, begin, end);
 
 			if (count)

@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Addon Files">
       <UniqueIdentifier>{34930e46-816a-41e6-9ee8-b6350139e7d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Partition Files">
+      <UniqueIdentifier>{c4cd3e90-372d-4c29-ab79-da5bd2e1b0f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AllegroLibraryModule\modules\allegro.ixx">
@@ -285,87 +288,6 @@
     <ClCompile Include="modules\w_tilesheet.ixx">
       <Filter>Module Files\Wind Module Files\Partition Files</Filter>
     </ClCompile>
-    <ClCompile Include="modules\w_vector.ixx">
-      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_config.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_console_font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_dson.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_file.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_hex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_json_error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_json_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_json_parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_json_tokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_map_camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_map_cell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_map_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_map_io.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_path.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_string.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_system.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_tilemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_tilemap_tile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\w_tilesheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="modules\addons\w_datafile_addon.ixx">
       <Filter>Module Files\Wind Module Files\Addon Files</Filter>
     </ClCompile>
@@ -396,11 +318,113 @@
     <ClCompile Include="modules\w_flag.ixx">
       <Filter>Module Files\Wind Module Files\Partition Files</Filter>
     </ClCompile>
+    <ClCompile Include="modules\w_vector3d.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_array.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_matrix.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_bitmap.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_config.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_console.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_console_font.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_dson.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_error.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_file.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_font.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_frame.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_hex.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_input.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_error.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_object.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_parser.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_json_tokenizer.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_camera.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_cell.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_draw.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_map_io.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\w_ninepatch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_path.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_string.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_system.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilemap.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilemap_tile.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_tilesheet.cpp">
+      <Filter>Source Files\Partition Files</Filter>
     </ClCompile>
     <ClCompile Include="src\w_value.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_vector3d.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_matrix.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\addons\w_datafile_addon_objects.cpp">
+      <Filter>Source Files\Addon Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\w_log.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log.cpp">
+      <Filter>Source Files\Partition Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

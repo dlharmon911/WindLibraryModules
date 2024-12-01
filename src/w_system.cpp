@@ -19,7 +19,7 @@ import :dialog;
 import :system;
 import :base;
 import :string;
-import :vector;
+import :array;
 
 namespace WIND
 {
@@ -38,7 +38,6 @@ namespace wind
 		int32_t m_display_flags{ ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE };
 		ALLEGRO::DISPLAY m_display{ nullptr };
 		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
-		ALLEGRO::BITMAP m_bitmap_buffer{ nullptr };
 
 		display::option_t null_display_option{ -1, 0 };
 
@@ -67,11 +66,6 @@ namespace wind
 		auto set_new_display_flags(int32_t flags) -> void
 		{
 			system::m_display_flags = flags;
-		}
-
-		auto get_bitmap_buffer() -> wind::add_const_reference<ALLEGRO::BITMAP>::type
-		{
-			return system::m_bitmap_buffer;
 		}
 
 		auto get_display() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type
@@ -171,7 +165,7 @@ namespace wind
 	{
 	}
 
-	int32_t system_t::run(wind::add_const_reference_t<vector_t<wind::string_t>> args)
+	int32_t system_t::run(wind::add_const_reference_t<array_t<wind::string_t>> args)
 	{
 		int32_t rv = 0;
 
@@ -187,7 +181,7 @@ namespace wind
 		return rv;
 	}
 
-	int32_t system_t::init(wind::add_const_reference_t<vector_t<wind::string_t>> args)
+	int32_t system_t::init(wind::add_const_reference_t<array_t<wind::string_t>> args)
 	{
 		std::cout << "Initialization Phase Begin" << "----------------------------------------\n";
 
@@ -243,16 +237,19 @@ namespace wind
 			std::cout << "pass\n";
 		}
 
-		std::cout << "Initializing PhysFS Addon: ";
-		if (!PHYSFS_init(args[0].c_str()))
+		if (!al::physfs_addon::is_initialized())
 		{
-			std::cout << "failed\n";
-			return -1;
+			std::cout << "Initializing PhysFS Addon: ";
+			if (!al::physfs_addon::init(args[0].c_str()))
+			{
+				std::cout << "failed\n";
+				return -1;
+			}
+			std::cout << "pass\n";
 		}
-		std::cout << "pass\n";
 
 #ifndef _DEBUG
-		// set the directory to the path of the exe
+		// set the directory to the path of the executable
 		ALLEGRO::PATH base_path = al::get_standard_path(ALLEGRO::RESOURCES_PATH);
 
 		if (base_path)
@@ -321,15 +318,6 @@ namespace wind
 			icon2.reset();
 		}
 
-		std::cout << "Creating Double Buffer Bitmap: ";
-		system::m_bitmap_buffer = al::create_bitmap(al::get_display_dimensions(system::m_display));
-		if (!system::m_bitmap_buffer)
-		{
-			std::cout << "failed\n";
-			return -1;
-		}
-		std::cout << "pass\n";
-
 		std::cout << "Creating Event Queue: ";
 		system::m_event_queue = al::create_event_queue();
 		if (!system::m_event_queue)
@@ -392,19 +380,13 @@ namespace wind
 			std::cout << "Event Queue Destroyed\n";
 		}
 
-		if (system::m_bitmap_buffer)
-		{
-			system::m_bitmap_buffer.reset();
-			std::cout << "Double Buffer Destroyed\n";
-		}
-
 		if (system::m_display)
 		{
 			system::m_display.reset();
 			std::cout << "Display Destroyed\n";
 		}
 
-		PHYSFS_deinit();
+		al::physfs_addon::shutdown();
 
 		std::cout << "Termination Phase Complete\n" << std::endl;
 	}
@@ -414,7 +396,6 @@ namespace wind
 		int32_t tick_count{ 0 };
 		double elapsed{ 0.0 };
 		double timepoint{ 0.0 };
-		ALLEGRO::BITMAP target{};
 		ALLEGRO::EVENT event{};
 
 		this->m_dialog->on_start();
@@ -666,17 +647,7 @@ namespace wind
 				break;
 			}
 
-			target = al::get_target_bitmap();
-			al::set_target_bitmap(system::m_bitmap_buffer);
-
 			system::dialog::render(this->m_dialog);
-
-			al::set_target_bitmap(target);
-
-			al::draw_scaled_bitmap(system::m_bitmap_buffer,
-				{ {0, 0}, al::get_bitmap_dimensions(system::m_bitmap_buffer) },
-				{ { 0, 0}, al::get_display_dimensions(system::m_display) });
-
 			al::flip_display();
 			al::rest(0.1);
 		}

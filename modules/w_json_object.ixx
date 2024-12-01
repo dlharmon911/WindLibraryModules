@@ -86,8 +86,8 @@ namespace wind
 	export class json_object_t
 	{
 	private:
-		using vector_t = std::unordered_map<json_key_t, json_t>;
-		using allocator_t = vector_t::allocator_type;
+		using array_t = std::unordered_map<json_key_t, json_t>;
+		using allocator_t = array_t::allocator_type;
 
 	public:
 		using element_type = json_t;
@@ -120,7 +120,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(vector_t::iterator it) : m_it(it) {}
+			iterator(array_t::iterator it) : m_it(it) {}
 			auto key() -> const json_key_t& { return this->m_it->first; }
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
@@ -131,7 +131,7 @@ namespace wind
 
 			friend class json_object_t;
 		private:
-			vector_t::iterator m_it;
+			array_t::iterator m_it;
 		};
 
 		class const_iterator
@@ -139,7 +139,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(vector_t::const_iterator it) : m_it(it) {}
+			const_iterator(array_t::const_iterator it) : m_it(it) {}
 
 			auto key() const -> const json_key_t& { return this->m_it->first; }
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
@@ -151,7 +151,7 @@ namespace wind
 
 			friend class json_object_t;
 		private:
-			vector_t::const_iterator m_it;
+			array_t::const_iterator m_it;
 		};
 
 		auto find(const json_key_t& key) -> iterator;
@@ -164,7 +164,7 @@ namespace wind
 
 	private:
 
-		vector_t m_data;
+		array_t m_data;
 	};
 
 	/****************************************************************************************************/
@@ -181,7 +181,7 @@ namespace wind
 		json_array_t();
 		explicit json_array_t(size_t n);
 		json_array_t(size_t n, const element_type& val);
-		template <class InputIterator> json_array_t(InputIterator first, InputIterator last) : m_data(vector_t(first, last)) {}
+		template <class InputIterator> json_array_t(InputIterator first, InputIterator last) : m_data(array_t(first, last)) {}
 		json_array_t(const json_array_t& array);
 		json_array_t(json_array_t& array);
 		json_array_t(std::initializer_list<element_type> il);

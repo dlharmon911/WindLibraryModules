@@ -1,4 +1,4 @@
-export module wind:vector;
+export module wind:array;
 
 import <memory>;
 import <cstdint>;
@@ -7,7 +7,7 @@ import :base;
 namespace wind
 {
 	export template <typename T>
-		class vector_t
+		class array_t
 	{
 	public:
 		using element_type = T;
@@ -16,9 +16,9 @@ namespace wind
 		using const_pointer_element_type = wind::add_const_pointer<element_type>::type;
 		using const_reference_element_type = wind::add_const_reference<element_type>::type;
 
-		vector_t() : m_data(nullptr), m_count(0) {}
+		array_t() : m_data(nullptr), m_count(0) {}
 
-		vector_t(std::initializer_list<element_type> l) : m_data(l.size() ? std::make_shared<element_type[]>(l.size()) : nullptr), m_count(this->m_data ? l.size() : 0)
+		array_t(std::initializer_list<element_type> l) : m_data(l.size() ? std::make_shared<element_type[]>(l.size()) : nullptr), m_count(this->m_data ? l.size() : 0)
 		{
 			size_t i = 0;
 			for (auto it = l.begin(); it != l.end(); ++it)
@@ -28,27 +28,27 @@ namespace wind
 			}
 		}
 
-		vector_t(size_t count) : m_data(std::make_shared<element_type[]>(count)), m_count(this->m_data ? count : 0) {}
+		array_t(size_t count) : m_data(std::make_shared<element_type[]>(count)), m_count(this->m_data ? count : 0) {}
 
-		vector_t(const vector_t<element_type>& vector) : m_data(vector.m_data), m_count(vector.m_count) {}
+		array_t(const array_t<element_type>& array) : m_data(array.m_data), m_count(array.m_count) {}
 
 		template <typename Q>
-		vector_t(const vector_t<Q>& vector) : m_data(vector.get_count() ? std::make_shared<element_type[]>(vector.get_count()) : nullptr), m_count(this->m_data ? vector.get_count() : 0)
+		array_t(const array_t<Q>& array) : m_data(array.get_count() ? std::make_shared<element_type[]>(array.get_count()) : nullptr), m_count(this->m_data ? array.get_count() : 0)
 		{
 			for (size_t i = 0; i < this->m_count; ++i)
 			{
-				this->operator[](i) = vector[i];
+				this->operator[](i) = array[i];
 			}
 		}
 
-		~vector_t() {}
+		~array_t() {}
 
 		auto clear() -> void
 		{
 			this->m_data.reset();
 		}
 
-		auto operator = (std::initializer_list<element_type> l) -> vector_t&
+		auto operator = (std::initializer_list<element_type> l) -> array_t&
 		{
 			if (l.size())
 			{
@@ -78,28 +78,28 @@ namespace wind
 			return *this;
 		}
 
-		auto operator = (const vector_t<T>& vector) -> vector_t&
+		auto operator = (const array_t<T>& array) -> array_t&
 		{
-			this->m_data = vector.m_data;
-			this->m_count = vector.m_count;
+			this->m_data = array.m_data;
+			this->m_count = array.m_count;
 			return *this;
 		}
 
 		template <typename Q>
-		auto operator = (const vector_t<Q>& vector) -> vector_t&
+		auto operator = (const array_t<Q>& array) -> array_t&
 		{
-			if (vector.m_data)
+			if (array.m_data)
 			{
-				this->m_data = std::make_shared<element_type[]>(vector.m_count);
+				this->m_data = std::make_shared<element_type[]>(array.m_count);
 
 				if (this->m_data)
 				{
 					for (size_t i = 0; i < this->m_count; ++i)
 					{
-						this->m_data.get()[i] = (element_type)vector.m_data.get()[i];
+						this->m_data.get()[i] = (element_type)array.m_data.get()[i];
 					}
 
-					this->m_count = vector.m_count;
+					this->m_count = array.m_count;
 				}
 				else
 				{
@@ -179,7 +179,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
+			iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset) {}
 
 			iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
 
@@ -370,42 +370,42 @@ namespace wind
 
 		auto begin() -> iterator
 		{
-			return iterator(this->m_data, 0);
+			return iterator(this->m_data, this->m_count, 0);
 		}
 
 		auto end() -> iterator
 		{
-			return iterator(this->m_data, this->m_count);
+			return iterator(this->m_data, this->m_count, this->m_count);
 		}
 
 		auto cbegin() const->const_iterator
 		{
-			return const_iterator(this->m_data, 0);
+			return const_iterator(this->m_data, this->m_count, 0);
 		}
 
 		auto cend() const->const_iterator
 		{
-			return const_iterator(this->m_data, this->m_count);
+			return const_iterator(this->m_data, this->m_count, this->m_count);
 		}
 
 		auto rbegin() -> reverse_iterator
 		{
-			return reverse_iterator(this->m_data, this->m_count - 1);
+			return reverse_iterator(this->m_data, this->m_count, this->m_count - 1);
 		}
 
 		auto rend() -> reverse_iterator
 		{
-			return reverse_iterator(this->m_data, -1);
+			return reverse_iterator(this->m_data, this->m_count, -1);
 		}
 
 		auto crbegin() const->const_reverse_iterator
 		{
-			return const_reverse_iterator(this->m_data, this->m_count - 1);
+			return const_reverse_iterator(this->m_data, this->m_count, this->m_count - 1);
 		}
 
 		auto crend() const->const_reverse_iterator
 		{
-			return const_reverse_iterator(this->m_data, -1);
+			return const_reverse_iterator(this->m_data, this->m_count, -1);
 		}
 
 	private:

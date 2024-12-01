@@ -5,7 +5,7 @@ import <memory>;
 import std;
 import allegro;
 import :base;
-import :vector;
+import :array;
 import :string;
 import :dialog.base;
 

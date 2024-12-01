@@ -51,7 +51,7 @@ namespace wind
 		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 	private:
-		using vector_t = std::vector<std::shared_ptr<void>>;
+		using array_t = std::vector<std::shared_ptr<void>>;
 
 	public:
 		using object_info_t = std::pair<int32_t, string_t>;
@@ -95,7 +95,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(vector_t::iterator o, std::vector<object_info_t>::iterator e) : m_o(o), m_e(e) {}
+			iterator(array_t::iterator o, std::vector<object_info_t>::iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
 			reference_element_type data() { return *this->m_o; }
@@ -108,7 +108,7 @@ namespace wind
 			pointer_element_type operator &() { return &(*this->m_o); }
 
 		private:
-			vector_t::iterator m_o;
+			array_t::iterator m_o;
 			std::vector<object_info_t>::iterator m_e;
 		};
 
@@ -117,7 +117,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(vector_t::const_iterator o, std::vector<object_info_t>::const_iterator e) : m_o(o), m_e(e) {}
+			const_iterator(array_t::const_iterator o, std::vector<object_info_t>::const_iterator e) : m_o(o), m_e(e) {}
 			int32_t type() const { return this->m_e->first; }
 			string_t name() const { return this->m_e->second; }
 			const_reference_element_type data() const { return *this->m_o; }
@@ -130,7 +130,7 @@ namespace wind
 			const_pointer_element_type operator &() const { return &(*this->m_o); }
 
 		private:
-			vector_t::const_iterator m_o;
+			array_t::const_iterator m_o;
 			std::vector<object_info_t>::const_iterator m_e;
 		};
 
@@ -140,7 +140,7 @@ namespace wind
 		const_iterator cend();
 
 	private:
-		vector_t m_object_data;
+		array_t m_object_data;
 		std::vector<object_info_t> m_element_data;
 	};
 

@@ -6,7 +6,7 @@ import <memory>;
 import allegro;
 import :base;
 import :string;
-import :vector;
+import :array;
 import :dialog.widget;
 import :dialog.base;
 
@@ -21,7 +21,7 @@ namespace wind
 		virtual auto get_version() const->int32_t = 0;
 		virtual auto get_title() const->wind::add_const_reference_t<wind::string_t> = 0;
 
-		virtual auto on_initialize(wind::add_const_reference_t<vector_t<wind::string_t>> args) -> int32_t = 0;
+		virtual auto on_initialize(const wind::array_t<wind::string_t>& args) -> int32_t = 0;
 		virtual auto on_shutdown() -> int32_t = 0;
 		virtual auto on_start() -> int32_t = 0;
 		virtual auto on_stop() -> int32_t = 0;

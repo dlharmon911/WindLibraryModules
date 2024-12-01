@@ -9,7 +9,7 @@ import allegro;
 import :dialog;
 import :base;
 import :string;
-import :vector;
+import :array;
 
 namespace WIND
 {
@@ -29,10 +29,10 @@ namespace wind
 	public:
 		system_t(wind::add_const_reference_t<std::shared_ptr<dialog_t>> dialog);
 		~system_t();
-		auto run(wind::add_const_reference_t<vector_t<wind::string_t>> args) -> int32_t;
+		auto run(wind::add_const_reference_t<array_t<wind::string_t>> args) -> int32_t;
 
 	private:
-		auto init(wind::add_const_reference_t<vector_t<wind::string_t>> args) -> int32_t;
+		auto init(wind::add_const_reference_t<array_t<wind::string_t>> args) -> int32_t;
 		auto shutdown() -> void;
 		auto loop() -> void;
 
@@ -57,7 +57,6 @@ namespace wind
 		export auto set_new_display_option(int32_t id, const display::option_t& option) -> void;
 		export auto get_new_display_flags() -> int32_t;
 		export auto set_new_display_flags(int32_t flags) -> void;
-		export auto get_bitmap_buffer() -> wind::add_const_reference<ALLEGRO::BITMAP>::type;
 		export auto get_display() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type;
 		export auto get_event_queue() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type;
 		export auto timestamp() -> wind::string_t;

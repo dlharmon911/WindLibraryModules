@@ -2,7 +2,7 @@ module wind;
 
 import <cstdarg>;
 import <cstdint>;
-import <vector>;
+import <array>;
 import <memory>;
 import allegro;
 import allegro.font_addon;
@@ -14,7 +14,7 @@ import :string;
 import :bitmap;
 import :file;
 import :color;
-import :vector;
+import :array;
 
 namespace WIND
 {
@@ -33,7 +33,7 @@ namespace wind
 			size_t m_start{ 0 };
 			size_t m_count{ 0 };
 			ALLEGRO::BITMAP m_bitmap{};
-			vector_t<ALLEGRO::BITMAP> m_glyphs{};
+			array_t<ALLEGRO::BITMAP> m_glyphs{};
 		};
 
 		using glyph_data_t = std::array<uint8_t, WIND::CONSOLE::FONT_GLYPH_SIZE>;
@@ -318,7 +318,7 @@ namespace wind
 				return -1;
 			}
 
-			font->m_glyphs = vector_t<ALLEGRO::BITMAP>(count);
+			font->m_glyphs = array_t<ALLEGRO::BITMAP>(count);
 
 			size_t index = 0;
 
