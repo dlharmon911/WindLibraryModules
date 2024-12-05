@@ -66,7 +66,7 @@ namespace wind
 		std::shared_ptr<log::data_t> m_data{};
 	};
 
-	auto endl(log_t& log)->log_t&;
+	export auto endl(log_t& log)->log_t&;
 
 	export extern log_t lout;
 }

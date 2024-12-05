@@ -20,6 +20,7 @@ import :system;
 import :base;
 import :string;
 import :array;
+import :log;
 
 namespace WIND
 {
@@ -178,9 +179,9 @@ namespace wind
 
 		lout.open("logs\\output.txt");
 
-		lout << "---------------------------------------\n" <<
+		lout << "----------------------------------------\n" <<
 			" Log opened: " << wind::system::timestamp() << "\n" <<
-			"---------------------------------------" << wind::endl;
+			"----------------------------------------" << wind::endl;
 
 		if (this->m_dialog)
 		{
@@ -192,7 +193,7 @@ namespace wind
 			this->shutdown();
 		}
 
-		lout << "\n---------------------------------------\n" <<
+		lout << "---------------------------------------\n" <<
 			" Log closed: " << wind::system::timestamp() << "\n" <<
 			"---------------------------------------" << wind::endl;
 		lout.reset();
@@ -366,14 +367,16 @@ namespace wind
 			wind::lout << "Initialization failed\n";
 			return -1;
 		}
-		wind::lout << "Dialog initialized\n----------------------------------------\n" << "Initialization Phase Complete\n" << wind::endl;
+		wind::lout << "Dialog initialized\n----------------------------------------\n" << 
+					"Initialization Phase Complete\n----------------------------------------" << wind::endl;
 
 		return 0;
 	}
 
 	void system_t::shutdown()
 	{
-		wind::lout << wind::endl << "Termination Phase Begin\n";
+		wind::lout << wind::endl << "----------------------------------------\n" << 
+			"Termination Phase Begin\n----------------------------------------\n";
 
 		wind::lout << "Terminating Dialog: \n";
 		this->m_dialog->on_shutdown();
@@ -400,9 +403,7 @@ namespace wind
 
 		al::physfs_addon::shutdown();
 
-		wind::lout << "Termination Phase Complete\n" << wind::endl;
-
-		lout.reset();
+		wind::lout << "----------------------------------------\nTermination Phase Complete\n";
 	}
 
 	void system_t::loop()
