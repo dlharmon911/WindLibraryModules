@@ -147,7 +147,7 @@ namespace wind
 	namespace datafile
 	{
 		export constexpr int32_t shortcut_prefix = '$';
-		export bool generate_header_file(const string_t& manifest_filename, const string_t& header_filename, int32_t type = WIND::DATAFILE::OUTPUT_TYPE::HEADER, const char sListSep = ',');
+		export bool generate_header_file(const string_t& manifest_filename, const string_t& output_filename, int32_t type = WIND::DATAFILE::OUTPUT_TYPE::HEADER, const char sListSep = ',');
 		export datafile_t load(const string_t& filename, const char sListSep = ',');
 
 		namespace parser

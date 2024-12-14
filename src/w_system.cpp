@@ -356,7 +356,7 @@ namespace wind
 
 		const auto now = std::chrono::system_clock::now();
 		const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
-		srand(t_c);
+		wind::random::set_seed((uint32_t)t_c);
 
 		this->m_time_info.m_elapsed = 0.0;
 		this->m_time_info.m_last_updated = al::get_time();

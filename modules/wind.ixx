@@ -30,6 +30,7 @@ export import :matrix;
 export import :memory;
 export import :ninepatch;
 export import :path;
+export import :random;
 export import :string;
 export import :system;
 export import :tilemap;

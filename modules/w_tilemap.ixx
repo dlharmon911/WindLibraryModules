@@ -83,8 +83,8 @@ namespace wind
 
 		auto begin() -> iterator;
 		auto end() -> iterator;
-		auto cbegin() const-> const_iterator;
-		auto cend() const-> const_iterator;
+		auto cbegin() const->const_iterator;
+		auto cend() const->const_iterator;
 
 	private:
 		vector_type m_sheets;

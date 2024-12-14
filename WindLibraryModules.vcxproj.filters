@@ -426,6 +426,12 @@
     <ClCompile Include="src\w_log.cpp">
       <Filter>Source Files\Partition Files</Filter>
     </ClCompile>
+    <ClCompile Include="modules\w_random.ixx">
+      <Filter>Module Files\Wind Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\w_random.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

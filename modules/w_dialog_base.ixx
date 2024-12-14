@@ -7,6 +7,7 @@ import allegro;
 import :base;
 import :array;
 import :string;
+import :math;
 
 namespace WIND
 {
@@ -14,9 +15,9 @@ namespace WIND
 	{
 		export namespace STATUS_FLAGS
 		{
-			constexpr int32_t ENABLED = wind::power_2(0);
-			constexpr int32_t VISIBLE = wind::power_2(1);
-			constexpr int32_t GRABBABLE = wind::power_2(2);
+			constexpr int32_t ENABLED = wind::math::power_2(0);
+			constexpr int32_t VISIBLE = wind::math::power_2(1);
+			constexpr int32_t GRABBABLE = wind::math::power_2(2);
 		}
 	}
 }

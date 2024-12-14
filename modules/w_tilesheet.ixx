@@ -108,8 +108,8 @@ namespace wind
 		auto cend() const->const_iterator;
 		auto rbegin() -> reverse_iterator;
 		auto rend() -> reverse_iterator;
-		auto crbegin() const -> const_reverse_iterator;
-		auto crend() const -> const_reverse_iterator;
+		auto crbegin() const->const_reverse_iterator;
+		auto crend() const->const_reverse_iterator;
 
 	private:
 		std::vector<element_type> m_bitmaps{};

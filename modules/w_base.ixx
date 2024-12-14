@@ -22,9 +22,4 @@ namespace wind
 	export template<typename T> using add_const_pointer_t = typename add_const_pointer<T>::type;
 	export template<typename T> using add_const_reference_t = typename add_const_reference<T>::type;
 	export template<typename T> using add_const_t = typename add_const<T>::type;
-
-	export constexpr int32_t power_2(int32_t value)
-	{
-		return (1 << value);
-	}
 }

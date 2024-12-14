@@ -48,7 +48,7 @@ namespace wind
 		auto translate(const float xfactor = 1.0, const float yfactor = 1.0, const float zfactor = 1.0) -> matrix_t&;
 		auto rotate(const float xfactor = 0.0, const float yfactor = 0.0, const float zfactor = 0.0) const->matrix_t;
 		auto scale(const float xfactor = 1.0, const float yfactor = 1.0, const float zfactor = 1.0) const->matrix_t;
-		auto translate(const float xfactor = 1.0, const float yfactor = 1.0, const float zfactor = 1.0) const -> matrix_t;
+		auto translate(const float xfactor = 1.0, const float yfactor = 1.0, const float zfactor = 1.0) const->matrix_t;
 		auto is_identity() const -> bool;
 		auto is_square() const -> bool;
 

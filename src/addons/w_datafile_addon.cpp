@@ -564,9 +564,16 @@ namespace wind
 				return false;
 			}
 
-			string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index)
+			string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index, int32_t output_type)
 			{
-				string_t out = "\tconstexpr auto " + string::fuse(header, '_') + " = " + std::to_string(index) + ';';
+				string_t export_s{ "" };
+
+				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
+				{
+					export_s = "export ";
+				}
+
+				string_t out = "\t" + export_s  + "constexpr auto " + string::fuse(header, '_') + " = " + std::to_string(index) + ';';
 				while (out.size() < 56) out.push_back(' ');
 				out.append("/* ");
 				out.append(string::to_upper(type_name));
@@ -613,7 +620,7 @@ namespace wind
 					}
 
 					header.push_back(key);
-					entry = write_header_object(pfile, node, header, key, node_type.get_content(), index);
+					entry = write_header_object(pfile, node, header, key, node_type.get_content(), index, output_type);
 					header.pop_back();
 
 					pfile << entry;
@@ -631,7 +638,15 @@ namespace wind
 				}
 
 				header.push_back("count");
-				pfile << "\tconstexpr auto " << string::fuse(header, '_') + " = " << std::to_string(index) << ";\n";
+
+				pfile << "\t";
+
+				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
+				{
+					pfile << "export ";
+				}
+
+				pfile << "constexpr auto " << string::fuse(header, '_') + " = " << std::to_string(index) << "; \n";
 				header.pop_back();
 
 				return true;
@@ -660,40 +675,24 @@ namespace wind
 					<< "/* Index File: "
 					<< input_text_filename
 					<< " */\n"
-					<< "/* Date: "
+					<< "/* Date:"
 					<< system::timestamp()
 					<< " */ \n"
 					<< "/* Do not hand edit! */\n\n";
 
 				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
 				{
-					pfile << "export module " << string::to_lower(prefix) << ";\n\n"
-
-						<< "export namespace " << string::to_upper(prefix) << "\n"
-						<< "{\n";
+					pfile << "export module " << string::to_lower(prefix) << ";\n\n";
 				}
 
-				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::HEADER)
-				{
-					header.push_back(prefix);
-				}
+				pfile << "namespace " << string::to_upper(prefix) << "\n{\n";
 
 				if (!write_header_datafile(pfile, dson, header, output_type))
 				{
 					return false;
 				}
 
-				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
-				{
-					pfile << "}";
-				}
-
-				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::HEADER)
-				{
-					header.pop_back();
-				}
-
-				pfile << "\n\n";
+				pfile << "}\n";
 
 				return true;
 			}

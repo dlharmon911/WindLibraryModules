@@ -36,6 +36,11 @@ namespace wind
 {
 	namespace math
 	{
+		export inline constexpr int32_t power_2(int32_t value)
+		{
+			return (1 << value);
+		}
+
 		export template <typename T> inline auto sin(const T& a) -> T { return std::sin(a); }
 		export template <typename T> inline auto cos(const T& a) -> T { return std::cos(a); }
 		export template <typename T> inline auto tan(const T& a) -> T { return std::tan(a); }
@@ -52,7 +57,7 @@ namespace wind
 		export template <typename T> inline auto ceil(const T& a) -> T { return std::ceil(a); }
 		export template <typename T> inline auto floor(const T& a) -> T { return std::floor(a); }
 		export template <typename T> inline auto abs(const T& a) -> T { return std::abs(a); }
-			
+
 		export template <typename T> inline auto to_radians(const T& angle) -> T
 		{
 			return (angle * WIND::MATH::CONSTANT_DEGTORAD);

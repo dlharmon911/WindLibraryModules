@@ -206,8 +206,8 @@ namespace wind
 
 		auto begin() -> iterator;
 		auto end() -> iterator;
-		auto cbegin() const -> map_t::const_iterator;
-		auto cend() const -> map_t::const_iterator;
+		auto cbegin() const->map_t::const_iterator;
+		auto cend() const->map_t::const_iterator;
 
 	private:
 		shared_type m_data;

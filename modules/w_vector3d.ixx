@@ -28,21 +28,21 @@ namespace wind
 		explicit vector3d_t(const std::array<float, WIND::VECTOR3D::INDEX::COUNT>& rhs);
 		vector3d_t(const vector3d_t& vector);
 		~vector3d_t();
-		
+
 		auto operator+(const vector3d_t& rhs) const->vector3d_t;
 		auto operator-(const vector3d_t& rhs) const->vector3d_t;
 		auto operator*(const float factor) const->vector3d_t;
 		auto operator/(const float factor) const->vector3d_t;
-		
+
 		auto operator-() const->vector3d_t;
-		
+
 		auto operator+=(const vector3d_t& rhs)->vector3d_t&;
 		auto operator-=(const vector3d_t& rhs)->vector3d_t&;
 		auto operator*=(const float factor)->vector3d_t&;
 		auto operator/=(const float factor)->vector3d_t&;
 
 		auto operator=(const vector3d_t& rhs)->vector3d_t&;
-		
+
 		auto operator==(const vector3d_t& rhs) const -> bool;
 		auto operator!=(const vector3d_t& rhs) const -> bool;
 		auto dot_product(const vector3d_t& rhs) const -> float;

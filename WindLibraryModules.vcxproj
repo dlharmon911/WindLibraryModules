@@ -263,6 +263,7 @@
     <ClCompile Include="modules\w_memory.ixx" />
     <ClCompile Include="modules\w_ninepatch.ixx" />
     <ClCompile Include="modules\w_path.ixx" />
+    <ClCompile Include="modules\w_random.ixx" />
     <ClCompile Include="modules\w_string.ixx" />
     <ClCompile Include="modules\w_system.ixx" />
     <ClCompile Include="modules\w_tilemap.ixx" />
@@ -296,6 +297,7 @@
     <ClCompile Include="src\w_matrix.cpp" />
     <ClCompile Include="src\w_ninepatch.cpp" />
     <ClCompile Include="src\w_path.cpp" />
+    <ClCompile Include="src\w_random.cpp" />
     <ClCompile Include="src\w_string.cpp" />
     <ClCompile Include="src\w_system.cpp" />
     <ClCompile Include="src\w_tilemap.cpp" />

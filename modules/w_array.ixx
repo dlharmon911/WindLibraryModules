@@ -412,4 +412,14 @@ namespace wind
 		std::shared_ptr<element_type[]> m_data{};
 		size_t m_count{ 0 };
 	};
+
+	namespace array
+	{
+		export template <typename T> auto swap(array_t<T>& array, size_t index_a, size_t index_b) -> void
+		{
+			T c = array[index_a];
+			array[index_a] = array[index_b];
+			array[index_b] = c;
+		}
+	}
 }
