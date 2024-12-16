@@ -564,7 +564,7 @@ namespace wind
 				return false;
 			}
 
-			string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index, int32_t output_type)
+			string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index, int32_t output_type, int32_t& tab_level)
 			{
 				string_t export_s{ "" };
 
@@ -573,7 +573,14 @@ namespace wind
 					export_s = "export ";
 				}
 
-				string_t out = "\t" + export_s  + "constexpr auto " + string::fuse(header, '_') + " = " + std::to_string(index) + ';';
+				string_t out;
+				
+				for (int32_t i = 0; i < tab_level; ++i)
+				{
+					out.push_back('\t');
+				}
+				
+				out += export_s + "constexpr auto " + string::fuse(header, '_') + " = " + std::to_string(index) + ';';
 				while (out.size() < 56) out.push_back(' ');
 				out.append("/* ");
 				out.append(string::to_upper(type_name));
@@ -582,7 +589,7 @@ namespace wind
 				return out;
 			}
 
-			bool write_header_datafile(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, int32_t output_type)
+			bool write_header_datafile(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, int32_t output_type, int32_t& tab_level)
 			{
 				size_t index = 0;
 
@@ -620,18 +627,40 @@ namespace wind
 					}
 
 					header.push_back(key);
-					entry = write_header_object(pfile, node, header, key, node_type.get_content(), index, output_type);
+					entry = write_header_object(pfile, node, header, key, node_type.get_content(), index, output_type, tab_level);
 					header.pop_back();
 
 					pfile << entry;
+					entry.clear();
 					pfile << "\n";
 
 					if (type == WIND::DATAFILE::OBJECT::TYPE_DATAFILE)
 					{
-						if (!write_header_datafile(pfile, dson, header, type))
+						if (!node.contains("objects"))
+						{
+							wind::lout << "ERROR: No objects\n";
+							wind::error::push("Missing \"objects\" attribute", __FILE__, __LINE__, __FUNCTION__);
+							return false;
+						}
+
+						const dson_t& node_objects = node.get_child("objects");
+
+						if (!node_objects.has_children())
+						{
+							wind::lout << "ERROR: No children\n";
+							wind::error::push("Empty \"objects\" attribute", __FILE__, __LINE__, __FUNCTION__);
+							return false;
+						}
+
+
+						wind::lout << "*********** ERROR: N/A **********\n";
+
+						header.push_back(key);
+						if (!write_header_datafile(pfile, node_objects, header, output_type, tab_level))
 						{
 							return false;
 						}
+						header.pop_back();
 					}
 
 					++index;
@@ -639,7 +668,10 @@ namespace wind
 
 				header.push_back("count");
 
-				pfile << "\t";
+				for (int32_t i = 0; i < tab_level; ++i)
+				{
+					pfile << "\t";
+				}
 
 				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
 				{
@@ -658,12 +690,19 @@ namespace wind
 				int32_t n = 0;
 				string_t output = path::make_canonical(output_filename);
 				ALLEGRO::FILE pfile{ al::fopen(output.c_str(), "wb") };
+				string_t owner = "game";
 				string_t prefix = "datafile";
+				int32_t tab_level = 2;
 
 				if (!pfile)
 				{
 					wind::error::push(string::to_string("Could not open file: \"%s\"", output.c_str()), __FILE__, __LINE__, __FUNCTION__);
 					return false;
+				}
+
+				if (dson.contains("$owner"))
+				{
+					owner = dson.get_child("$owner").get_content();
 				}
 
 				if (dson.contains("$prefix"))
@@ -682,17 +721,18 @@ namespace wind
 
 				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
 				{
-					pfile << "export module " << string::to_lower(prefix) << ";\n\n";
+					pfile << "export module " << string::to_lower(owner)<< ":" << string::to_lower(prefix) << ";\n\n";
 				}
 
-				pfile << "namespace " << string::to_upper(prefix) << "\n{\n";
+				pfile << "namespace " << string::to_upper(owner) << "\n{\n";
+				pfile << "\tnamespace " << string::to_upper(prefix) << "\n\t{\n";
 
-				if (!write_header_datafile(pfile, dson, header, output_type))
+				if (!write_header_datafile(pfile, dson, header, output_type, tab_level))
 				{
 					return false;
 				}
 
-				pfile << "}\n";
+				pfile << "\t}\n}\n";
 
 				return true;
 			}
@@ -875,6 +915,11 @@ namespace wind
 						}
 
 						object::parser_func_t func = object::get_info()[child.m_type].second;
+
+						if (child.m_type == WIND::DATAFILE::OBJECT::TYPE_DATAFILE)
+						{
+							node = node.get_child("objects");
+						}
 
 						if (!func(node, child))
 						{

@@ -22,4 +22,9 @@ namespace wind
 	{
 		return std::shared_ptr<void>((void*)object, Deleter);
 	}
+
+	export template<typename Type>
+		auto null_deleter(Type* object) -> void
+	{
+	}
 }

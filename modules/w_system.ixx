@@ -11,19 +11,8 @@ import :base;
 import :string;
 import :array;
 
-namespace WIND
-{
-	static constexpr double TICK_RATE = 0.001;
-}
-
 namespace wind
 {
-	export using time_info_t = struct time_info_tag_t
-	{
-		double m_elapsed{ 0.0 };
-		double m_last_updated{ 0.0 };
-	};
-
 	export class system_t
 	{
 	public:
@@ -38,7 +27,6 @@ namespace wind
 
 		std::shared_ptr<dialog_t> m_dialog{};
 		ALLEGRO::TIMER m_timer{ nullptr };
-		time_info_t m_time_info{ 0.0, 0.0 };
 		bool m_kill{ false };
 	};
 

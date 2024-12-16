@@ -232,7 +232,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
+			const_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset) {}
 
 			const_iterator(const const_iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
 

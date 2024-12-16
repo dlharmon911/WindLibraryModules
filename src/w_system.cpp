@@ -27,7 +27,6 @@ namespace WIND
 	static constexpr float DISPLAY_SCALE = 1.25f;
 	static constexpr ALLEGRO::SIZE<float> DISPLAY_SIZE = { 800.0f, 600.0f };
 	static constexpr double LOGIC_TIMING = 60.0;
-	static constexpr double TICK_SIZE = 0.02;
 	static constexpr uint32_t BACKGROUND_DEFAULT = 0x101030;
 }
 
@@ -159,7 +158,6 @@ namespace wind
 	system_t::system_t(wind::add_const_reference_t<std::shared_ptr<dialog_t>> dialog) :
 		m_dialog(dialog),
 		m_timer(),
-		m_time_info({ 0.0, 0.0 }),
 		m_kill(false)
 	{
 	}
@@ -311,7 +309,7 @@ namespace wind
 			return -1;
 		}
 		wind::lout << "pass\n";
-		al::clear_to_color(wind::map_rgb_i(0xffffff));
+		al::clear_to_color(wind::map_rgb_i(0x00000));
 
 #ifdef _MSC_VER
 		HICON icon1 = LoadIcon(GetModuleHandle(NULL), L"IDI_ICON1");
@@ -357,9 +355,6 @@ namespace wind
 		const auto now = std::chrono::system_clock::now();
 		const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
 		wind::random::set_seed((uint32_t)t_c);
-
-		this->m_time_info.m_elapsed = 0.0;
-		this->m_time_info.m_last_updated = al::get_time();
 
 		wind::lout << "Initializing Dialog: \n";
 		if (this->m_dialog->on_initialize(args) < 0)
@@ -470,7 +465,7 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_KEY_UP:
 				{
-					wind::set_keyboard_released(event.keyboard.keycode);
+					wind::input::keyboard::set_released(event.keyboard.keycode);
 
 					if (this->m_dialog->on_key_up(event))
 					{
@@ -482,7 +477,7 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_KEY_DOWN:
 				{
-					wind::set_keyboard_pressed(event.keyboard.keycode);
+					wind::input::keyboard::set_pressed(event.keyboard.keycode);
 
 					if (this->m_dialog->on_key_down(event))
 					{
@@ -504,8 +499,8 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_AXES:
 				{
-					wind::set_mouse_position({ event.mouse.x, event.mouse.y });
-					wind::set_mouse_wheel({ event.mouse.w, event.mouse.z });
+					wind::input::mouse::set_position({ event.mouse.x, event.mouse.y });
+					wind::input::mouse::set_wheel({ event.mouse.w, event.mouse.z });
 
 					if (this->m_dialog->on_mouse_axes(event))
 					{
@@ -517,7 +512,7 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_DOWN:
 				{
-					wind::set_mouse_pressed(event.mouse.button);
+					wind::input::mouse::set_pressed(event.mouse.button);
 
 					if (this->m_dialog->on_mouse_button_down(event))
 					{
@@ -529,7 +524,7 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_UP:
 				{
-					wind::set_mouse_released(event.mouse.button);
+					wind::input::mouse::set_released(event.mouse.button);
 
 					if (this->m_dialog->on_mouse_button_up(event))
 					{
@@ -571,12 +566,7 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_TIMER:
 				{
-					double current = al::get_time();
-					elapsed += current - timepoint;
-					timepoint = current;
-
-					tick_count += static_cast<int32_t>(elapsed / WIND::TICK_SIZE);
-					elapsed -= static_cast<float>(tick_count * WIND::TICK_SIZE);
+					++tick_count;
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_RESIZE:
