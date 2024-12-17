@@ -15,36 +15,43 @@ namespace wind
 		{
 			ALLEGRO::POINT<int32_t> m_position;
 			ALLEGRO::POINT<int32_t> m_wheel;
-			button_state_t m_state[WIND::MOUSE_BUTTON_COUNT];
+			button_state_t m_state[WIND::MOUSE::BUTTON_COUNT];
 
 			auto is_pressed(int32_t index) -> bool
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				return m_state[index].m_is_pressed;
 			}
 
 			auto was_pressed(int32_t index) -> bool
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				return m_state[index].m_was_pressed;
 			}
 
 			auto set_pressed(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				m_state[index].m_is_pressed = true;
 				m_state[index].m_was_pressed = true;
 			}
 
+			auto was_released(int32_t index) -> bool
+			{
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
+				return m_state[index].m_was_released;
+			}
+
 			auto set_released(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				m_state[index].m_is_pressed = false;
+				m_state[index].m_was_released = true;
 			}
 
 			auto get_state(int32_t index) -> const button_state_t&
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				return m_state[index];
 			}
 
@@ -70,63 +77,74 @@ namespace wind
 
 			auto acknowledge(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				m_state[index].m_was_pressed = false;
+				m_state[index].m_was_released = false;
 			}
 		}
 
 		namespace keyboard
 		{
-			button_state_t m_state[WIND::KEYBOARD_BUTTON_COUNT];
+			button_state_t m_state[WIND::KEYBOARD::BUTTON_COUNT];
 
 			auto is_pressed(int32_t index) -> bool
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				return m_state[index].m_is_pressed;
 			}
 			
 			auto was_pressed(int32_t index) -> bool
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				return m_state[index].m_was_pressed;
 			}
 
 			auto set_pressed(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				m_state[index].m_is_pressed = true;
 				m_state[index].m_was_pressed = true;
 			}
 
+			auto was_released(int32_t index) -> bool
+			{
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
+				return m_state[index].m_was_released;
+			}
+
 			auto set_released(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				m_state[index].m_is_pressed = false;
+				m_state[index].m_was_released = true;
 			}
 
 			auto get_state(int32_t index) -> const button_state_t&
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				return m_state[index];
 			}
 
 			auto acknowledge(int32_t index) -> void
 			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD_BUTTON_COUNT);
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				m_state[index].m_was_pressed = false;
+				m_state[index].m_was_released = false;
 			}
 		}
 
 		auto acknowledge() -> void
 		{
-			for (int32_t i = 0; i < WIND::MOUSE_BUTTON_COUNT; ++i)
+			for (int32_t index = 0; index < WIND::MOUSE::BUTTON_COUNT; ++index)
 			{
-				mouse::m_state[i].m_was_pressed = false;
+				mouse::m_state[index].m_was_pressed = false;
+				mouse::m_state[index].m_was_released = false;
 			}
 
-			for (int32_t i = 0; i < WIND::KEYBOARD_BUTTON_COUNT; ++i)
+			for (int32_t index = 0; index < WIND::KEYBOARD::BUTTON_COUNT; ++index)
 			{
-				keyboard::m_state[i].m_was_pressed = false;
+				keyboard::m_state[index].m_was_pressed = false;
+				keyboard::m_state[index].m_was_released = false;
 			}
 		}
 
