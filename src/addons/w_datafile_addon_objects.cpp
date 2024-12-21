@@ -105,23 +105,21 @@ namespace wind
 
 				data.find_data("truetype", truetype, false);
 
-				if (!data.find_data("flags", flag_string))
+				if (data.find_data("flags", flag_string))
 				{
-					return false;
-				}
+					sz = string::separate(flag_string, flag_vector, '|');
 
-				sz = string::separate(flag_string, flag_vector, '|');
-
-				for (auto a : flag_vector)
-				{
-					if (truetype)
+					for (auto a : flag_vector)
 					{
-						if (a == "no_kerning") flags |= ALLEGRO::FLAG_TTF_NO_KERNING;
-						if (a == "monochrome") flags |= ALLEGRO::FLAG_TTF_MONOCHROME;
-					}
-					else
-					{
-						if (a == "no_premultified_alpha") flags |= ALLEGRO::FLAG_NO_PREMULTIPLIED_ALPHA;
+						if (truetype)
+						{
+							if (a == "no_kerning") flags |= ALLEGRO::FLAG_TTF_NO_KERNING;
+							if (a == "monochrome") flags |= ALLEGRO::FLAG_TTF_MONOCHROME;
+						}
+						else
+						{
+							if (a == "no_premultified_alpha") flags |= ALLEGRO::FLAG_NO_PREMULTIPLIED_ALPHA;
+						}
 					}
 				}
 

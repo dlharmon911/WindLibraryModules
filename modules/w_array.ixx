@@ -158,7 +158,7 @@ namespace wind
 		{
 			if (this->m_data)
 			{
-				return (pointer_element_type)this->m_data.get()->m_data;
+				return (pointer_element_type)this->m_data.get();
 			}
 
 			return nullptr;
@@ -168,7 +168,7 @@ namespace wind
 		{
 			if (this->m_data)
 			{
-				return (const_pointer_element_type)this->m_data.get()->m_data;
+				return (const_pointer_element_type)this->m_data.get();
 			}
 
 			return nullptr;

@@ -36,48 +36,74 @@ namespace wind
 
 	namespace system
 	{
-		std::map<int32_t, display::option_t> m_display_options{};
-		int32_t m_display_flags{ ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE };
-		ALLEGRO::DISPLAY m_display{ nullptr };
-		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
-
-		display::option_t null_display_option{ -1, 0 };
-
-		auto get_new_display_option(int32_t id) -> display::option_t&
+		namespace timer
 		{
-			auto i = m_display_options.find(id);
+			int32_t m_tick_count{ 0 };
+			bool m_paused{ false };
 
-			if (i == m_display_options.end())
+			auto pause() -> void
 			{
-				return null_display_option;
+				m_paused = true;
 			}
 
-			return m_display_options[id];
+			auto unpause() -> void
+			{
+				m_paused = false;
+			}
+
+			auto reset() -> void
+			{
+				m_tick_count = 0;
+			}
 		}
 
-		auto set_new_display_option(int32_t id, const display::option_t& option) -> void
+		ALLEGRO::DISPLAY m_display{ nullptr };
+		namespace display
 		{
-			m_display_options[id] = { option.m_value, option.m_importance };
+			std::map<int32_t, display::option_t> m_options{};
+			int32_t m_flags{ ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE };
+			display::option_t m_null_option{ -1, 0 };
+
+			auto get_new_option(int32_t id) -> display::option_t&
+			{
+				auto i = m_options.find(id);
+
+				if (i == m_options.end())
+				{
+					return m_null_option;
+				}
+
+				return m_options[id];
+			}
+
+			auto set_new_option(int32_t id, const display::option_t& option) -> void
+			{
+				m_options[id] = { option.m_value, option.m_importance };
+			}
+
+			auto get_new_flags() -> int32_t
+			{
+				return m_flags;
+			}
+
+			auto set_new_flags(int32_t flags) -> void
+			{
+				m_flags = flags;
+			}
+
+			auto get() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type
+			{
+				return m_display;
+			}
 		}
 
-		auto get_new_display_flags() -> int32_t
+		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
+		namespace event_queue
 		{
-			return system::m_display_flags;
-		}
-
-		auto set_new_display_flags(int32_t flags) -> void
-		{
-			system::m_display_flags = flags;
-		}
-
-		auto get_display() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type
-		{
-			return system::m_display;
-		}
-
-		auto get_event_queue() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type
-		{
-			return system::m_event_queue;
+			auto get_event_queue() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type
+			{
+				return m_event_queue;
+			}
 		}
 
 		auto timestamp() -> string_t
@@ -294,9 +320,9 @@ namespace wind
 		}
 
 		wind::lout << "Creating Display: ";
-		al::set_new_display_flags(system::m_display_flags);
+		al::set_new_display_flags(system::display::m_flags);
 
-		for (auto i = system::m_display_options.cbegin(); i != system::m_display_options.cend(); ++i)
+		for (auto i = system::display::m_options.cbegin(); i != system::display::m_options.cend(); ++i)
 		{
 			al::set_new_display_option(i->first, i->second.m_value, i->second.m_importance);
 		}
@@ -403,17 +429,12 @@ namespace wind
 
 	void system_t::loop()
 	{
-		int32_t tick_count{ 0 };
-		double elapsed{ 0.0 };
-		double timepoint{ 0.0 };
 		ALLEGRO::EVENT event{};
 
 		this->m_dialog->on_start();
 
 		al::start_timer(this->m_timer);
 		al::pause_event_queue(system::m_event_queue, false);
-
-		timepoint = al::get_time();
 
 		while (!this->m_kill)
 		{
@@ -566,7 +587,10 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_TIMER:
 				{
-					++tick_count;
+					if (!system::timer::m_paused)
+					{
+						++system::timer::m_tick_count;
+					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_RESIZE:
@@ -641,10 +665,10 @@ namespace wind
 				}
 			}
 
-			while (tick_count > 0)
+			while (system::timer::m_tick_count > 0)
 			{
 				system::dialog::update(this->m_dialog);
-				--tick_count;
+				--system::timer::m_tick_count;
 			}
 
 			if (this->m_kill)

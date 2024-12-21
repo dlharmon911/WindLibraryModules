@@ -32,6 +32,13 @@ namespace wind
 
 	namespace system
 	{
+		namespace timer
+		{
+			export auto pause() -> void;
+			export auto unpause() -> void;
+			export auto reset() -> void;
+		}
+
 		namespace display
 		{
 			export using option_t = struct option_tag_t
@@ -39,14 +46,18 @@ namespace wind
 				int32_t m_value{ 0 };
 				int32_t m_importance{ 0 };
 			};
+			export auto get_new_option(int32_t id) -> display::option_t&;
+			export auto set_new_option(int32_t id, const display::option_t& option) -> void;
+			export auto get_new_flags() -> int32_t;
+			export auto set_new_flags(int32_t flags) -> void;
+			export auto get() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type;
 		}
 
-		export auto get_new_display_option(int32_t id) -> display::option_t&;
-		export auto set_new_display_option(int32_t id, const display::option_t& option) -> void;
-		export auto get_new_display_flags() -> int32_t;
-		export auto set_new_display_flags(int32_t flags) -> void;
-		export auto get_display() -> wind::add_const_reference<ALLEGRO::DISPLAY>::type;
-		export auto get_event_queue() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type;
+		namespace event_queue
+		{
+			export auto get() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type;
+		}
+
 		export auto timestamp() -> wind::string_t;
 	}
 }

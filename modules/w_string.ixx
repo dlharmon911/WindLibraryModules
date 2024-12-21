@@ -527,6 +527,22 @@ export template <class E, class TR = std::char_traits<E>> auto operator >> (std:
 
 namespace std
 {
+	export template <> struct hash<const wind::string_t>
+	{
+	public:
+		auto operator()(const wind::string_t& str) const -> size_t
+		{
+			size_t s = std::hash<int32_t>{}(1);
+
+			for (size_t i = 0; (i < 3 && i < str.size()); ++i)
+			{
+				s ^= std::hash<int32_t>{}(str[i]);
+			}
+
+			return s;
+		}
+	};
+
 	export template <> struct hash<wind::string_t>
 	{
 	public:
