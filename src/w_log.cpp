@@ -13,7 +13,7 @@ namespace wind
 {
 	namespace log
 	{
-		void destroy(data_t* log_struct)
+		void destroy(shared_data_t* log_struct)
 		{
 			if (log_struct)
 			{
@@ -32,9 +32,9 @@ namespace wind
 			}
 		}
 
-		std::shared_ptr<data_t> create(const wind::string_t& filename, int32_t type)
+		std::shared_ptr<shared_data_t> create(const wind::string_t& filename, int32_t type)
 		{
-			std::shared_ptr<data_t> rv(new data_t, destroy);
+			std::shared_ptr<shared_data_t> rv(new shared_data_t, destroy);
 
 			if (rv)
 			{
@@ -69,7 +69,7 @@ namespace wind
 		{
 			if (file)
 			{
-				al::fputs(file, std::to_string(value).c_str());
+				al::fputs(file, string_t(std::to_string(value)).c_str());
 			}
 		}
 

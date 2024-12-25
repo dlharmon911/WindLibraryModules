@@ -191,14 +191,14 @@ namespace wind
 		template <>
 		auto get_as(dson_t& config_file, const string_t& name, const int32_t default_value) -> int32_t
 		{
-			string_t str = config::get_content(config_file, name, std::to_string(default_value));
+			string_t str = config::get_content(config_file, name, string::to_string(default_value));
 			return std::atoi(str.c_str());
 		}
 
 		template <>
 		auto get_as(dson_t& config_file, const string_t& name, const double default_value) -> double
 		{
-			string_t str = config::get_content(config_file, name, std::to_string(default_value));
+			string_t str = config::get_content(config_file, name, string::to_string(default_value));
 			return std::atof(str.c_str());
 		}
 
@@ -212,13 +212,13 @@ namespace wind
 		template <>
 		auto set_as(dson_t& config_file, const string_t& name, int32_t value) -> void
 		{
-			config::set_content(config_file, name, std::to_string(value));
+			config::set_content(config_file, name, string::to_string(value));
 		}
 
 		template <>
 		auto set_as(dson_t& config_file, const string_t& name, double value) -> void
 		{
-			config::set_content(config_file, name, std::to_string(value));
+			config::set_content(config_file, name, string::to_string(value));
 		}
 
 		template <>

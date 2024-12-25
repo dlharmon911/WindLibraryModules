@@ -167,20 +167,20 @@ namespace wind
 
 		namespace object
 		{
-			class data_t;
-			bool datafile_parser(data_t& data, object_t& object);
+			class shared_data_t;
+			bool datafile_parser(shared_data_t& data, object_t& object);
 
-			export class data_t
+			export class shared_data_t
 			{
 			public:
-				data_t();
-				data_t(const data_t& data);
-				~data_t();
-				data_t& operator = (const data_t& data);
+				shared_data_t();
+				shared_data_t(const shared_data_t& data);
+				~shared_data_t();
+				shared_data_t& operator = (const shared_data_t& data);
 				explicit operator bool() const;
 				bool has_children() const;
 				bool contains(const string_t& name) const;
-				const data_t get_child(const string_t& name) const;
+				const shared_data_t get_child(const string_t& name) const;
 				bool has_content() const;
 
 				string_t get_string() const;
@@ -196,7 +196,7 @@ namespace wind
 						return false;
 					}
 
-					const object::data_t node = this->get_child(name);
+					const object::shared_data_t node = this->get_child(name);
 
 					if (!node.has_content())
 					{
@@ -217,20 +217,20 @@ namespace wind
 				class iterator
 				{
 				public:
-					using element_type = data_t;
+					using element_type = shared_data_t;
 
 					iterator() = default;
 
 					string_t key() const { return this->m_iter.key(); };
-					const data_t data() const { return data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
+					const shared_data_t data() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
 
 					bool operator == (const iterator& it) const { return (this->m_iter == it.m_iter); }
 					bool operator != (const iterator& it) const { return !operator == (it); }
 					iterator& operator ++() { ++this->m_iter; return *this; }
 					iterator operator++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
-					const data_t operator *() const { return data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
+					const shared_data_t operator *() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
 
-					friend class data_t;
+					friend class shared_data_t;
 
 				private:
 					iterator(const std::shared_ptr<std::vector<object_t>>& objects, const dson_t* root, const dson_t::const_iterator& iter, const dson_t* config) : m_objects(objects), m_root(root), m_iter(iter), m_config(config) {}
@@ -245,11 +245,11 @@ namespace wind
 				iterator end();
 
 				friend class iterator;
-				friend bool datafile_parser(data_t& data, object_t& object);
+				friend bool datafile_parser(shared_data_t& data, object_t& object);
 				friend bool datafile::parser::parse(const string_t& filename, datafile_t& datafile, const char sListSep);
 
 			private:
-				data_t(const std::shared_ptr<std::vector<object_t>>& objects, const dson_t* root, const dson_t* node, const dson_t* config);
+				shared_data_t(const std::shared_ptr<std::vector<object_t>>& objects, const dson_t* root, const dson_t* node, const dson_t* config);
 
 				std::shared_ptr<std::vector<object_t>> m_objects;
 				const dson_t* m_root;
@@ -266,16 +266,16 @@ namespace wind
 				"TILESHEET"
 			};
 
-			export using parser_func_t = bool (*)(data_t& data, object_t& object);
+			export using parser_func_t = bool (*)(shared_data_t& data, object_t& object);
 
-			export void register_type(int32_t type, const string_t& name, bool (*parser_func)(data_t& data, object_t& object));
+			export void register_type(int32_t type, const string_t& name, bool (*parser_func)(shared_data_t& data, object_t& object));
 			export int32_t get_type(const string_t& name);
 			export std::map<int32_t, std::pair<string_t, parser_func_t>>& get_info();
-			export bool datafile_parser(data_t& data, object_t& object);
-			export bool bitmap_parser(data_t& data, object_t& object);
-			export bool font_parser(data_t& data, object_t& object);
-			export bool text_parser(data_t& data, object_t& object);
-			export bool tilesheet_parser(data_t& data, object_t& object);
+			export bool datafile_parser(shared_data_t& data, object_t& object);
+			export bool bitmap_parser(shared_data_t& data, object_t& object);
+			export bool font_parser(shared_data_t& data, object_t& object);
+			export bool text_parser(shared_data_t& data, object_t& object);
+			export bool tilesheet_parser(shared_data_t& data, object_t& object);
 		}
 	}
 }

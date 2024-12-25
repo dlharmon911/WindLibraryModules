@@ -121,6 +121,9 @@ namespace wind
 			ALLEGRO::BITMAP target{};
 			ALLEGRO::RECTANGLE<size_t> source = { {0,0}, tile_size };
 
+			bitmap_size.width -= (bitmap_size.width % tile_size.width);
+			bitmap_size.height -= (bitmap_size.height % tile_size.height);
+
 			for (source.position.y = 0; source.position.y < bitmap_size.height; source.position.y += tile_size.height)
 			{
 				for (source.position.x = 0; source.position.x < bitmap_size.width; source.position.x += tile_size.width)
@@ -145,7 +148,7 @@ namespace wind
 	{
 		namespace object
 		{
-			bool tilesheet_parser(data_t& data, object_t& object)
+			bool tilesheet_parser(shared_data_t& data, object_t& object)
 			{
 				ALLEGRO::SIZE<int32_t> size{ 0,0 };
 				int32_t index{ -1 };
@@ -160,7 +163,7 @@ namespace wind
 					return false;
 				}
 
-				if (load_json(json, file) < 0)
+				if (json::load(json, file) < 0)
 				{
 					return false;
 				}

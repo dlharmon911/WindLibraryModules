@@ -1,7 +1,7 @@
 export module wind:config;
 
 import <vector>;
-import <unordered_map>;
+import <map>;
 import <string>;
 import <cstdint>;
 import allegro;

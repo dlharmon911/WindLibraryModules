@@ -14,7 +14,7 @@ namespace wind
 {
 	namespace datafile
 	{
-		static bool registered = false;
+		bool registered = false;
 
 		namespace config
 		{
@@ -107,14 +107,14 @@ namespace wind
 			template <>
 			int32_t get_as(dson_t& config_file, const string_t& name, const int32_t default_value)
 			{
-				string_t str = config::get_content(config_file, name, std::to_string(default_value));
+				string_t str = config::get_content(config_file, name, string::to_string(default_value));
 				return std::atoi(str.c_str());
 			}
 
 			template <>
 			double get_as(dson_t& config_file, const string_t& name, const double default_value)
 			{
-				string_t str = config::get_content(config_file, name, std::to_string(default_value));
+				string_t str = config::get_content(config_file, name, string::to_string(default_value));
 				return std::atof(str.c_str());
 			}
 
@@ -131,13 +131,13 @@ namespace wind
 			template <>
 			void set_as(dson_t& config_file, const string_t& name, int32_t value)
 			{
-				config::set_content(config_file, name, std::to_string(value));
+				config::set_content(config_file, name, string::to_string(value));
 			}
 
 			template <>
 			void set_as(dson_t& config_file, const string_t& name, double value)
 			{
-				config::set_content(config_file, name, std::to_string(value));
+				config::set_content(config_file, name, string::to_string(value));
 			}
 
 			template <>
@@ -154,23 +154,23 @@ namespace wind
 			int32_t get_type(const string_t& name);
 			std::map<int32_t, std::pair<string_t, parser_func_t>>& get_info();
 
-			data_t::data_t() : m_objects(nullptr), m_root(nullptr), m_node(nullptr), m_config(nullptr)
+			shared_data_t::shared_data_t() : m_objects(nullptr), m_root(nullptr), m_node(nullptr), m_config(nullptr)
 			{
 			}
 
-			data_t::data_t(const std::shared_ptr<std::vector<object_t>>& objects, const dson_t* root, const dson_t* node, const dson_t* config) : m_objects(objects), m_root(root), m_node(node), m_config(config)
+			shared_data_t::shared_data_t(const std::shared_ptr<std::vector<object_t>>& objects, const dson_t* root, const dson_t* node, const dson_t* config) : m_objects(objects), m_root(root), m_node(node), m_config(config)
 			{
 			}
 
-			data_t::data_t(const data_t& data) : m_objects(data.m_objects), m_root(data.m_root), m_node(data.m_node), m_config(data.m_config)
+			shared_data_t::shared_data_t(const shared_data_t& data) : m_objects(data.m_objects), m_root(data.m_root), m_node(data.m_node), m_config(data.m_config)
 			{
 			}
 
-			data_t::~data_t()
+			shared_data_t::~shared_data_t()
 			{
 			}
 
-			data_t& data_t::operator = (const data_t& data)
+			shared_data_t& shared_data_t::operator = (const shared_data_t& data)
 			{
 				this->m_root = data.m_root;
 				this->m_node = data.m_node;
@@ -178,32 +178,32 @@ namespace wind
 				return *this;
 			}
 
-			data_t::operator bool() const
+			shared_data_t::operator bool() const
 			{
 				return (this->m_node != nullptr);
 			}
 
-			bool data_t::has_children() const
+			bool shared_data_t::has_children() const
 			{
 				return this->m_node->has_children();
 			}
 
-			bool data_t::contains(const string_t& name) const
+			bool shared_data_t::contains(const string_t& name) const
 			{
 				return this->m_node->contains(name);
 			}
 
-			const data_t data_t::get_child(const string_t& name) const
+			const shared_data_t shared_data_t::get_child(const string_t& name) const
 			{
-				return data_t(this->m_objects, this->m_root, &((*this->m_node)[name]), this->m_config);
+				return shared_data_t(this->m_objects, this->m_root, &((*this->m_node)[name]), this->m_config);
 			}
 
-			bool data_t::has_content() const
+			bool shared_data_t::has_content() const
 			{
 				return this->m_node->has_content();
 			}
 
-			string_t data_t::get_string() const
+			string_t shared_data_t::get_string() const
 			{
 				string_t output;
 
@@ -221,7 +221,7 @@ namespace wind
 				return output;
 			}
 
-			bool load_object(data_t& data, object_t& object)
+			bool load_object(shared_data_t& data, object_t& object)
 			{
 				string_t type_string{};
 
@@ -255,7 +255,7 @@ namespace wind
 				return true;
 			}
 
-			object_t data_t::find_object(const string_t& name)
+			object_t shared_data_t::find_object(const string_t& name)
 			{
 				size_t index = 0;
 
@@ -276,7 +276,7 @@ namespace wind
 
 					if (it.key() == name)
 					{
-						data_t node(this->m_objects, this->m_root, &(*it), this->m_config);
+						shared_data_t node(this->m_objects, this->m_root, &(*it), this->m_config);
 
 						object_t object{ WIND::DATAFILE::OBJECT::TYPE_USER_DEFINED, index, name, nullptr };
 
@@ -297,14 +297,14 @@ namespace wind
 				return { WIND::DATAFILE::OBJECT::TYPE_USER_DEFINED, 0, string_t(), nullptr };
 			}
 
-			data_t::iterator data_t::begin()
+			shared_data_t::iterator shared_data_t::begin()
 			{
-				return data_t::iterator(this->m_objects, this->m_root, this->m_node->cbegin(), this->m_config);
+				return shared_data_t::iterator(this->m_objects, this->m_root, this->m_node->cbegin(), this->m_config);
 			}
 
-			data_t::iterator data_t::end()
+			shared_data_t::iterator shared_data_t::end()
 			{
-				return data_t::iterator(this->m_objects, this->m_root, this->m_node->cend(), this->m_config);
+				return shared_data_t::iterator(this->m_objects, this->m_root, this->m_node->cend(), this->m_config);
 			}
 
 			/****************************************************************************************************/
@@ -324,7 +324,7 @@ namespace wind
 				return m_info;
 			}
 
-			extern bool datafile_parser(data_t& data, object_t& object);
+			extern bool datafile_parser(shared_data_t& data, object_t& object);
 			extern void register_default_types();
 		}
 	}
@@ -546,7 +546,7 @@ namespace wind
 
 						std::shared_ptr<std::vector<object_t>> objects{ nullptr };
 
-						object::data_t data(objects, &dson, &dson, &config);
+						object::shared_data_t data(objects, &dson, &dson, &config);
 
 						object_t object = { WIND::DATAFILE::OBJECT::TYPE_USER_DEFINED, 0, string_t(), nullptr };
 
@@ -580,7 +580,7 @@ namespace wind
 					out.push_back('\t');
 				}
 				
-				out += export_s + "constexpr auto " + string::fuse(header, '_') + " = " + std::to_string(index) + ';';
+				out += export_s + "constexpr auto " + string::fuse(header, '_') + " = " + string::to_string(index) + ';';
 				while (out.size() < 56) out.push_back(' ');
 				out.append("/* ");
 				out.append(string::to_upper(type_name));
@@ -678,7 +678,7 @@ namespace wind
 					pfile << "export ";
 				}
 
-				pfile << "constexpr auto " << string::fuse(header, '_') + " = " << std::to_string(index) << "; \n";
+				pfile << "constexpr auto " << string::fuse(header, '_') + " = " << string::to_string(index) << "; \n";
 				header.pop_back();
 
 				return true;
@@ -763,8 +763,12 @@ namespace wind
 			string_t ext;
 			string_t path;
 			datafile_t output;
-			bool archive = false;
-			bool error = false;
+			bool is_archive = false;
+
+			if (!al::filename_exists(filename.c_str()))
+			{
+				return output;
+			}
 
 			filepath = path::make_canonical(filename);
 			path::split_filepath(filepath, path, base, ext);
@@ -772,24 +776,29 @@ namespace wind
 			const PHYSFS_ArchiveInfo** i = nullptr;
 			for (i = PHYSFS_supportedArchiveTypes(); *i != nullptr; i++)
 			{
-				if (string::to_upper(ext) == (*i)->extension)
+				wind::string_t a = string::to_upper(ext);
+				wind::string_t b = (*i)->extension;
+
+				if (a.compare((*i)->extension) == 0)
 				{
-					archive = true;
+					is_archive = true;
 					break;
 				}
 			}
 
-			if (archive)
+			if (is_archive)
 			{
 				const ALLEGRO::FILE_INTERFACE file_interface = al::get_new_file_interface();
 
 				if (PHYSFS_mount(filename.c_str(), nullptr, 1))
 				{
 					al::physfs_addon::set_file_interface();
+
 					if (!datafile::parser::parse("index.ini", output, sListSep))
 					{
-						error = true;
+						output.clear();
 					}
+
 					PHYSFS_unmount(filename.c_str());
 				}
 
@@ -800,16 +809,12 @@ namespace wind
 				string_t dir = al::get_current_directory();
 
 				al::change_directory((dir + ALLEGRO::NATIVE_PATH_SEP + path).c_str());
+
 				if (!datafile::parser::parse(base + "." + ext, output, sListSep))
 				{
-					error = true;
+					output.clear();
 				}
 				al::change_directory(dir.c_str());
-			}
-
-			if (error)
-			{
-				output.clear();
 			}
 
 			return output;
@@ -817,9 +822,10 @@ namespace wind
 
 		namespace object
 		{
-			void register_type(int32_t type, const string_t& name, bool (*parser_func)(data_t& data, object_t& object))
+			void register_type(int32_t type, const string_t& name, bool (*parser_func)(shared_data_t& data, object_t& object))
 			{
-				get_info()[type] = { string::to_lower(name), parser_func };
+				get_info()[type].first = string::to_lower(name);
+				get_info()[type].second = parser_func;
 			}
 
 			void register_default_types()
@@ -836,7 +842,7 @@ namespace wind
 				return (a.m_index < b.m_index);
 			}
 
-			size_t object_count(data_t& data)
+			size_t object_count(shared_data_t& data)
 			{
 				size_t size = 0;
 
@@ -852,7 +858,7 @@ namespace wind
 				return size;
 			}
 
-			bool datafile_parser(data_t& data, object_t& object)
+			bool datafile_parser(shared_data_t& data, object_t& object)
 			{
 				size_t size = object_count(data);
 				size_t count = 0;
@@ -875,7 +881,7 @@ namespace wind
 					{
 						bool found = false;
 						string_t type_string{};
-						data_t node{ (*it) };
+						shared_data_t node{ (*it) };
 
 						child.m_type = WIND::DATAFILE::OBJECT::TYPE_USER_DEFINED;
 						child.m_name = it.key();
@@ -888,9 +894,9 @@ namespace wind
 							continue;
 						}
 
-						for (auto it = data.m_objects.get()->cbegin(); it != data.m_objects.get()->cend(); ++it)
+						for (auto cit = data.m_objects.get()->cbegin(); cit != data.m_objects.get()->cend(); ++cit)
 						{
-							if (it->m_name == child.m_name)
+							if (cit->m_name == child.m_name)
 							{
 								found = true;
 							}

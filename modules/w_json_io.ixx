@@ -8,18 +8,11 @@ import :string;
 
 namespace wind
 {
-	export auto load_json(json_t& json, const string_t& filename) -> int32_t
+	namespace json
 	{
-		return json_parser_t::file::parse(json, filename);
-	}
-
-	export auto parse_json_buffer(json_t& json, const string_t& buffer) -> int32_t
-	{
-		return json_parser_t::string::parse(json, buffer);
-	}
-
-	export auto save_json(const json_t& json, const string_t& filename) -> int32_t
-	{
-		return json_parser_t::value::write(json, filename);
+		export auto load(json_t& json, const string_t& filename) -> int32_t;
+		export auto parse_buffer(json_t& json, const string_t& buffer) -> int32_t;
+		export auto save(const json_t& json, const string_t& filename) -> int32_t;
+		export auto load_from_archive(wind::json_t& json, const wind::string_t& archive_filename, const wind::string_t& filename) -> int32_t;
 	}
 }

@@ -171,7 +171,7 @@ namespace wind
 					}
 					else
 					{
-						do_json_error(WIND::JSON::ERROR_INVALID_TOKEN_TYPE, __FILE__, __LINE__);
+						do_json_error(WIND::JSON::ERROR_INVALID_TOKEN_TYPE, wind::string_t(__FILE__), __LINE__);
 						return 0;
 					}
 
@@ -216,19 +216,19 @@ namespace wind
 				this->pop();
 			}
 
-			if (rv.get_string() == "null")
+			if (rv.get_string().compare("null") == 0)
 			{
 				rv.set_type(WIND::JSON::TOKEN::TYPE_NULL);
 			}
 			else
 			{
-				if (rv.get_string() == "true" || rv.get_string() == "false")
+				if (rv.get_string().compare("true") == 0 || rv.get_string().compare("false") == 0)
 				{
 					rv.set_type(WIND::JSON::TOKEN::TYPE_BOOLEAN);
 				}
 				else
 				{
-					do_json_error(WIND::JSON::ERROR_UNQUOTED_STRING, __FILE__, __LINE__);
+					do_json_error(WIND::JSON::ERROR_UNQUOTED_STRING, wind::string_t(__FILE__), __LINE__);
 					rv.clear();
 				}
 			}
@@ -270,7 +270,7 @@ namespace wind
 
 					if (s != 4)
 					{
-						do_json_error(WIND::JSON::ERROR_HEX_LENGTH, __FILE__, __LINE__);
+						do_json_error(WIND::JSON::ERROR_HEX_LENGTH, wind::string_t(__FILE__), __LINE__);
 						rv = -1;
 						break;
 					}
@@ -279,14 +279,14 @@ namespace wind
 				} break;
 				default:
 				{
-					do_json_error(WIND::JSON::ERROR_ESCAPE_CHAR, __FILE__, __LINE__);
+					do_json_error(WIND::JSON::ERROR_ESCAPE_CHAR, wind::string_t(__FILE__), __LINE__);
 					rv = -1;
 				} break;
 				}
 			}
 			else
 			{
-				do_json_error(WIND::JSON::ERROR_STREAM_ENDED_EARLY, __FILE__, __LINE__);
+				do_json_error(WIND::JSON::ERROR_STREAM_ENDED_EARLY, wind::string_t(__FILE__), __LINE__);
 				rv = -1;
 			}
 
@@ -317,7 +317,7 @@ namespace wind
 				if (this->m_char < 32 || this->m_char >= 127)
 				{
 					// unknown
-					do_json_error(WIND::JSON::ERROR_CHAR_VALUE, __FILE__, __LINE__);
+					do_json_error(WIND::JSON::ERROR_CHAR_VALUE, wind::string_t(__FILE__), __LINE__);
 					rv.clear();
 					break;
 				}

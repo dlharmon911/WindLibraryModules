@@ -432,6 +432,9 @@
     <ClCompile Include="src\w_random.cpp">
       <Filter>Source Files\Partition Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\w_json_io.cpp">
+      <Filter>Source Files\Partition Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -85,7 +85,7 @@ namespace wind
 
 	auto dson_t::get_indexed_property(const string_t& name, const size_t nIndex) -> dson_t&
 	{
-		return get_property(name + "[" + std::to_string(nIndex) + "]");
+		return get_property(name + "[" + string::to_string(nIndex) + "]");
 	}
 
 	auto dson_t::write(const dson_t& n, const string_t& sFileName, const string_t& sIndent, const char sListSep) -> bool
@@ -119,8 +119,8 @@ namespace wind
 						// is flagged get_as comment, it has no assignment potential. First write the
 						// property name
 
-						al::fput_ustr(pfile, indent(sIndent, nIndentCount));
-						al::fput_ustr(pfile, property.first);
+						al::fput_ustr(pfile, indent(sIndent, nIndentCount).u_str());
+						al::fput_ustr(pfile, property.first.u_str());
 						al::fputs(pfile, (property.second.m_bIsComment ? "" : " = "));
 
 						// Second, write the property value (or values, separated by provided
@@ -138,20 +138,20 @@ namespace wind
 							{
 								// Value contains separator, so wrap in quotes
 								al::fputs(pfile, "\"");
-								al::fput_ustr(pfile, property.second.get_content(i));
+								al::fput_ustr(pfile, property.second.get_content(i).u_str());
 								al::fputs(pfile, "\"");
 								if (nItems > 1)
 								{
-									al::fput_ustr(pfile, sSeperator);
+									al::fput_ustr(pfile, sSeperator.u_str());
 								}
 							}
 							else
 							{
 								// Value does not contain separator, so just write out
-								al::fput_ustr(pfile, property.second.get_content(i));
+								al::fput_ustr(pfile, property.second.get_content(i).u_str());
 								if (nItems > 1)
 								{
-									al::fput_ustr(pfile, sSeperator);
+									al::fput_ustr(pfile, sSeperator.u_str());
 								}
 							}
 							nItems--;
@@ -164,17 +164,17 @@ namespace wind
 					{
 						// Yes, property has properties of its own, so it's a node
 						// Force a new line and write out the node's name
-						al::fput_ustr(pfile, indent(sIndent, nIndentCount));
-						al::fput_ustr(pfile, property.first);
+						al::fput_ustr(pfile, indent(sIndent, nIndentCount).u_str());
+						al::fput_ustr(pfile, property.first.u_str());
 						al::fputs(pfile, "\n");
 						// Open braces, and update indentation
-						al::fput_ustr(pfile, indent(sIndent, nIndentCount));
+						al::fput_ustr(pfile, indent(sIndent, nIndentCount).u_str());
 						al::fputs(pfile, "{\n");
 						nIndentCount++;
 						// Recursively write that node
 						write(property.second, pfile);
 						// Node written, so close braces
-						al::fput_ustr(pfile, indent(sIndent, nIndentCount));
+						al::fput_ustr(pfile, indent(sIndent, nIndentCount).u_str());
 						al::fputs(pfile, "}\n");
 					}
 				}
@@ -232,8 +232,8 @@ namespace wind
 				// beginning and end of supplied string
 				auto trim = [](string_t& s)
 					{
-						al::ustr_ltrim_ws(s);
-						al::ustr_rtrim_ws(s);
+						al::ustr_ltrim_ws(s.u_str());
+						al::ustr_rtrim_ws(s.u_str());
 						return s;
 					};
 

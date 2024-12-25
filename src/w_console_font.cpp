@@ -397,7 +397,7 @@ namespace wind
 			ALLEGRO::ASSERT(file && font);
 
 			bool rv = false;
-			std::string out;
+			string_t out;
 
 			file << "{\n\t\"font\" :\n\t{\n";
 			file << "\t\t\"start\": ";
@@ -508,7 +508,7 @@ namespace wind
 			return set_font_glyph(font, index, data);
 		}
 
-		auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, uint8_t index) -> void
+		auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, uint8_t index) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
@@ -516,29 +516,30 @@ namespace wind
 			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, point, 0);
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const wind::string_t& text) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const wind::string_t& text) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			float w = text.length() << WIND::CONSOLE::FONT_GLYPH_SHIFT;
+			ALLEGRO::POINT<int32_t> pos{ point };
 
 			if (alignment == WIND::CONSOLE::FONT_ALIGNMENT_RIGHT)
 			{
-				point.x -= w;
+				pos.x -= w;
 			}
 
 			if (alignment == WIND::CONSOLE::FONT_ALIGNMENT_CENTRE)
 			{
-				point.x -= (w * 0.5f);
+				pos.x -= (w * 0.5f);
 			}
 
 			for (auto it = text.cbegin(); it != text.cend(); ++it)
 			{
-				draw_font_glyph(font, color, point, (*it).get_codepoint());
-				point.x += WIND::CONSOLE::FONT_GLYPH_SIZE;
+				draw_font_glyph(font, color, pos, (*it).get_codepoint());
+				pos.x += WIND::CONSOLE::FONT_GLYPH_SIZE;
 			}
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const char* format, ...) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const char* format, ...) -> void
 		{
 			va_list args;
 			int32_t len;

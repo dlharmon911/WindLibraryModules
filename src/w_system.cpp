@@ -100,7 +100,7 @@ namespace wind
 		ALLEGRO::EVENT_QUEUE m_event_queue{ nullptr };
 		namespace event_queue
 		{
-			auto get_event_queue() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type
+			auto get() -> wind::add_const_reference<ALLEGRO::EVENT_QUEUE>::type
 			{
 				return m_event_queue;
 			}
@@ -136,14 +136,21 @@ namespace wind
 
 		namespace widget
 		{
-			auto update(wind::add_const_reference_t<std::shared_ptr<wind::dialog::widget_t>> widget) -> void
+			auto update(wind::add_const_reference_t<std::shared_ptr<wind::dialog::widget_t>> widget) -> int32_t
 			{
-				widget->on_update();
+				if (widget->on_update() < 0)
+				{
+					return -1;
+				}
 
 				for (auto it = widget->cbegin(); it != widget->cend(); ++it)
 				{
-					widget::update(*it);
+					if (widget::update(*it) < 0)
+					{
+						return -1;
+					}
 				}
+				return 0;
 			}
 
 			auto render(wind::add_const_reference_t<std::shared_ptr<wind::dialog::widget_t>> widget) -> void
@@ -159,14 +166,22 @@ namespace wind
 
 		namespace dialog
 		{
-			auto update(const std::shared_ptr<wind::dialog_t>& dialog) -> void
+			auto update(const std::shared_ptr<wind::dialog_t>& dialog) -> int32_t
 			{
-				dialog->on_update();
+				if (dialog->on_update() < 0)
+				{
+					return -1;
+				}
 
 				for (auto it = dialog->cbegin(); it != dialog->cend(); ++it)
 				{
-					widget::update(*it);
+					if (widget::update(*it) < 0)
+					{
+						return -1;
+					}
 				}
+
+				return 0;
 			}
 
 			auto render(const std::shared_ptr<wind::dialog_t>& dialog) -> void
@@ -285,18 +300,6 @@ namespace wind
 			wind::lout << "pass\n";
 		}
 
-#ifndef _DEBUG
-		// set the directory to the path of the executable
-		ALLEGRO::PATH base_path = al::get_standard_path(ALLEGRO::RESOURCES_PATH);
-
-		if (base_path)
-		{
-			al::make_path_canonical(base_path);
-			al::change_directory(al::path_cstr(base_path, ALLEGRO::NATIVE_PATH_SEP));
-			base_path.reset();
-		}
-#endif // !_DEBUG
-
 		if (!al::is_mouse_installed())
 		{
 			wind::lout << "Initializing Mouse: ";
@@ -383,7 +386,8 @@ namespace wind
 		wind::random::set_seed((uint32_t)t_c);
 
 		wind::lout << "Initializing Dialog: \n";
-		if (this->m_dialog->on_initialize(args) < 0)
+		int r = this->m_dialog->on_initialize(args);
+		if (r < 0)
 		{
 			wind::lout << "Initialization failed\n";
 			return -1;
@@ -667,7 +671,10 @@ namespace wind
 
 			while (system::timer::m_tick_count > 0)
 			{
-				system::dialog::update(this->m_dialog);
+				if (system::dialog::update(this->m_dialog) < 0)
+				{
+					this->m_kill = true;
+				}
 				--system::timer::m_tick_count;
 			}
 

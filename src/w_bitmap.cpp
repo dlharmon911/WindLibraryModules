@@ -17,7 +17,7 @@ namespace wind
 			
 			ALLEGRO::BITMAP_LOCKED_REGION region = al::lock_bitmap(bitmap, ALLEGRO::PIXEL_FORMAT_ANY, ALLEGRO::BITMAP_LOCK_READ_ONLY);
 
-			if (region && al::is_bitmap_locked(bitmap))
+			if (region)
 			{
 				ALLEGRO::COLOR color;
 				ALLEGRO::SIZE<size_t> b_size = { al::get_bitmap_width(bitmap), al::get_bitmap_height(bitmap) };
@@ -43,6 +43,23 @@ namespace wind
 			}
 
 			return rv;
+		}
+
+		auto flood_fill(const ALLEGRO::BITMAP& bitmap, const ALLEGRO::RECTANGLE<int32_t>& region) -> void
+		{
+			ALLEGRO::SIZE<int32_t> bgsize = al::get_bitmap_dimensions(bitmap);
+
+			const ALLEGRO::RECTANGLE<int32_t> clip = al::get_clipping_rectangle();
+			al::set_clipping_rectangle(region);
+
+			for (int32_t y = region.position.y; y < (region.position.y + region.size.height); y += bgsize.height)
+			{
+				for (int32_t x = region.position.x; x < (region.position.x + region.size.width); x += bgsize.width)
+				{
+					al::draw_bitmap(bitmap, { x, y });
+				}
+			}
+			al::set_clipping_rectangle(clip);
 		}
 	}
 }

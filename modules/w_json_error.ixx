@@ -1,7 +1,7 @@
 export module wind:json.error;
 
 import <vector>;
-import <unordered_map>;
+import <map>;
 import <string>;
 import <memory>;
 import allegro;
@@ -32,5 +32,5 @@ namespace WIND
 
 namespace wind
 {
-	export auto do_json_error(size_t index, const string_t& file, int32_t line) -> void;
+	export auto do_json_error(size_t index, const string_t file, int32_t line) -> void;
 }

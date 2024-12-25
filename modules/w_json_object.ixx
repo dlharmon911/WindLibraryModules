@@ -1,7 +1,7 @@
 export module wind:json.object;
 
 import <vector>;
-import <unordered_map>;
+import <map>;
 import <string>;
 import <memory>;
 import allegro;
@@ -86,7 +86,7 @@ namespace wind
 	export class json_object_t
 	{
 	private:
-		using array_t = std::unordered_map<json_key_t, json_t>;
+		using array_t = std::map<json_key_t, json_t>;
 		using allocator_t = array_t::allocator_type;
 
 	public:

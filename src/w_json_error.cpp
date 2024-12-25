@@ -38,7 +38,7 @@ namespace wind
 		}
 	}
 
-	auto do_json_error(size_t index, const string_t& file, int32_t line) -> void
+	auto do_json_error(size_t index, const string_t file, int32_t line) -> void
 	{
 		message(index, line, file.c_str());
 	}

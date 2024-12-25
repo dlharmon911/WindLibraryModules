@@ -38,8 +38,8 @@ namespace wind
 		export auto get_font_glyph(const font_t& font, size_t index) -> const ALLEGRO::BITMAP&;
 		export auto set_font_glyph(font_t& font, size_t index, const uint8_t* data) -> bool;
 		export auto set_font_glyph(font_t& font, size_t index, const wind::string_t& string) -> bool;
-		export auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, uint8_t c) -> void;
-		export auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const wind::string_t& text) -> void;
-		export auto draw_font(const font_t& font, ALLEGRO::COLOR color, ALLEGRO::POINT<int32_t> point, int32_t alignment, const char* format, ...) -> void;
+		export auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, uint8_t c) -> void;
+		export auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const wind::string_t& text) -> void;
+		export auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const char* format, ...) -> void;
 	}
 }

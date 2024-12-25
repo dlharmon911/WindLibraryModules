@@ -26,7 +26,7 @@ namespace wind
 {
 	namespace log
 	{
-		using data_t = struct data_tag_t
+		using shared_data_t = struct data_tag_t
 		{
 			ALLEGRO::FILE m_file{};
 			int32_t m_type{ WIND::LOG::TYPE::TEXT };
@@ -63,7 +63,7 @@ namespace wind
 		auto write(const char* s, size_t n) -> log_t&;
 		auto flush() -> log_t&;
 	private:
-		std::shared_ptr<log::data_t> m_data{};
+		std::shared_ptr<log::shared_data_t> m_data{};
 	};
 
 	export auto endl(log_t& log) -> log_t&;

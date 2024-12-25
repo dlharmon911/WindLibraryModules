@@ -54,7 +54,7 @@ namespace wind
 
 		string_t();
 		string_t(const ALLEGRO::USTRING& string);
-		string_t(const std::string& string);
+		explicit string_t(const std::string& string);
 		string_t(const char* string);
 		string_t(const string_t& string);
 		string_t(const std::initializer_list<uchar_t> il);
@@ -96,21 +96,14 @@ namespace wind
 		auto operator += (const string_t& string)->string_t&;
 		auto operator += (std::initializer_list<uchar_t> il)->string_t&;
 
-		auto operator == (const string_t& u) const -> bool;
-		auto operator != (const string_t& u) const -> bool;
-		auto operator == (const std::string& s) const -> bool;
-		auto operator != (const std::string& s) const -> bool;
-		auto operator == (const char* s) const -> bool;
-		auto operator != (const char* s) const -> bool;
-
 		auto c_str() const -> const char*;
 		explicit operator const char* () const;
 
 		auto u_str() const -> const ALLEGRO::USTRING&;
 		auto u_str() -> ALLEGRO::USTRING&;
 
-		operator const ALLEGRO::USTRING& () const;
-		operator ALLEGRO::USTRING& ();
+		explicit operator const ALLEGRO::USTRING& () const;
+		explicit operator ALLEGRO::USTRING& ();
 
 		auto size() const->size_t;
 		auto length() const->size_t;
@@ -394,7 +387,7 @@ namespace wind
 			return this->prepend(string_t(first, last));
 		}
 
-		auto compare(const string_t& rhs) const->int32_t;
+		auto compare(const string_t& rhs)const noexcept->int32_t;
 		auto compare(const std::string& rhs) const->int32_t;
 		auto compare(const char* rhs) const->int32_t;
 
@@ -403,6 +396,7 @@ namespace wind
 		auto insert(size_t pos, const char* rhs) -> string_t&;
 		auto insert(size_t pos, uchar_t rhs) -> string_t&;
 		auto insert(size_t pos, const std::initializer_list<uchar_t> il) -> string_t&;
+
 		template <class InputIterator>
 		auto insert(iterator p, InputIterator first, InputIterator last) -> iterator
 		{
@@ -466,8 +460,16 @@ namespace wind
 
 		template <> auto get_as<bool>() const -> bool
 		{
-			return string::to_lower(*this) == "true";
+			return string::to_lower(*this).compare("true") == 0;
 		}
+
+		auto operator == (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator != (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator <  (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator <= (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator >  (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator >= (const wind::string_t& rhs) const noexcept -> bool;
+
 
 	protected:
 		ALLEGRO::USTRING m_data;
@@ -505,16 +507,26 @@ namespace wind
 }
 
 export auto operator + (const wind::string_t& lhs, const wind::string_t& rhs)->wind::string_t;
-export auto operator + (const wind::string_t& lhs, const std::string& rhs)->wind::string_t;
 export auto operator + (const wind::string_t& lhs, const char* rhs)->wind::string_t;
-export auto operator + (const wind::string_t& lhs, wind::uchar_t rhs)->wind::string_t;
-export auto operator + (const wind::string_t& lhs, char rhs)->wind::string_t;
-export auto operator + (const std::string& rhs, const wind::string_t& lhs)->wind::string_t;
 export auto operator + (const char* rhs, const wind::string_t& lhs)->wind::string_t;
-export auto operator + (wind::uchar_t rhs, const wind::string_t& lhs)->wind::string_t;
-export auto operator + (char rhs, const wind::string_t& lhs)->wind::string_t;
+export auto operator + (const wind::string_t& lhs, char rhs)->wind::string_t;
+export auto operator + (char lhs, const wind::string_t& rhs)->wind::string_t;
 
-template <typename E, typename TR = std::char_traits<E>> auto operator << (std::basic_ostream<E, TR>& stream, const wind::string_t& string) -> std::basic_ostream<E, TR>&
+
+export auto operator == (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator != (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator <  (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator <= (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator >  (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator >= (const char* lhs, const wind::string_t& rhs) -> bool;
+export auto operator == (const wind::string_t& lhs, const char* rhs) -> bool;
+export auto operator != (const wind::string_t& lhs, const char* rhs) -> bool;
+export auto operator <  (const wind::string_t& lhs, const char* rhs) -> bool;
+export auto operator <= (const wind::string_t& lhs, const char* rhs) -> bool;
+export auto operator >  (const wind::string_t& lhs, const char* rhs) -> bool;
+export auto operator >= (const wind::string_t& lhs, const char* rhs) -> bool;
+
+export template <typename E, typename TR = std::char_traits<E>> auto operator << (std::basic_ostream<E, TR>& stream, const wind::string_t& string) -> std::basic_ostream<E, TR>&
 {
 	stream.write(string.c_str(), string.size());
 	return stream;
@@ -525,37 +537,23 @@ export template <class E, class TR = std::char_traits<E>> auto operator >> (std:
 	return stream >> (string.u_str());
 }
 
+
 namespace std
 {
-	export template <> struct hash<const wind::string_t>
-	{
-	public:
-		auto operator()(const wind::string_t& str) const -> size_t
-		{
-			size_t s = std::hash<int32_t>{}(1);
-
-			for (size_t i = 0; (i < 3 && i < str.size()); ++i)
-			{
-				s ^= std::hash<int32_t>{}(str[i]);
-			}
-
-			return s;
-		}
-	};
-
 	export template <> struct hash<wind::string_t>
 	{
 	public:
 		auto operator()(const wind::string_t& str) const -> size_t
 		{
-			size_t s = std::hash<int32_t>{}(1);
+			size_t s = hash<int32_t>{}(-1);
 
 			for (size_t i = 0; (i < 3 && i < str.size()); ++i)
 			{
-				s ^= std::hash<int32_t>{}(str[i]);
+				s ^= hash<int32_t>{}(str[i]);
 			}
 
 			return s;
 		}
 	};
 }
+

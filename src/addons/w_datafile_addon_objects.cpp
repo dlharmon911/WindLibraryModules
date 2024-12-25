@@ -13,7 +13,7 @@ namespace wind
 	{
 		namespace object
 		{
-			bool bitmap_parser(data_t& data, object_t& object)
+			bool bitmap_parser(shared_data_t& data, object_t& object)
 			{
 				string_t file;
 				string_t working = path::get_working_directory();
@@ -62,7 +62,7 @@ namespace wind
 				return (bool)object.m_object;
 			}
 
-			bool font_parser(data_t& data, object_t& object)
+			bool font_parser(shared_data_t& data, object_t& object)
 			{
 				string_t file{};
 				string_t working{ path::get_working_directory() };
@@ -140,7 +140,7 @@ namespace wind
 				return (bool)object.m_object;
 			}
 
-			bool text_parser(data_t& data, object_t& object)
+			bool text_parser(shared_data_t& data, object_t& object)
 			{
 				if (data.has_content())
 				{

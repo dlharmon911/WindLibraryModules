@@ -56,7 +56,7 @@ export module wind:dson;
 
 import <string>;
 import <vector>;
-import <unordered_map>;
+import <map>;
 import <cstdint>;
 import allegro;
 import :base;
@@ -75,7 +75,7 @@ namespace wind
 
 	private:
 		using object_vector_t = std::vector<std::pair<string_t, dson_t>>;
-		using index_map_t = std::unordered_map<string_t, size_t>;
+		using index_map_t = std::map<string_t, size_t>;
 
 		std::vector<string_t> m_vContent;
 		object_vector_t m_vecObjects;
@@ -113,7 +113,7 @@ namespace wind
 			iterator() = default;
 			iterator(object_vector_t::iterator it) : m_it(it) {}
 
-			auto key() const -> string_t& { return this->m_it->first; }
+			auto key() const -> const string_t& { return this->m_it->first; }
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++ () -> iterator& { ++this->m_it; return *this; }

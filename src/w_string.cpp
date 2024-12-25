@@ -237,36 +237,6 @@ namespace wind
 		return this->append(il);
 	}
 
-	auto string_t::operator == (const string_t& u) const -> bool
-	{
-		return al::ustr_equal(this->u_str(), u.u_str());
-	}
-
-	auto string_t::operator != (const string_t& u) const -> bool
-	{
-		return !(this->operator == (u));
-	}
-
-	auto string_t::operator == (const std::string& s) const -> bool
-	{
-		return (std::strcmp(s.c_str(), this->c_str()) == 0);
-	}
-
-	auto string_t::operator != (const std::string& s) const -> bool
-	{
-		return !(this->operator == (s));
-	}
-
-	auto string_t::operator == (const char* string) const -> bool
-	{
-		return (std::strcmp(string::validate_string(string), this->c_str()) == 0);
-	}
-
-	auto string_t::operator != (const char* string) const -> bool
-	{
-		return !(this->operator == (string));
-	}
-
 	auto string_t::c_str() const -> const char*
 	{
 		return al::c_str(this->m_data);
@@ -469,7 +439,7 @@ namespace wind
 		return this->append(string_t(il));
 	}
 
-	auto string_t::compare(const string_t& rhs) const -> int32_t
+	auto string_t::compare(const string_t& rhs)const noexcept->int32_t
 	{
 		return al::ustr_compare(this->u_str(), rhs.u_str());
 	}
@@ -684,6 +654,36 @@ namespace wind
 		return (size_t)al::ustr_rfind_chr(this->u_str(), (int32_t)pos, rhs);
 	}
 
+	auto string_t::operator == (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) == 0;
+	}
+
+	auto string_t::operator != (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) != 0;
+	}
+
+	auto string_t::operator <  (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) < 0;
+	}
+
+	auto string_t::operator <= (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) <= 0;
+	}
+
+	auto string_t::operator >  (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) > 0;
+	}
+
+	auto string_t::operator >= (const wind::string_t& rhs) const noexcept -> bool
+	{
+		return this->compare(rhs) >= 0;
+	}
+
 	namespace string
 	{
 		auto to_string(const char* format, ...) -> string_t
@@ -766,7 +766,7 @@ namespace wind
 
 		auto separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t
 		{
-			size_t x = string.find(0, separator);
+			size_t x = string.find(separator);
 
 			if (x != string_t::npos)
 			{
@@ -872,13 +872,6 @@ auto operator + (const wind::string_t& lhs, const wind::string_t& rhs) -> wind::
 	return rv;
 }
 
-auto operator + (const wind::string_t& lhs, const std::string& rhs) -> wind::string_t
-{
-	wind::string_t rv = lhs;
-	rv.append(rhs);
-	return rv;
-}
-
 auto operator + (const wind::string_t& lhs, const char* rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
@@ -889,27 +882,6 @@ auto operator + (const wind::string_t& lhs, const char* rhs) -> wind::string_t
 auto operator + (const char* lhs, const wind::string_t& rhs) -> wind::string_t
 {
 	wind::string_t rv = lhs;
-	rv.append(rhs);
-	return rv;
-}
-
-auto operator + (const std::string& lhs, const wind::string_t& rhs) -> wind::string_t
-{
-	wind::string_t rv = lhs;
-	rv.append(rhs);
-	return rv;
-}
-
-auto operator + (const wind::string_t& lhs, wind::uchar_t rhs) -> wind::string_t
-{
-	wind::string_t rv = lhs;
-	rv.push_back(rhs);
-	return rv;
-}
-
-auto operator + (wind::uchar_t lhs, const wind::string_t& rhs) -> wind::string_t
-{
-	wind::string_t rv = wind::string::create(lhs, 1);
 	rv.append(rhs);
 	return rv;
 }
@@ -926,4 +898,64 @@ auto operator + (char lhs, const wind::string_t& rhs) -> wind::string_t
 	wind::string_t rv = wind::string::create(lhs, 1);
 	rv.append(rhs);
 	return rv;
+}
+
+auto operator == (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) == 0;
+}
+
+auto operator == (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) == 0;
+}
+
+auto operator != (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) != 0;
+}
+
+auto operator != (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) != 0;
+}
+
+auto operator <  (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) >= 0;
+}
+
+auto operator <  (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) < 0;
+}
+
+auto operator <= (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) > 0;
+}
+
+auto operator <= (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) <= 0;
+}
+
+auto operator >  (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) <= 0;
+}
+
+auto operator >  (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) > 0;
+}
+
+auto operator >= (const char* lhs, const wind::string_t& rhs) -> bool
+{
+	return rhs.compare(lhs) < 0;
+}
+
+auto operator >= (const wind::string_t& lhs, const char* rhs) -> bool
+{
+	return lhs.compare(rhs) >= 0;
 }

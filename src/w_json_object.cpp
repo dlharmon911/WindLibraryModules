@@ -16,7 +16,7 @@ namespace wind
 		ALLEGRO::ASSERT(this->m_data);
 	}
 
-	json_t::json_t(double value) : m_type(WIND::JSON::TYPE_NUMBER), m_data(al::ustr_new(std::to_string(value).c_str()))
+	json_t::json_t(double value) : m_type(WIND::JSON::TYPE_NUMBER), m_data(al::ustr_new(string::to_string(value).c_str()))
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
@@ -94,7 +94,7 @@ namespace wind
 	auto json_t::set_as_number(double value) -> bool
 	{
 		this->m_type = WIND::JSON::TYPE_NUMBER;
-		this->m_data = al::ustr_new(std::to_string(value).c_str());
+		this->m_data = al::ustr_new(string::to_string(value).c_str());
 
 		return true;
 	}
@@ -137,7 +137,9 @@ namespace wind
 
 	auto json_t::get_as_string() const -> string_t
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_STRING);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_BOOLEAN || 
+			this->m_type == WIND::JSON::TYPE_NUMBER || 
+			this->m_type == WIND::JSON::TYPE_STRING);
 
 		string_t rv;
 

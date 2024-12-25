@@ -645,7 +645,7 @@ namespace wind
 			auto parse(json_t& json, const string_t& filename) -> int32_t
 			{
 				ALLEGRO::FILE file;
-				int32_t rv = 0;
+				int32_t rv = -1;
 
 				if (file = al::fopen(filename.c_str(), "rb"))
 				{
