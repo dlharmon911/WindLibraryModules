@@ -245,6 +245,7 @@
     <ClCompile Include="modules\w_dialog_widget_button.ixx" />
     <ClCompile Include="modules\w_dson.ixx" />
     <ClCompile Include="modules\w_error.ixx" />
+    <ClCompile Include="modules\w_faders.ixx" />
     <ClCompile Include="modules\w_file.ixx" />
     <ClCompile Include="modules\w_flag.ixx" />
     <ClCompile Include="modules\w_frame.ixx" />
@@ -252,6 +253,7 @@
     <ClCompile Include="modules\w_input.ixx" />
     <ClCompile Include="modules\w_json.ixx" />
     <ClCompile Include="modules\w_json_error.ixx" />
+    <ClCompile Include="modules\w_json_initializer.ixx" />
     <ClCompile Include="modules\w_json_io.ixx" />
     <ClCompile Include="modules\w_json_object.ixx" />
     <ClCompile Include="modules\w_json_parser.ixx" />
@@ -279,12 +281,14 @@
     <ClCompile Include="src\w_console_font.cpp" />
     <ClCompile Include="src\w_dson.cpp" />
     <ClCompile Include="src\w_error.cpp" />
+    <ClCompile Include="src\w_faders.cpp" />
     <ClCompile Include="src\w_file.cpp" />
     <ClCompile Include="src\w_font.cpp" />
     <ClCompile Include="src\w_frame.cpp" />
     <ClCompile Include="src\w_hex.cpp" />
     <ClCompile Include="src\w_input.cpp" />
     <ClCompile Include="src\w_json_error.cpp" />
+    <ClCompile Include="src\w_json_initializer.cpp" />
     <ClCompile Include="src\w_json_io.cpp" />
     <ClCompile Include="src\w_json_object.cpp" />
     <ClCompile Include="src\w_json_parser.cpp" />

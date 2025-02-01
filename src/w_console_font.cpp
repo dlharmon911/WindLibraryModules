@@ -301,7 +301,7 @@ namespace wind
 		auto convert_font_glyph_from_data(const uint8_t* data, ALLEGRO::BITMAP& glyph) -> bool;
 		auto convert_font_glyph_to_data(const ALLEGRO::BITMAP& glyph, uint8_t* data) -> bool;
 
-		auto create_font(font_t& font, const uint8_t* data, size_t count, int32_t start) -> int32_t
+		static auto create_font(font_t& font, const uint8_t* data, size_t count, int32_t start) -> int32_t
 		{
 			size_t h = (count >> WIND::CONSOLE::FONT_GLYPH_SHIFT);
 			size_t w = WIND::CONSOLE::FONT_GLYPH_SIZE;
@@ -330,7 +330,7 @@ namespace wind
 				{
 					rect.position.x = (index % WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 
-					ALLEGRO::BITMAP glyph = al::create_sub_bitmap(font->m_bitmap, rect);
+					ALLEGRO::BITMAP glyph = al::create_sub_bitmap(font->m_bitmap, static_cast<ALLEGRO::RECTANGLE<int32_t>>(rect));
 
 					if (!glyph)
 					{
@@ -513,21 +513,21 @@ namespace wind
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
 
-			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, point, 0);
+			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, static_cast<ALLEGRO::POINT<float>>(point), 0);
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const wind::string_t& text) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const wind::string_t& text) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			float w = text.length() << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 			ALLEGRO::POINT<int32_t> pos{ point };
 
-			if (alignment == WIND::CONSOLE::FONT_ALIGNMENT_RIGHT)
+			if (alignment == WIND::CONSOLE::FONT::ALIGNMENT::RIGHT)
 			{
 				pos.x -= w;
 			}
 
-			if (alignment == WIND::CONSOLE::FONT_ALIGNMENT_CENTRE)
+			if (alignment == WIND::CONSOLE::FONT::ALIGNMENT::CENTRE)
 			{
 				pos.x -= (w * 0.5f);
 			}
@@ -539,7 +539,7 @@ namespace wind
 			}
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, int32_t alignment, const char* format, ...) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const char* format, ...) -> void
 		{
 			va_list args;
 			int32_t len;
@@ -623,7 +623,7 @@ namespace wind
 
 				for (point.x = 0; point.x < WIND::CONSOLE::FONT_GLYPH_SIZE; ++point.x)
 				{
-					int32_t color = wind::unmap_rgb_i(al::get_pixel(glyph, point));
+					int32_t color = wind::unmap_rgb_i(al::get_pixel(glyph, static_cast<ALLEGRO::POINT<float>>(point)));
 
 					data[point.y] <<= 1;
 

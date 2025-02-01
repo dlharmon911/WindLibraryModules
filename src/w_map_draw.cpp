@@ -10,15 +10,15 @@ namespace wind
 	{
 		namespace cell
 		{
-			auto draw(const map::cell_t& cell, const tilemap_t& tilemap, const ALLEGRO::POINT<size_t>& position) -> void
+			static auto draw(const map::cell_t& cell, const tilemap_t& tilemap, const ALLEGRO::POINT<size_t>& position) -> void
 			{
-				for (size_t layer = 0; layer < WIND::MAP::CELL::LAYER_COUNT; ++layer)
+				for (size_t layer = 0; layer < std::to_underlying(WIND::MAP::CELL::LAYER::COUNT); ++layer)
 				{
-					const tilemap::tile_t& tile = cell[layer];
+					const tilemap::tile_t& tile = cell[(WIND::MAP::CELL::LAYER)layer];
 					const tilesheet_t& tilesheet = tilemap.at(tile.get_tilesheet());
 					const ALLEGRO::BITMAP& bitmap = tilesheet.at(tile.get_index());
 
-					al::draw_bitmap(bitmap, position);
+					al::draw_bitmap(bitmap, static_cast<ALLEGRO::POINT<float>>(position));
 				}
 			}
 		}
@@ -27,8 +27,8 @@ namespace wind
 		{
 			const ALLEGRO::SIZE<size_t>& map_size{ map.size() };
 			const ALLEGRO::SIZE<size_t>& camera_size{ camera.get_size() };
-			const ALLEGRO::SIZE<size_t>& tile_size{ tilemap.get_tile_size() };
-			const ALLEGRO::SIZE<size_t>& tile_shift{ tilemap.get_tile_size() };
+			const ALLEGRO::SIZE<size_t>& tile_size{ static_cast<ALLEGRO::SIZE<size_t>>(tilemap.get_tile_size()) };
+			const ALLEGRO::SIZE<size_t>& tile_shift{ static_cast<ALLEGRO::SIZE<size_t>>(tilemap.get_tile_size()) };
 			ALLEGRO::POINT<size_t> point{ position.x - camera.get_shift().x, position.y - camera.get_shift().y };
 			ALLEGRO::POINT<size_t> actual_position{};
 			size_t map_index{ 0 };

@@ -471,7 +471,7 @@ namespace wind
 		{
 			std::vector<string_t> m_path;
 
-			int32_t process_shortcuts(const dson_t& dson, dson_t& config, const string_t& prefix = "")
+			int32_t process_shortcuts(const dson_t& dson, dson_t& config, const string_t& prefix = static_cast<string_t>(""))
 			{
 				for (auto i = dson.cbegin(); i != dson.cend(); ++i)
 				{
@@ -777,7 +777,7 @@ namespace wind
 			for (i = PHYSFS_supportedArchiveTypes(); *i != nullptr; i++)
 			{
 				wind::string_t a = string::to_upper(ext);
-				wind::string_t b = (*i)->extension;
+				wind::string_t b = static_cast<string_t>((*i)->extension);
 
 				if (a.compare((*i)->extension) == 0)
 				{
@@ -794,7 +794,7 @@ namespace wind
 				{
 					al::physfs_addon::set_file_interface();
 
-					if (!datafile::parser::parse("index.ini", output, sListSep))
+					if (!datafile::parser::parse(static_cast<string_t>("index.ini"), output, sListSep))
 					{
 						output.clear();
 					}
@@ -810,7 +810,7 @@ namespace wind
 
 				al::change_directory((dir + ALLEGRO::NATIVE_PATH_SEP + path).c_str());
 
-				if (!datafile::parser::parse(base + "." + ext, output, sListSep))
+				if (!datafile::parser::parse(base + static_cast<string_t>(".") + ext, output, sListSep))
 				{
 					output.clear();
 				}

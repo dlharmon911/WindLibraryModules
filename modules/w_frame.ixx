@@ -6,46 +6,49 @@ import allegro;
 import :base;
 import :math;
 
-namespace wind
+namespace WIND
 {
-	namespace theme
+	namespace THEME
 	{
-		export enum colors
+		export enum class COLOR : int32_t
 		{
-			background,
-			foreground,
-			workspace,
-			border,
-			border_light,
-			border_dark,
-			text,
-			text_shadow,
-			_count
+			BACKGROUND,
+			FOREGROUND,
+			WORKSPACE,
+			BORDER,
+			BORDER_LIGHT,
+			BORDER_DARK,
+			TEXT,
+			TEXT_SHADOW,
+			COUNT
 		};
 	}
 
-	namespace frame
+	namespace FRAME
 	{
-		namespace border
+		namespace BORDER
 		{
-			export enum class type
+			export enum class TYPE : int32_t
 			{
-				none,
-				raised,
-				sunken,
-				ridge,
-				groove,
-				workspace,
-				solid
+				NONE,
+				RAISED,
+				SUNKEN,
+				RIDGE,
+				GROOVE,
+				WORKSPACE,
+				SOLID
 			};
 		}
 
-		export enum class type
+		export enum class TYPE : int32_t
 		{
-			normal,
-			workspace
+			NORMAL,
+			WORKSPACE
 		};
-
-		export auto draw(const ALLEGRO::POINT<float> point, const ALLEGRO::SIZE<float> dim, frame::type type = type::normal, frame::border::type border = border::type::raised) -> void;
 	}
+}
+
+namespace wind::frame
+{
+	export auto draw(const ALLEGRO::POINT<float>& point, const ALLEGRO::SIZE<float>& dim, WIND::FRAME::TYPE type = WIND::FRAME::TYPE::NORMAL, WIND::FRAME::BORDER::TYPE border = WIND::FRAME::BORDER::TYPE::RAISED) -> void;
 }

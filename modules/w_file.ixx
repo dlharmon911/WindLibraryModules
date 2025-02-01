@@ -14,13 +14,13 @@ namespace wind
 	export class file_iterator_t
 	{
 	public:
-		file_iterator_t() : m_data(), m_c(EOF) {}
+		file_iterator_t() = default;
 
-		file_iterator_t(const ALLEGRO::FILE& file) : m_data(file), m_c(EOF) {}
+		explicit file_iterator_t(const ALLEGRO::FILE& file) : m_data(file), m_c(EOF) {}
 
-		file_iterator_t(const file_iterator_t& it) : m_data(it.m_data), m_c(it.m_c) {}
+		file_iterator_t(const file_iterator_t& it) = default;
 
-		~file_iterator_t() {}
+		~file_iterator_t() = default;
 
 		auto operator = (const file_iterator_t& it) -> file_iterator_t&
 		{
@@ -87,8 +87,8 @@ namespace wind
 		}
 
 	private:
-		ALLEGRO::FILE m_data;
-		int32_t m_c;
+		ALLEGRO::FILE m_data{};
+		int32_t m_c{ EOF };
 	};
 }
 

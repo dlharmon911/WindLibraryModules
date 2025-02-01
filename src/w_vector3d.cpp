@@ -24,32 +24,6 @@ namespace wind
     {
     }
 
-    auto vector3d_t::operator+(const vector3d_t& rhs) const -> vector3d_t
-    {
-        return vector3d_t(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X],
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y],
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z]);
-    }
-
-    auto vector3d_t::operator-(const vector3d_t& rhs) const -> vector3d_t
-    {
-        return vector3d_t(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X],
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y],
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z]);
-    }
-
-    auto vector3d_t::operator*(const float factor) const -> vector3d_t
-    {
-        return vector3d_t(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] * factor,
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] * factor,
-            this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] * factor);
-    }
-
-    auto vector3d_t::operator/(const float factor) const -> vector3d_t
-    {
-        return this->operator*(1.0f / factor);
-    }
-
     auto vector3d_t::operator-() const -> vector3d_t
     {
         return vector3d_t(-this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_X],
@@ -103,11 +77,6 @@ namespace wind
         return (std::abs(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X]) <= std::numeric_limits<float>::epsilon() &&
             std::abs(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y]) <= std::numeric_limits<float>::epsilon() &&
             std::abs(this->m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z]) <= std::numeric_limits<float>::epsilon());
-    }
-
-    auto vector3d_t::operator!=(const vector3d_t& rhs) const -> bool
-    {
-        return !(this->operator == (rhs));
     }
 
     auto vector3d_t::dot_product(const vector3d_t& rhs) const -> float
@@ -266,5 +235,32 @@ namespace wind
     {
         ALLEGRO::ASSERT(index < WIND::VECTOR3D::INDEX::COUNT);
         this->m_array[index] = value;
+    }
+
+
+    auto operator+(const vector3d_t& lhs, const vector3d_t& rhs) -> vector3d_t
+    {
+        return vector3d_t(lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X],
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y],
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] + rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z]);
+    }
+
+    auto operator-(const vector3d_t& lhs, const vector3d_t& rhs) -> vector3d_t
+    {
+        return vector3d_t(lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X],
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y],
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] - rhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z]);
+    }
+
+    auto operator*(const vector3d_t& lhs, const float factor) -> vector3d_t
+    {
+        return vector3d_t(lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_X] * factor,
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Y] * factor,
+            lhs.m_array[WIND::VECTOR3D::INDEX::ELEMENT_Z] * factor);
+    }
+
+    auto operator/(const vector3d_t& lhs, const float factor) -> vector3d_t
+    {
+        return lhs * (1.0f / factor);
     }
 }

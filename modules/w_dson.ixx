@@ -1,8 +1,8 @@
 /*
 	OneLoneCoder - DataFile v1.00
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	An "easy to use" serialisation/deserialisation class that yields
-	human readable hierachical files.
+	An "easy to use" serialization/deserialization class that yields
+	human readable hierarchical files.
 
 	License (OLC-3)
 	~~~~~~~~~~~~~~~
@@ -111,7 +111,7 @@ namespace wind
 		{
 		public:
 			iterator() = default;
-			iterator(object_vector_t::iterator it) : m_it(it) {}
+			explicit iterator(object_vector_t::iterator it) : m_it(it) {}
 
 			auto key() const -> const string_t& { return this->m_it->first; }
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
@@ -129,15 +129,15 @@ namespace wind
 		{
 		public:
 			const_iterator() = default;
-			const_iterator(object_vector_t::const_iterator it) : m_it(it) {}
+			explicit const_iterator(object_vector_t::const_iterator it) : m_it(it) {}
 
 			auto key() const -> const string_t& { return this->m_it->first; }
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++ () -> const_iterator& { ++this->m_it; return *this; }
 			auto operator ++ (int32_t) -> const_iterator { const_iterator tmp = *this; ++(*this); return tmp; }
-			auto operator -> () const -> const_pointer_type const { return &this->m_it->second; }
-			auto operator * () const -> const_reference_type const { return this->m_it->second; }
+			auto operator -> () -> const_pointer_type { return &this->m_it->second; }
+			auto operator * () const -> const_reference_type { return this->m_it->second; }
 
 		private:
 			object_vector_t::const_iterator m_it;
@@ -148,7 +148,7 @@ namespace wind
 		auto cbegin() const->const_iterator;
 		auto cend() const->const_iterator;
 
-	protected:
+	private:
 		bool m_bIsComment = false;
 	};
 }

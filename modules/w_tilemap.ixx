@@ -23,7 +23,7 @@ namespace wind
 
 	public:
 		tilemap_t();
-		tilemap_t(ALLEGRO::SIZE<int32_t> tilesize);
+		explicit tilemap_t(ALLEGRO::SIZE<int32_t> tilesize);
 		tilemap_t(const tilemap_t& tilemap);
 		~tilemap_t();
 		auto operator = (const tilemap_t& tilemap)->tilemap_t&;
@@ -33,7 +33,7 @@ namespace wind
 
 		auto clear() -> void;
 
-		auto get_count() const->size_t;
+		auto size() const->size_t;
 		auto is_empty() const -> bool;
 
 		auto push_back(reference_element_type tilemap) -> void;
@@ -52,7 +52,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(vector_type::iterator it) : m_it(it) {}
+			explicit iterator(vector_type::iterator it) : m_it(it) {}
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++() -> iterator& { ++this->m_it; return *this; }
@@ -69,7 +69,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(const vector_type::const_iterator it) : m_it(it) {}
+			explicit const_iterator(const vector_type::const_iterator it) : m_it(it) {}
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++() -> const_iterator& { ++this->m_it; return *this; }
@@ -99,14 +99,12 @@ namespace wind
 			tile_t();
 			tile_t(const tile_t& tile);
 			tile_t(uint32_t tilesheet, uint32_t index);
-			tile_t(uint32_t tile);
+			explicit tile_t(uint32_t tile);
 			~tile_t();
 			auto operator = (const tile_t& tile)->tile_t&;
 			auto operator = (uint32_t tile)->tile_t&;
 			auto operator == (const tile_t& tile) -> bool;
 			auto operator == (uint32_t tile) -> bool;
-			auto operator != (const tile_t& tile) -> bool;
-			auto operator != (uint32_t tile) -> bool;
 			auto set_data(uint32_t tile) -> void;
 			auto get_data() const->uint32_t;
 			auto set_tilesheet(uint32_t tilesheet) -> void;
@@ -124,7 +122,9 @@ namespace wind
 					uint32_t m_index : 10;
 					uint32_t m_reserved : 16;
 				};
-			} m_tile;
+			};
+			
+			_tile m_tile{ 0 };
 		};
 	}
 }

@@ -11,8 +11,8 @@ namespace wind
 	export class button_t : public dialog::widget_t
 	{
 	public:
-		button_t() {}
-		virtual ~button_t() {}
+		button_t() = default;
+		virtual ~button_t() = default;
 
 		virtual auto on_initialize() -> int32_t = 0;
 		virtual auto on_shutdown() -> int32_t = 0;

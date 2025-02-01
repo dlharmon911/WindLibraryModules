@@ -16,7 +16,7 @@ namespace wind
 	export class system_t
 	{
 	public:
-		system_t(wind::add_const_reference_t<std::shared_ptr<dialog_t>> dialog);
+		explicit system_t(wind::add_const_reference_t<std::shared_ptr<dialog_t>> dialog);
 		~system_t();
 		auto run(wind::add_const_reference_t<array_t<wind::string_t>> args) -> int32_t;
 

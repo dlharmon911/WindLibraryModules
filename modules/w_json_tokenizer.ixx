@@ -15,47 +15,44 @@ namespace WIND
 	{
 		namespace TOKEN
 		{
-			enum
+			export enum class TYPE : int32_t
 			{
-				TYPE_UNDEFINED = -1,
-				TYPE_NULL,
-				TYPE_BOOLEAN,
-				TYPE_NUMBER,
-				TYPE_STRING,
-				TYPE_OBJECT_START,
-				TYPE_OBJECT_END,
-				TYPE_ARRAY_START,
-				TYPE_ARRAY_END,
-				TYPE_COLON,
-				TYPE_COMMA
+				UNDEFINED = -1,
+				EMPTY,
+				BOOLEAN,
+				NUMBER,
+				STRING,
+				OBJECT_START,
+				OBJECT_END,
+				ARRAY_START,
+				ARRAY_END,
+				COLON,
+				COMMA
 			};
 		}
 
 		namespace TOKENIZER
 		{
-			export enum
-			{
-				CHAR_OBJECT_START = 0x7b,
-				CHAR_OBJECT_END = 0x7d,
-				CHAR_ARRAY_START = 0x5b,
-				CHAR_ARRAY_END = 0x5d,
-				CHAR_COLON = 0x3a,
-				CHAR_COMMA = 0x2c,
-				CHAR_BACK_SLASH = 0x5c,
-				CHAR_FORWARD_SLASH = 0x2f,
-				CHAR_QUOTATION = 0x22,
-				CHAR_MINUS = 0x2d,
-				CHAR_PLUS = 0x2b,
-				CHAR_DECIMAL = 0x2e,
-				CHAR_E_UPPER = 0x45,
-				CHAR_E_LOWER = 0x65,
-				CHAR_SPACE = 0x20,
-				CHAR_TAB = 0x09,
-				CHAR_NEW_LINE = 0x0a,
-				CHAR_CARRIAGE_RETURN = 0x0d,
-				CHAR_BACKSPACE = 0x08,
-				CHAR_FORMFEED = 0x0c
-			};
+			constexpr wind::uchar_t CHAR_OBJECT_START{ 0x7b };
+			constexpr wind::uchar_t CHAR_OBJECT_END{ 0x7d };
+			constexpr wind::uchar_t CHAR_ARRAY_START{ 0x5b };
+			constexpr wind::uchar_t CHAR_ARRAY_END{ 0x5d };
+			constexpr wind::uchar_t CHAR_COLON{ 0x3a };
+			constexpr wind::uchar_t CHAR_COMMA{ 0x2c };
+			constexpr wind::uchar_t CHAR_BACK_SLASH{ 0x5c };
+			constexpr wind::uchar_t CHAR_FORWARD_SLASH{ 0x2f };
+			constexpr wind::uchar_t CHAR_QUOTATION{ 0x22 };
+			constexpr wind::uchar_t CHAR_MINUS{ 0x2d };
+			constexpr wind::uchar_t CHAR_PLUS{ 0x2b };
+			constexpr wind::uchar_t CHAR_DECIMAL{ 0x2e };
+			constexpr wind::uchar_t CHAR_E_UPPER{ 0x45 };
+			constexpr wind::uchar_t CHAR_E_LOWER{ 0x65 };
+			constexpr wind::uchar_t CHAR_SPACE{ 0x20 };
+			constexpr wind::uchar_t CHAR_TAB{ 0x09 };
+			constexpr wind::uchar_t CHAR_NEW_LINE{ 0x0a };
+			constexpr wind::uchar_t CHAR_CARRIAGE_RETURN{ 0x0d };
+			constexpr wind::uchar_t CHAR_BACKSPACE{ 0x08 };
+			constexpr wind::uchar_t CHAR_FORMFEED{ 0x0c };
 		}
 	}
 }
@@ -66,19 +63,19 @@ namespace wind
 	{
 	public:
 		json_token_t();
-		json_token_t(int32_t type, const string_t& str);
+		json_token_t(WIND::JSON::TOKEN::TYPE type, const string_t& str);
 		json_token_t(const json_token_t& token);
 		~json_token_t();
 		auto operator = (const json_token_t& token)->json_token_t&;
 		auto clear() -> void;
-		auto set_type(int32_t type) -> void;
-		auto get_type() const->int32_t;
+		auto set_type(WIND::JSON::TOKEN::TYPE type) -> void;
+		auto get_type() const->WIND::JSON::TOKEN::TYPE;
 		auto set_string(const string_t& str) -> void;
 		auto get_string() -> string_t&;
 		auto get_string() const -> const string_t&;
 
 	private:
-		int32_t m_type;
+		WIND::JSON::TOKEN::TYPE m_type;
 		string_t m_ustring;
 	};
 
@@ -91,7 +88,7 @@ namespace wind
 		json_tokenizer_t(iterator begin, iterator end) : m_char(0), m_begin(begin), m_end(end) {}
 		json_tokenizer_t(const json_tokenizer_t& tokenizer) : m_char(tokenizer.m_char), m_begin(tokenizer.m_begin), m_end(tokenizer.m_end) {}
 		json_tokenizer_t(json_tokenizer_t& tokenizer) : m_char(tokenizer.m_char), m_begin(tokenizer.m_begin), m_end(tokenizer.m_end) {}
-		~json_tokenizer_t() {}
+		~json_tokenizer_t() = default;
 
 		auto operator = (const json_tokenizer_t& tokenizer) -> json_tokenizer_t&
 		{
@@ -130,12 +127,12 @@ namespace wind
 				rv = this->parse_number();
 			} break;
 
-			case WIND::JSON::TOKENIZER::CHAR_OBJECT_START: rv = json_token_t(WIND::JSON::TOKEN::TYPE_OBJECT_START, wind::string::create(this->m_char, 1)); this->pop(); break;
-			case WIND::JSON::TOKENIZER::CHAR_OBJECT_END: rv = json_token_t(WIND::JSON::TOKEN::TYPE_OBJECT_END, wind::string::create(this->m_char, 1)); this->pop(); break;
-			case WIND::JSON::TOKENIZER::CHAR_ARRAY_START: rv = json_token_t(WIND::JSON::TOKEN::TYPE_ARRAY_START, wind::string::create(this->m_char, 1)); this->pop(); break;
-			case WIND::JSON::TOKENIZER::CHAR_ARRAY_END: rv = json_token_t(WIND::JSON::TOKEN::TYPE_ARRAY_END, wind::string::create(this->m_char, 1)); this->pop(); break;
-			case WIND::JSON::TOKENIZER::CHAR_COLON: rv = json_token_t(WIND::JSON::TOKEN::TYPE_COLON, wind::string::create(this->m_char, 1)); this->pop(); break;
-			case WIND::JSON::TOKENIZER::CHAR_COMMA: rv = json_token_t(WIND::JSON::TOKEN::TYPE_COMMA, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_OBJECT_START: rv = json_token_t(WIND::JSON::TOKEN::TYPE::OBJECT_START, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_OBJECT_END: rv = json_token_t(WIND::JSON::TOKEN::TYPE::OBJECT_END, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_ARRAY_START: rv = json_token_t(WIND::JSON::TOKEN::TYPE::ARRAY_START, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_ARRAY_END: rv = json_token_t(WIND::JSON::TOKEN::TYPE::ARRAY_END, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_COLON: rv = json_token_t(WIND::JSON::TOKEN::TYPE::COLON, wind::string::create(this->m_char, 1)); this->pop(); break;
+			case WIND::JSON::TOKENIZER::CHAR_COMMA: rv = json_token_t(WIND::JSON::TOKEN::TYPE::COMMA, wind::string::create(this->m_char, 1)); this->pop(); break;
 
 			default:
 			{
@@ -165,7 +162,7 @@ namespace wind
 				{
 					json_token_t token = tokenizer.get_next();
 
-					if (token.get_type() != WIND::JSON::TOKEN::TYPE_UNDEFINED)
+					if (token.get_type() != WIND::JSON::TOKEN::TYPE::UNDEFINED)
 					{
 						tokens.push_back(token);
 					}
@@ -218,13 +215,13 @@ namespace wind
 
 			if (rv.get_string().compare("null") == 0)
 			{
-				rv.set_type(WIND::JSON::TOKEN::TYPE_NULL);
+				rv.set_type(WIND::JSON::TOKEN::TYPE::EMPTY);
 			}
 			else
 			{
 				if (rv.get_string().compare("true") == 0 || rv.get_string().compare("false") == 0)
 				{
-					rv.set_type(WIND::JSON::TOKEN::TYPE_BOOLEAN);
+					rv.set_type(WIND::JSON::TOKEN::TYPE::BOOLEAN);
 				}
 				else
 				{
@@ -310,8 +307,8 @@ namespace wind
 				if (this->m_char == WIND::JSON::TOKENIZER::CHAR_QUOTATION)
 				{
 					this->pop();
-					rv.set_type(WIND::JSON::TOKEN::TYPE_STRING);
-					break;
+					rv.set_type(WIND::JSON::TOKEN::TYPE::STRING);
+					return rv;
 				}
 
 				if (this->m_char < 32 || this->m_char >= 127)
@@ -319,7 +316,7 @@ namespace wind
 					// unknown
 					do_json_error(WIND::JSON::ERROR_CHAR_VALUE, wind::string_t(__FILE__), __LINE__);
 					rv.clear();
-					break;
+					return rv;
 				}
 				else
 				{
@@ -328,7 +325,7 @@ namespace wind
 						if (this->parse_escape_chars(rv.get_string()) < 0)
 						{
 							rv.clear();
-							break;
+							return rv;
 						}
 					}
 					else
@@ -405,6 +402,20 @@ namespace wind
 			return ipart.length();
 		}
 
+		auto parse_digits(string_t& string) -> size_t
+		{
+			size_t count = 0;
+
+			while (this->m_char >= '0' && this->m_char <= '9')
+			{
+				string.push_back(this->m_char);
+				this->pop();
+				++count;
+			}
+
+			return count;
+		}
+
 		auto parse_number() -> json_token_t
 		{
 			bool error = false;
@@ -419,44 +430,33 @@ namespace wind
 				this->pop();
 			}
 
-			if (this->parse_fragment_int(string))
+			if (!this->parse_fragment_int(string))
 			{
-				if (this->m_char == WIND::JSON::TOKENIZER::CHAR_DECIMAL)
-				{
-					string.push_back(this->m_char);
-					this->pop();
-
-					if (this->m_char >= '0' && this->m_char <= '9')
-					{
-						while (this->m_char >= '0' && this->m_char <= '9')
-						{
-							string.push_back(this->m_char);
-							this->pop();
-						}
-
-						if (this->m_char == WIND::JSON::TOKENIZER::CHAR_E_LOWER ||
-							this->m_char == WIND::JSON::TOKENIZER::CHAR_E_UPPER)
-						{
-							if (!this->parse_fragment_exp(string))
-							{
-								error = true;
-							}
-						}
-					}
-					else
-					{
-						error = true;
-					}
-				}
+				return rv;
 			}
-			else
+
+			if (this->m_char == WIND::JSON::TOKENIZER::CHAR_DECIMAL)
 			{
-				error = true;
+				string.push_back(this->m_char);
+				this->pop();
+
+				if (parse_digits(string) < 1)
+				{
+					return rv;
+				}
+
+				if ((this->m_char == WIND::JSON::TOKENIZER::CHAR_E_LOWER ||
+					this->m_char == WIND::JSON::TOKENIZER::CHAR_E_UPPER) &&
+					!this->parse_fragment_exp(string))
+				{
+					return rv;
+				}
+						
 			}
 
 			if (!error)
 			{
-				rv = json_token_t(WIND::JSON::TOKEN::TYPE_NUMBER, string);
+				rv = json_token_t(WIND::JSON::TOKEN::TYPE::NUMBER, string);
 			}
 
 			return rv;

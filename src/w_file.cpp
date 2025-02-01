@@ -126,7 +126,7 @@ auto operator << (ALLEGRO::FILE& stream, double value) -> ALLEGRO::FILE&
 auto operator >> (ALLEGRO::FILE& stream, wind::string_t& value) -> ALLEGRO::FILE&
 {
 	value.clear();
-	value.append(al::fget_ustr(stream));
+	value.append(static_cast<wind::string_t>(al::fget_ustr(stream)));
 	return stream;
 }
 

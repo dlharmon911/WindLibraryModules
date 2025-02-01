@@ -16,9 +16,9 @@ namespace wind
 		using const_pointer_element_type = wind::add_const_pointer<element_type>::type;
 		using const_reference_element_type = wind::add_const_reference<element_type>::type;
 
-		array_t() : m_data(nullptr), m_count(0) {}
+		array_t() = default;
 
-		array_t(std::initializer_list<element_type> l) : m_data(l.size() ? std::make_shared<element_type[]>(l.size()) : nullptr), m_count(this->m_data ? l.size() : 0)
+		explicit array_t(std::initializer_list<element_type> l) : m_data(l.size() ? std::make_shared<element_type[]>(l.size()) : nullptr), m_count(this->m_data ? l.size() : 0)
 		{
 			size_t i = 0;
 			for (auto it = l.begin(); it != l.end(); ++it)
@@ -28,12 +28,12 @@ namespace wind
 			}
 		}
 
-		array_t(size_t count) : m_data(std::make_shared<element_type[]>(count)), m_count(this->m_data ? count : 0) {}
+		explicit array_t(size_t count) : m_data(std::make_shared<element_type[]>(count)), m_count(this->m_data ? count : 0) {}
 
 		array_t(const array_t<element_type>& array) : m_data(array.m_data), m_count(array.m_count) {}
 
 		template <typename Q>
-		array_t(const array_t<Q>& array) : m_data(array.get_count() ? std::make_shared<element_type[]>(array.get_count()) : nullptr), m_count(this->m_data ? array.get_count() : 0)
+		explicit array_t(const array_t<Q>& array) : m_data(array.size() ? std::make_shared<element_type[]>(array.size()) : nullptr), m_count(this->m_data ? array.size() : 0)
 		{
 			for (size_t i = 0; i < this->m_count; ++i)
 			{
@@ -41,7 +41,7 @@ namespace wind
 			}
 		}
 
-		~array_t() {}
+		~array_t() = default;
 
 		auto clear() -> void
 		{
@@ -115,7 +115,7 @@ namespace wind
 			return *this;
 		}
 
-		auto get_count() const -> size_t
+		auto size() const -> size_t
 		{
 			if (this->m_data)
 			{
@@ -223,8 +223,8 @@ namespace wind
 
 		private:
 			std::shared_ptr<element_type[]> m_data{};
-			size_t m_count;
-			size_t m_offset;
+			size_t m_count{ 0 };
+			size_t m_offset{ 0 };
 		};
 
 		class const_iterator
@@ -279,7 +279,7 @@ namespace wind
 		public:
 			reverse_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
 
-			reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
+			explicit reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
 
 			auto operator = (const iterator& it) -> reverse_iterator&
 			{
@@ -331,7 +331,7 @@ namespace wind
 		public:
 			const_reverse_iterator(const std::shared_ptr<element_type[]>& data, size_t count, size_t offset) : m_data(data), m_count(count), m_offset(offset), m_offset(offset) {}
 
-			const_reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
+			explicit const_reverse_iterator(const iterator& it) : m_data(it.m_data), m_count(it.m_count), m_offset(it.m_offset) {}
 
 			auto operator = (const iterator& it) -> const_reverse_iterator&
 			{

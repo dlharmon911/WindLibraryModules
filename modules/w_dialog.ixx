@@ -15,8 +15,8 @@ namespace wind
 	export class dialog_t : public dialog::base_t<wind::dialog::widget_t>
 	{
 	public:
-		dialog_t() {}
-		virtual ~dialog_t() {}
+		dialog_t() = default;
+		virtual ~dialog_t() = default;
 
 		virtual auto get_version() const->int32_t = 0;
 		virtual auto get_title() const->wind::add_const_reference_t<wind::string_t> = 0;

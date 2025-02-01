@@ -9,7 +9,7 @@ import :string;
 
 namespace wind
 {
-	const string_t dson_t::default_tab = "\t";
+	const string_t dson_t::default_tab = static_cast<string_t>("\t");
 
 	dson_t::dson_t() = default;
 
@@ -25,7 +25,7 @@ namespace wind
 	auto dson_t::get_content(const size_t nItem) const -> const string_t
 	{
 		if (nItem >= m_vContent.size())
-			return "";
+			return string_t();
 		else
 			return m_vContent[nItem];
 	}
@@ -208,8 +208,8 @@ namespace wind
 		{
 			// These variables are outside of the read loop, get_as we will
 			// need to refer to previous iteration values in certain conditions
-			string_t sPropName = "";
-			string_t sPropValue = "";
+			string_t sPropName{};
+			string_t sPropValue{};
 
 			// The file is fundamentally structured get_as a stack, so we will read it
 			// in a such, but note the data structure in memory is not explicitly
@@ -375,7 +375,7 @@ namespace wind
 
 	auto dson_t::get_child(const string_t& name) const -> const dson_t&
 	{
-		auto a = m_mapObjects.find(name.c_str());
+		auto a = m_mapObjects.find(static_cast<string_t>(name.c_str()));
 
 		ALLEGRO::ASSERT(a != m_mapObjects.cend());
 

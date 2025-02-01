@@ -17,7 +17,7 @@ namespace wind
 	{
 		namespace string
 		{
-			auto from_ustring(const string_t& ustring) -> string_t
+			static auto from_ustring(const string_t& ustring) -> string_t
 			{
 				string_t s;
 				int32_t pos = 0;
@@ -66,7 +66,7 @@ namespace wind
 
 		namespace tab
 		{
-			auto write(parse_info_t& info) -> int32_t
+			static auto write(parse_info_t& info) -> int32_t
 			{
 				for (int32_t i = 0; i < info.m_tab; ++i)
 				{
@@ -119,31 +119,31 @@ namespace wind
 				{
 					switch (begin->get_type())
 					{
-					case WIND::JSON::TOKEN::TYPE_NULL:
+					case WIND::JSON::TOKEN::TYPE::EMPTY:
 					{
 						json.clear();
 						++begin;
 					} break;
 
-					case WIND::JSON::TOKEN::TYPE_BOOLEAN:
+					case WIND::JSON::TOKEN::TYPE::BOOLEAN:
 					{
 						json.set_as_boolean(begin->get_string() == "true");
 						++begin;
 					} break;
 
-					case WIND::JSON::TOKEN::TYPE_NUMBER:
+					case WIND::JSON::TOKEN::TYPE::NUMBER:
 					{
 						json.set_as_number(std::atof(begin->get_string().c_str()));
 						++begin;
 					} break;
 
-					case WIND::JSON::TOKEN::TYPE_STRING:
+					case WIND::JSON::TOKEN::TYPE::STRING:
 					{
 						json.set_as_string(begin->get_string());
 						++begin;
 					} break;
 
-					case WIND::JSON::TOKEN::TYPE_OBJECT_START:
+					case WIND::JSON::TOKEN::TYPE::OBJECT_START:
 					{
 						json_object_t object;
 
@@ -154,7 +154,7 @@ namespace wind
 							json.set_as_object(object);
 						}
 					}break;
-					case WIND::JSON::TOKEN::TYPE_ARRAY_START:
+					case WIND::JSON::TOKEN::TYPE::ARRAY_START:
 					{
 						json_array_t array;
 
@@ -182,10 +182,10 @@ namespace wind
 
 				switch (json.get_type())
 				{
-				case WIND::JSON::TYPE_NULL:
+				case WIND::JSON::TYPE::EMPTY:
 				{
 					string_t output = "null";
-					for (auto c : output)
+					for (auto& c : output)
 					{
 						if (al::fputc(info.m_file, c) == EOF)
 						{
@@ -195,10 +195,10 @@ namespace wind
 					}
 				} break;
 
-				case WIND::JSON::TYPE_BOOLEAN:
+				case WIND::JSON::TYPE::BOOLEAN:
 				{
 					string_t output = ((bool)json ? "true" : "false");
-					for (auto c : output)
+					for (auto& c : output)
 					{
 						if (al::fputc(info.m_file, c) == EOF)
 						{
@@ -208,7 +208,7 @@ namespace wind
 					}
 				} break;
 
-				case WIND::JSON::TYPE_NUMBER:
+				case WIND::JSON::TYPE::NUMBER:
 				{
 					if (al::fprintf(info.m_file, "%G", (double)json) <= 0)
 					{
@@ -216,7 +216,7 @@ namespace wind
 					}
 				} break;
 
-				case WIND::JSON::TYPE_STRING:
+				case WIND::JSON::TYPE::STRING:
 				{
 					if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_QUOTATION) == EOF)
 					{
@@ -226,7 +226,7 @@ namespace wind
 
 					string_t s = json.get_as_string();
 
-					for (auto c : s)
+					for (auto& c : s)
 					{
 						if (al::fputc(info.m_file, c) == EOF)
 						{
@@ -242,12 +242,12 @@ namespace wind
 					}
 				} break;
 
-				case WIND::JSON::TYPE_OBJECT:
+				case WIND::JSON::TYPE::OBJECT:
 				{
 					rv = object::write((json_object_t)json, info);
 				}break;
 
-				case WIND::JSON::TYPE_ARRAY:
+				case WIND::JSON::TYPE::ARRAY:
 				{
 					rv = array::write((json_array_t)json, info);
 				}break;
@@ -279,7 +279,7 @@ namespace wind
 			{
 				int32_t rv = 0;
 
-				if (begin->get_type() != WIND::JSON::TOKEN::TYPE_STRING)
+				if (begin->get_type() != WIND::JSON::TOKEN::TYPE::STRING)
 				{
 					do_json_error(WIND::JSON::ERROR_INVALID_TOKEN_TYPE, __FILE__, __LINE__);
 					return -1;
@@ -295,7 +295,7 @@ namespace wind
 					return -1;
 				}
 
-				if (begin->get_type() == WIND::JSON::TOKEN::TYPE_COLON)
+				if (begin->get_type() == WIND::JSON::TOKEN::TYPE::COLON)
 				{
 					++begin;
 
@@ -326,7 +326,7 @@ namespace wind
 
 				string_t s = string::from_ustring(pair.first);
 
-				for (auto c : s)
+				for (auto& c : s)
 				{
 					if (al::fputc(info.m_file, c) == EOF)
 					{
@@ -359,8 +359,8 @@ namespace wind
 					return -1;
 				}
 
-				if (pair.second.get_type() == WIND::JSON::TYPE_ARRAY ||
-					pair.second.get_type() == WIND::JSON::TYPE_OBJECT)
+				if (pair.second.get_type() == WIND::JSON::TYPE::ARRAY ||
+					pair.second.get_type() == WIND::JSON::TYPE::OBJECT)
 				{
 					if (al::fputc(info.m_file, WIND::JSON::TOKENIZER::CHAR_NEW_LINE) == EOF)
 					{
@@ -389,8 +389,7 @@ namespace wind
 					if (begin == end)
 					{
 						do_json_error(WIND::JSON::ERROR_STREAM_ENDED_EARLY, __FILE__, __LINE__);
-						rv = -1;
-						break;
+						return -1;
 					}
 
 					rv = pair::parse(pair, begin, end);
@@ -409,14 +408,13 @@ namespace wind
 					else
 					{
 						do_json_error(WIND::JSON::ERROR_NON_UNIQUE_KEY, __FILE__, __LINE__);
-						rv = -1;
-						break;
+						return -1;
 					}
-				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE_COMMA);
+				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE::COMMA);
 
 				if (rv == 0)
 				{
-					if (begin->get_type() == WIND::JSON::TOKEN::TYPE_OBJECT_END)
+					if (begin->get_type() == WIND::JSON::TOKEN::TYPE::OBJECT_END)
 					{
 						++begin;
 					}
@@ -526,8 +524,7 @@ namespace wind
 					if (begin == end)
 					{
 						do_json_error(WIND::JSON::ERROR_STREAM_ENDED_EARLY, __FILE__, __LINE__);
-						rv = -1;
-						break;
+						return -1;
 					}
 
 					rv = value::parse(value, begin, end);
@@ -538,11 +535,11 @@ namespace wind
 					}
 
 					array.push_back(value);
-				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE_COMMA);
+				} while (begin->get_type() == WIND::JSON::TOKEN::TYPE::COMMA);
 
 				if (rv == 0)
 				{
-					if (begin->get_type() == WIND::JSON::TOKEN::TYPE_ARRAY_END)
+					if (begin->get_type() == WIND::JSON::TOKEN::TYPE::ARRAY_END)
 					{
 						++begin;
 					}
@@ -588,8 +585,8 @@ namespace wind
 						return -1;
 					}
 
-					if (array[index].get_type() != WIND::JSON::TYPE_ARRAY &&
-						array[index].get_type() != WIND::JSON::TYPE_OBJECT)
+					if (array[index].get_type() != WIND::JSON::TYPE::ARRAY &&
+						array[index].get_type() != WIND::JSON::TYPE::OBJECT)
 					{
 						if (tab::write(info) < 0)
 						{

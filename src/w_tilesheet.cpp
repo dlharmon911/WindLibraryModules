@@ -9,19 +9,20 @@ import :base;
 import :bitmap;
 import :color;
 import :json;
+import :string;
 import wind.datafile_addon;
 
 namespace wind
 {
 	tilesheet_t::tilesheet_t() : m_bitmaps(), m_tile_size({ 0, 0 }) {}
 
-	tilesheet_t::tilesheet_t(const std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size) : m_bitmaps(bitmaps), m_tile_size(tile_size) {}
+	tilesheet_t::tilesheet_t(const std::vector<element_type>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size) : m_bitmaps(bitmaps), m_tile_size(tile_size) {}
 
 	tilesheet_t::tilesheet_t(const tilesheet_t& tilesheet) : m_bitmaps(tilesheet.m_bitmaps), m_tile_size(tilesheet.m_tile_size) {}
 
 	tilesheet_t::~tilesheet_t() {}
 
-	auto tilesheet_t::operator = (const tilesheet_t& tilesheet) -> wind::add_reference_t<tilesheet_t>
+	auto tilesheet_t::operator = (const tilesheet_t& tilesheet) -> tilesheet_t&
 	{
 		this->m_bitmaps = tilesheet.m_bitmaps;
 		this->m_tile_size = tilesheet.m_tile_size;
@@ -114,7 +115,7 @@ namespace wind
 
 	namespace tilesheet
 	{
-		size_t populate_vector(ALLEGRO::BITMAP& bitmap, ALLEGRO::SIZE<size_t> tile_size, std::vector<ALLEGRO::BITMAP>& bitmaps)
+		static size_t populate_vector(ALLEGRO::BITMAP& bitmap, ALLEGRO::SIZE<size_t> tile_size, std::vector<ALLEGRO::BITMAP>& bitmaps)
 		{
 			ALLEGRO::SIZE<size_t> bitmap_size{ al::get_bitmap_dimensions(bitmap) };
 			ALLEGRO::BITMAP sub{ nullptr };
@@ -128,7 +129,7 @@ namespace wind
 			{
 				for (source.position.x = 0; source.position.x < bitmap_size.width; source.position.x += tile_size.width)
 				{
-					if (!(sub = al::create_sub_bitmap(bitmap, source)))
+					if (!(sub = al::create_sub_bitmap(bitmap, static_cast<ALLEGRO::RECTANGLE<int32_t>>(source))))
 					{
 						return 0;
 					}
@@ -168,7 +169,7 @@ namespace wind
 					return false;
 				}
 
-				if (json.get_type() != WIND::JSON::TYPE_OBJECT)
+				if (json.get_type() != WIND::JSON::TYPE::OBJECT)
 				{
 					return false;
 				}
@@ -179,7 +180,7 @@ namespace wind
 				{
 					const json_t& tilesheet_object = (*json_object.cbegin());
 
-					if (tilesheet_object.get_type() != WIND::JSON::TYPE_OBJECT)
+					if (tilesheet_object.get_type() != WIND::JSON::TYPE::OBJECT)
 					{
 						return false;
 					}
@@ -206,7 +207,7 @@ namespace wind
 
 						for (auto bit = bitmap_array.cbegin(); bit != bitmap_array.cend(); ++bit)
 						{
-							if (bit->get_type() != WIND::JSON::TYPE_STRING)
+							if (bit->get_type() != WIND::JSON::TYPE::STRING)
 							{
 								return false;
 							}
@@ -235,7 +236,7 @@ namespace wind
 					return false;
 				}
 
-				tiles.push_back(al::create_bitmap(size));
+				tiles.push_back(al::create_bitmap(static_cast<ALLEGRO::SIZE<size_t>>(size)));
 
 				if (!tiles[0])
 				{
@@ -248,15 +249,15 @@ namespace wind
 				al::convert_mask_to_alpha(tiles[0], wind::map_rgb_i(0xff00ff));
 				al::set_target_bitmap(target);
 
-				for (auto b : bitmaps)
+				for (auto& b : bitmaps)
 				{
-					if (tilesheet::populate_vector(b, size, tiles) == 0)
+					if (tilesheet::populate_vector(b, static_cast<ALLEGRO::SIZE<size_t>>(size), tiles) == 0)
 					{
 						return false;
 					}
 				}
 
-				object.m_object = std::make_shared<tilesheet_t>(tiles, size);
+				object.m_object = std::make_shared<tilesheet_t>(tiles, static_cast<ALLEGRO::SIZE<size_t>>(size));
 
 				return true;
 			}

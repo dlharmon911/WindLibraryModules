@@ -7,10 +7,6 @@ import :base;
 import :string;
 import :array;
 
-namespace WIND
-{
-}
-
 namespace wind
 {
 	export class matrix_t
@@ -21,23 +17,15 @@ namespace wind
 		matrix_t(const matrix_t& rhs);
 		~matrix_t();
 		auto operator=(const matrix_t& rhs)->matrix_t&;
-		auto operator-() const;
-		auto operator+(const float factor) const->matrix_t;
-		auto operator-(const float factor) const->matrix_t;
-		auto operator*(const float factor) const->matrix_t;
-		auto operator/(const float factor) const->matrix_t;
+		auto operator-() const -> matrix_t;
 		auto operator+=(const float factor)->matrix_t&;
 		auto operator-=(const float factor)->matrix_t&;
 		auto operator*=(const float factor)->matrix_t&;
 		auto operator/=(const float factor)->matrix_t&;
-		auto operator+(const matrix_t& rhs) const->matrix_t;
-		auto operator-(const matrix_t& rhs) const->matrix_t;
-		auto operator*(const matrix_t& rhs) const->matrix_t;
 		auto operator+=(const matrix_t& rhs)->matrix_t&;
 		auto operator-=(const matrix_t& rhs)->matrix_t&;
 		auto operator*=(const matrix_t& rhs)->matrix_t&;
 		auto operator==(const matrix_t& rhs) const -> bool;
-		auto operator!=(const matrix_t& rhs) const -> bool;
 		auto get(size_t column, size_t row) const -> float;
 		auto set(size_t column, size_t row, float value) -> void;
 		auto zero_out() -> void;
@@ -51,6 +39,15 @@ namespace wind
 		auto translate(const float xfactor = 1.0, const float yfactor = 1.0, const float zfactor = 1.0) const->matrix_t;
 		auto is_identity() const -> bool;
 		auto is_square() const -> bool;
+
+		friend auto operator + (const matrix_t& lhs, const float factor)->matrix_t;
+		friend auto operator - (const matrix_t& lhs, const float factor)->matrix_t;
+		friend auto operator * (const matrix_t& lhs, const float factor)->matrix_t;
+		friend auto operator / (const matrix_t& lhs, const float factor)->matrix_t;
+		friend auto operator + (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
+		friend auto operator - (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
+		friend auto operator * (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
+
 
 	private:
 		wind::array_t<float> m_array{};

@@ -3,6 +3,7 @@ export module wind:json;
 import allegro;
 export import :json.object;
 export import :json.io;
+export import :json.initializer;
 
 namespace wind
 {
@@ -17,7 +18,7 @@ namespace wind
 				return -1;
 			}
 
-			if (width_it->get_type() != WIND::JSON::TYPE_NUMBER)
+			if (width_it->get_type() != WIND::JSON::TYPE::NUMBER)
 			{
 				return -1;
 			}
@@ -29,7 +30,7 @@ namespace wind
 				return -1;
 			}
 
-			if (height_it->get_type() != WIND::JSON::TYPE_NUMBER)
+			if (height_it->get_type() != WIND::JSON::TYPE::NUMBER)
 			{
 				return -1;
 			}
@@ -46,7 +47,7 @@ namespace wind
 				return -1;
 			}
 
-			if (x_it->get_type() != WIND::JSON::TYPE_NUMBER)
+			if (x_it->get_type() != WIND::JSON::TYPE::NUMBER)
 			{
 				return -1;
 			}
@@ -58,7 +59,7 @@ namespace wind
 				return -1;
 			}
 
-			if (y_it->get_type() != WIND::JSON::TYPE_NUMBER)
+			if (y_it->get_type() != WIND::JSON::TYPE::NUMBER)
 			{
 				return -1;
 			}

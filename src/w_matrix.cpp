@@ -8,15 +8,15 @@ import :matrix;
 
 namespace wind
 {
-	matrix_t::matrix_t() : m_array(1), m_row(this->m_array.get_count() == 1 ? 1 : 0), m_column(this->m_array.get_count() == 1 ? 1 : 0)
+	matrix_t::matrix_t() : m_array(1), m_row(this->m_array.size() == 1 ? 1 : 0), m_column(this->m_array.size() == 1 ? 1 : 0)
 	{
-		ALLEGRO::ASSERT(this->m_array.get_count());
+		ALLEGRO::ASSERT(this->m_array.size());
 		this->zero_out();
 	}
 
-	matrix_t::matrix_t(size_t column, size_t row) : m_array(row* column), m_row(this->m_array.get_count() == 1 ? 1 : 0), m_column(this->m_array.get_count() == 1 ? 1 : 0)
+	matrix_t::matrix_t(size_t column, size_t row) : m_array(row* column), m_row(this->m_array.size() == 1 ? 1 : 0), m_column(this->m_array.size() == 1 ? 1 : 0)
 	{
-		ALLEGRO::ASSERT(this->m_array.get_count());
+		ALLEGRO::ASSERT(this->m_array.size());
 		this->zero_out();
 	}
 
@@ -30,11 +30,11 @@ namespace wind
 
 	auto matrix_t::operator=(const matrix_t& rhs)->matrix_t&
 	{
-		size_t size = rhs.m_array.get_count();
+		size_t size = rhs.m_array.size();
 
 		this->m_array = wind::array_t<float>(size);
 
-		ALLEGRO::ASSERT(this->m_array.get_count() == size);
+		ALLEGRO::ASSERT(this->m_array.size() == size);
 
 		this->m_row = rhs.m_row;
 		this->m_column = rhs.m_column;
@@ -47,55 +47,18 @@ namespace wind
 		return *this;
 	}
 
-	auto matrix_t::operator-() const
+	auto matrix_t::operator-() const->matrix_t
 	{
-		auto out = *this;
+		matrix_t out = *this;
 
-		out.operator*=(-1);
-
-		return out;
-	}
-
-	auto matrix_t::operator+(const float factor) const->matrix_t
-	{
-		auto out = *this;
-
-		out += factor;
-
-		return out;
-	}
-
-	auto matrix_t::operator-(const float factor) const->matrix_t
-	{
-		auto out = *this;
-
-		out -= factor;
-
-		return out;
-	}
-
-	auto matrix_t::operator*(const float factor) const->matrix_t
-	{
-		auto out = *this;
-
-		out *= factor;
-
-		return out;
-	}
-
-	auto matrix_t::operator/(const float factor) const->matrix_t
-	{
-		float inverse = 1.0f / factor;
-		auto out = *this;
-
-		out *= inverse;
+		out.operator *= (-1);
 
 		return out;
 	}
 
 	auto matrix_t::operator+=(const float factor)->matrix_t&
 	{
-		for (auto e : this->m_array)
+		for (auto& e : this->m_array)
 		{
 			e += factor;
 		}
@@ -105,7 +68,7 @@ namespace wind
 
 	auto matrix_t::operator-=(const float factor)->matrix_t&
 	{
-		for (auto e : this->m_array)
+		for (auto& e : this->m_array)
 		{
 			e -= factor;
 		}
@@ -115,7 +78,7 @@ namespace wind
 
 	auto matrix_t::operator*=(const float factor)->matrix_t&
 	{
-		for (auto e : this->m_array)
+		for (auto& e : this->m_array)
 		{
 			e *= factor;
 		}
@@ -127,7 +90,7 @@ namespace wind
 	{
 		float inverse = 1.0f / factor;
 
-		for (auto e : this->m_array)
+		for (auto& e : this->m_array)
 		{
 			e *= inverse;
 		}
@@ -135,29 +98,11 @@ namespace wind
 		return *this;
 	}
 
-	auto matrix_t::operator+(const matrix_t& rhs) const->matrix_t
-	{
-		auto out = *this;
-		return out.operator += (rhs);
-	}
-
-	auto matrix_t::operator-(const matrix_t& rhs) const->matrix_t
-	{
-		auto out = *this;
-		return out.operator -= (rhs);
-	}
-
-	auto matrix_t::operator*(const matrix_t& rhs) const->matrix_t
-	{
-		auto out = *this;
-		return out.operator *= (rhs);
-	}
-
 	auto matrix_t::operator+=(const matrix_t& rhs)->matrix_t&
 	{
-		size_t size = this->m_array.get_count();
+		size_t size = this->m_array.size();
 
-		ALLEGRO::ASSERT(size == rhs.m_array.get_count());
+		ALLEGRO::ASSERT(size == rhs.m_array.size());
 
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -169,9 +114,9 @@ namespace wind
 
 	auto matrix_t::operator-=(const matrix_t& rhs)->matrix_t&
 	{
-		size_t size = this->m_array.get_count();
+		size_t size = this->m_array.size();
 
-		ALLEGRO::ASSERT(size == rhs.m_array.get_count());
+		ALLEGRO::ASSERT(size == rhs.m_array.size());
 
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -188,9 +133,9 @@ namespace wind
 
 	auto matrix_t::operator==(const matrix_t& rhs) const -> bool
 	{
-		size_t size = this->m_array.get_count();
+		size_t size = this->m_array.size();
 
-		if (size != rhs.m_array.get_count())
+		if (size != rhs.m_array.size())
 		{
 			return false;
 		}
@@ -204,11 +149,6 @@ namespace wind
 		}
 
 		return true;
-	}
-
-	auto matrix_t::operator!=(const matrix_t& rhs) const -> bool
-	{
-		return !(this->operator==(rhs));
 	}
 
 	auto matrix_t::get(size_t column, size_t row) const -> float
@@ -225,7 +165,7 @@ namespace wind
 
 	auto matrix_t::zero_out() -> void
 	{
-		size_t size = this->m_array.get_count();
+		size_t size = this->m_array.size();
 
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -291,19 +231,19 @@ namespace wind
 
 	auto matrix_t::rotate(const float xfactor, const float yfactor, const float zfactor) const->matrix_t
 	{
-		auto out = *this;
+		matrix_t out = *this;
 		return out.rotate(xfactor, yfactor, zfactor);
 	}
 
 	auto matrix_t::scale(const float xfactor, const float yfactor, const float zfactor) const->matrix_t
 	{
-		auto out = *this;
+		matrix_t out = *this;
 		return out.scale(xfactor, yfactor, zfactor);
 	}
 
 	auto matrix_t::translate(const float xfactor, const float yfactor, const float zfactor) const->matrix_t
 	{
-		auto out = *this;
+		matrix_t out = *this;
 		return out.translate(xfactor, yfactor, zfactor);
 	}
 
@@ -316,4 +256,54 @@ namespace wind
 	{
 		return (this->m_row == this->m_column);
 	}
+
+	auto operator + (const matrix_t& lhs, const float factor)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv += factor;
+		return rv;
+	}
+
+	auto operator - (const matrix_t& lhs, const float factor)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv -= factor;
+		return rv;
+	}
+
+	auto operator * (const matrix_t& lhs, const float factor)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv *= factor;
+		return rv;
+	}
+
+	auto operator / (const matrix_t& lhs, const float factor)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv /= factor;
+		return rv;
+	}
+
+	auto operator + (const matrix_t& lhs, const matrix_t& rhs)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv += rhs;
+		return rv;
+	}
+
+	auto operator - (const matrix_t& lhs, const matrix_t& rhs)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv -= rhs;
+		return rv;
+	}
+
+	auto operator * (const matrix_t& lhs, const matrix_t& rhs)->matrix_t
+	{
+		matrix_t rv = lhs;
+		rv *= rhs;
+		return rv;
+	}
+
 }

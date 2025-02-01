@@ -9,29 +9,29 @@ import :string;
 
 namespace wind
 {
-	json_t::json_t() : m_type(WIND::JSON::TYPE_NULL), m_data() {}
+	json_t::json_t() : m_type(WIND::JSON::TYPE::EMPTY), m_data() {}
 
-	json_t::json_t(bool value) : m_type(WIND::JSON::TYPE_BOOLEAN), m_data(al::ustr_new(value ? "true" : "false"))
+	json_t::json_t(bool value) : m_type(WIND::JSON::TYPE::BOOLEAN), m_data(al::ustr_new(value ? "true" : "false"))
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
 
-	json_t::json_t(double value) : m_type(WIND::JSON::TYPE_NUMBER), m_data(al::ustr_new(string::to_string(value).c_str()))
+	json_t::json_t(double value) : m_type(WIND::JSON::TYPE::NUMBER), m_data(al::ustr_new(string::to_string(value).c_str()))
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
 
-	json_t::json_t(const string_t& value) : m_type(WIND::JSON::TYPE_STRING), m_data(value.u_str())
+	json_t::json_t(const string_t& value) : m_type(WIND::JSON::TYPE::STRING), m_data(value.u_str())
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
 
-	json_t::json_t(const json_object_t& value) : m_type(WIND::JSON::TYPE_OBJECT), m_data(std::make_shared<json_object_t>(value))
+	json_t::json_t(const json_object_t& value) : m_type(WIND::JSON::TYPE::OBJECT), m_data(std::make_shared<json_object_t>(value))
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
 
-	json_t::json_t(const json_array_t& value) : m_type(WIND::JSON::TYPE_ARRAY), m_data(std::make_shared<json_array_t>(value))
+	json_t::json_t(const json_array_t& value) : m_type(WIND::JSON::TYPE::ARRAY), m_data(std::make_shared<json_array_t>(value))
 	{
 		ALLEGRO::ASSERT(this->m_data);
 	}
@@ -40,18 +40,18 @@ namespace wind
 	{
 		switch (json.m_type)
 		{
-		case WIND::JSON::TYPE_NULL:
-		case WIND::JSON::TYPE_BOOLEAN:
-		case WIND::JSON::TYPE_NUMBER:
-		case WIND::JSON::TYPE_STRING:
+		case WIND::JSON::TYPE::EMPTY:
+		case WIND::JSON::TYPE::BOOLEAN:
+		case WIND::JSON::TYPE::NUMBER:
+		case WIND::JSON::TYPE::STRING:
 		{
 			this->m_data = json.m_data;
 		} break;
-		case WIND::JSON::TYPE_OBJECT:
+		case WIND::JSON::TYPE::OBJECT:
 		{
 			this->m_data = json.m_data;
 		} break;
-		case WIND::JSON::TYPE_ARRAY:
+		case WIND::JSON::TYPE::ARRAY:
 		{
 			this->m_data = json.m_data;
 		} break;
@@ -62,12 +62,12 @@ namespace wind
 
 	auto json_t::is_defined() const -> bool
 	{
-		return (this->m_type >= 0);
+		return (this->m_type != WIND::JSON::TYPE::EMPTY);
 	}
 
 	auto json_t::clear() -> void
 	{
-		this->m_type = WIND::JSON::TYPE_NULL;
+		this->m_type = WIND::JSON::TYPE::EMPTY;
 		this->m_data.reset();
 	}
 
@@ -79,21 +79,21 @@ namespace wind
 		return *this;
 	}
 
-	auto json_t::get_type() const -> int32_t
+	auto json_t::get_type() const -> WIND::JSON::TYPE
 	{
 		return this->m_type;
 	}
 
 	auto json_t::set_as_boolean(bool value) -> bool
 	{
-		this->m_type = WIND::JSON::TYPE_BOOLEAN;
+		this->m_type = WIND::JSON::TYPE::BOOLEAN;
 		this->m_data = al::ustr_new(value ? "true" : "false");
 		return true;
 	}
 
 	auto json_t::set_as_number(double value) -> bool
 	{
-		this->m_type = WIND::JSON::TYPE_NUMBER;
+		this->m_type = WIND::JSON::TYPE::NUMBER;
 		this->m_data = al::ustr_new(string::to_string(value).c_str());
 
 		return true;
@@ -101,7 +101,7 @@ namespace wind
 
 	auto json_t::set_as_string(const string_t& value) -> bool
 	{
-		this->m_type = WIND::JSON::TYPE_STRING;
+		this->m_type = WIND::JSON::TYPE::STRING;
 		this->m_data = value.u_str();
 
 		return true;
@@ -109,7 +109,7 @@ namespace wind
 
 	auto json_t::set_as_object(const json_object_t& value) -> bool
 	{
-		this->m_type = WIND::JSON::TYPE_OBJECT;
+		this->m_type = WIND::JSON::TYPE::OBJECT;
 		ALLEGRO::ASSERT(this->m_data = std::make_shared<json_object_t>(value));
 
 		return true;
@@ -117,7 +117,7 @@ namespace wind
 
 	auto json_t::set_as_array(const json_array_t& value) -> bool
 	{
-		this->m_type = WIND::JSON::TYPE_ARRAY;
+		this->m_type = WIND::JSON::TYPE::ARRAY;
 		ALLEGRO::ASSERT(this->m_data = std::make_shared<json_array_t>(value));
 
 		return true;
@@ -125,21 +125,21 @@ namespace wind
 
 	auto json_t::get_as_boolean() const -> bool
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_BOOLEAN);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::BOOLEAN);
 		return this->get_as_string() == "true";
 	}
 
 	auto json_t::get_as_number() const -> double
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_NUMBER);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::NUMBER);
 		return std::atof(al::c_str((ALLEGRO::USTRING&)this->m_data));
 	}
 
 	auto json_t::get_as_string() const -> string_t
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_BOOLEAN || 
-			this->m_type == WIND::JSON::TYPE_NUMBER || 
-			this->m_type == WIND::JSON::TYPE_STRING);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::BOOLEAN || 
+			this->m_type == WIND::JSON::TYPE::NUMBER || 
+			this->m_type == WIND::JSON::TYPE::STRING);
 
 		string_t rv;
 
@@ -153,25 +153,25 @@ namespace wind
 
 	auto json_t::get_as_object() -> json_object_t&
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_OBJECT);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::OBJECT);
 		return (*((json_object_t*)this->m_data.get()));
 	}
 
 	auto json_t::get_as_object() const -> const json_object_t&
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_OBJECT);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::OBJECT);
 		return (*((json_object_t*)this->m_data.get()));
 	}
 
 	auto json_t::get_as_array() -> json_array_t&
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_ARRAY);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::ARRAY);
 		return (*((json_array_t*)this->m_data.get()));
 	}
 
 	auto json_t::get_as_array() const -> const json_array_t&
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE_ARRAY);
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::ARRAY);
 		return (*((json_array_t*)this->m_data.get()));
 	}
 

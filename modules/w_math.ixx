@@ -36,7 +36,7 @@ namespace wind
 {
 	namespace math
 	{
-		export inline constexpr int32_t power_2(int32_t value)
+		export constexpr int32_t power_2(int32_t value)
 		{
 			return (1 << value);
 		}

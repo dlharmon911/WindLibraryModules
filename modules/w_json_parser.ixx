@@ -44,7 +44,7 @@ namespace wind
 
 				if (rv == 0)
 				{
-					if (json.get_type() != WIND::JSON::TYPE_OBJECT || json.get_type() == WIND::JSON::TYPE_ARRAY)
+					if (json.get_type() != WIND::JSON::TYPE::OBJECT || json.get_type() == WIND::JSON::TYPE::ARRAY)
 					{
 						json.clear();
 						rv = -1;

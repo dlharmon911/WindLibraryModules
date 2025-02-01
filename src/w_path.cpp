@@ -47,10 +47,6 @@ namespace wind
 		{
 			string_t filename = get_file_part(filepath);
 
-			//if (filepath.size() > filename.size())
-			//{
-			//}
-
 			return filepath.substr(0, filepath.length() - filename.size());
 		}
 

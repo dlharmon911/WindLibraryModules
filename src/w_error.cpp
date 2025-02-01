@@ -8,6 +8,18 @@ import :string;
 
 namespace wind
 {
+	namespace error
+	{
+		auto report_error(const string_t& message, std::source_location location) -> void
+		{
+			wind::lout << "Error Info: \nFile: "
+				<< location.file_name() << "\nLine: "
+				<< location.line() << "\nFunction: "
+				<< location.function_name() << "\nMessage: "
+				<< message << '\n';
+		}
+	}
+
 	error_t::error_t() : m_message(), m_filename(), m_line(0), m_function() {}
 
 	error_t::error_t(const string_t& message, const string_t& filename, int32_t line, const string_t& function) : m_message(message), m_filename(filename), m_line(line), m_function(function) {}

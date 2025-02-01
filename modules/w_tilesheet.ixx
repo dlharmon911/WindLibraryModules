@@ -21,10 +21,10 @@ namespace wind
 		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		tilesheet_t();
-		tilesheet_t(const std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size);
+		tilesheet_t(const std::vector<element_type>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size);
 		tilesheet_t(const tilesheet_t& tilesheet);
 		~tilesheet_t();
-		auto operator = (const tilesheet_t& tilesheet)->wind::add_reference_t<tilesheet_t>;
+		auto operator = (const tilesheet_t& tilesheet)-> tilesheet_t&;
 		auto clear() -> void;
 		auto count() const->size_t;
 		auto is_empty() const -> bool;
@@ -39,7 +39,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(std::vector<element_type>::iterator it) : m_it(it) {}
+			explicit iterator(std::vector<element_type>::iterator it) : m_it(it) {}
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++() -> iterator& { ++this->m_it; return *this; }
@@ -56,7 +56,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
+			explicit const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++() -> const_iterator& { ++this->m_it; return *this; }
@@ -73,7 +73,7 @@ namespace wind
 		private:
 			reverse_iterator() = default;
 		public:
-			reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
+			explicit reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
 			auto operator == (const reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const reverse_iterator& it) const -> bool { return !operator == (it); }
 			auto operator --() -> reverse_iterator& { --this->m_it; return *this; }
@@ -90,7 +90,7 @@ namespace wind
 		private:
 			const_reverse_iterator() = default;
 		public:
-			const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
+			explicit const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
 			auto operator == (const const_reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_reverse_iterator& it) const -> bool { return !operator == (it); }
 			auto operator --() -> const_reverse_iterator& { --this->m_it; return *this; }

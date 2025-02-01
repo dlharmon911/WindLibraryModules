@@ -17,6 +17,7 @@ export import :dialog;
 export import :dialog.widget;
 export import :dson;
 export import :error;
+export import :faders;
 export import :file;
 export import :flag;
 export import :frame;
@@ -43,6 +44,8 @@ namespace wind
 {
 	export template <typename T> int32_t run(int32_t argc, char** argv)
 	{
+		static_assert(std::is_base_of<wind::dialog_t, T>::value, "T must be a subclass of wind::dialog_t");
+
 		int32_t rv = 0;
 		wind::array_t<wind::string_t> args(argc);
 

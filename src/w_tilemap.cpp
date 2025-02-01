@@ -56,7 +56,7 @@ namespace wind
 		this->m_sheets.clear();
 	}
 
-	auto tilemap_t::get_count() const -> size_t
+	auto tilemap_t::size() const -> size_t
 	{
 		return this->m_sheets.size();
 	}

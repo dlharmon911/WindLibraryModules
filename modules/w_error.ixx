@@ -1,11 +1,19 @@
 export module wind:error;
 
 import <cstdint>;
+import <source_location>;
+import <string_view>;
 import :base;
+import :log;
 import :string;
 
 namespace wind
 {
+	namespace error
+	{
+		export auto report_error(const string_t& message, std::source_location location = std::source_location::current()) -> void;
+	}
+
 	export class error_t
 	{
 	public:

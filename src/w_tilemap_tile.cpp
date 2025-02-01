@@ -47,16 +47,6 @@ namespace wind
 			return this->m_tile.m_data == tile;
 		}
 
-		auto tile_t::operator != (const tile_t& tile) -> bool
-		{
-			return !(this->operator == (tile));
-		}
-
-		auto tile_t::operator != (uint32_t tile) -> bool
-		{
-			return !(this->operator == (tile));
-		}
-
 		auto tile_t::set_data(uint32_t tile) -> void
 		{
 			this->m_tile.m_data = tile;

@@ -10,12 +10,13 @@ import :string;
 
 namespace wind
 {
-	const char* empty_string = "";
 
 	namespace string
 	{
-		auto validate_string(const char* string)
+		static auto validate_string(const char* string)
 		{
+			static const char* empty_string = "";
+
 			if (string)
 			{
 				return string;
@@ -28,7 +29,7 @@ namespace wind
 	string_t::codepoint_t::codepoint_t(const ALLEGRO::USTRING& string, int32_t offset) : m_string(string), m_offset(offset) {}
 	string_t::codepoint_t::codepoint_t(const codepoint_t& ref) : m_string(ref.m_string), m_offset(ref.m_offset) {}
 
-	auto string_t::codepoint_t::operator = (const codepoint_t& ref) -> const codepoint_t&
+	auto string_t::codepoint_t::operator = (const codepoint_t& ref) -> codepoint_t&
 	{
 		this->m_string = ref.m_string;
 		this->m_offset = ref.m_offset;
@@ -98,11 +99,6 @@ namespace wind
 	auto string_t::codepoint_t::operator == (const string_t::codepoint_t& codepoint) const -> bool
 	{
 		return (this->m_string == codepoint.m_string && this->m_offset == codepoint.m_offset);
-	}
-
-	auto string_t::codepoint_t::operator != (const string_t::codepoint_t& codepoint) const -> bool
-	{
-		return !operator == (codepoint);
 	}
 
 	/***************************************************************************************/
@@ -214,7 +210,7 @@ namespace wind
 
 	auto string_t::operator += (const ALLEGRO::USTRING& string) -> string_t&
 	{
-		return this->append(string);
+		return this->append(static_cast<string_t>(string));
 	}
 
 	auto string_t::operator += (const std::string& string) -> string_t&
@@ -342,12 +338,12 @@ namespace wind
 		al::ustr_remove_chr(this->m_data, (int32_t)al::ustr_size(this->m_data) - 1);
 	}
 
-	auto string_t::begin() -> string_t::iterator
+	auto string_t::begin() const -> string_t::iterator
 	{
 		return string_t::iterator(this->m_data, 0);
 	}
 
-	auto string_t::end() -> string_t::iterator
+	auto string_t::end() const -> string_t::iterator
 	{
 		return string_t::iterator(this->m_data, (int32_t)this->length());
 	}
@@ -362,12 +358,12 @@ namespace wind
 		return string_t::const_iterator(this->m_data, (int32_t)this->length());
 	}
 
-	auto string_t::rbegin() -> string_t::reverse_iterator
+	auto string_t::rbegin() const -> string_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_data, (int32_t)this->length() - 1);
 	}
 
-	auto string_t::rend() -> string_t::reverse_iterator
+	auto string_t::rend() const -> string_t::reverse_iterator
 	{
 		return reverse_iterator(this->m_data, -1);
 	}
@@ -659,29 +655,21 @@ namespace wind
 		return this->compare(rhs) == 0;
 	}
 
-	auto string_t::operator != (const wind::string_t& rhs) const noexcept -> bool
+	auto string_t::operator <=> (const wind::string_t& rhs) const noexcept -> std::strong_ordering
 	{
-		return this->compare(rhs) != 0;
-	}
+		int32_t compare = this->compare(rhs);
 
-	auto string_t::operator <  (const wind::string_t& rhs) const noexcept -> bool
-	{
-		return this->compare(rhs) < 0;
-	}
+		if (compare)
+		{
+			if (compare < 0)
+			{
+				return std::strong_ordering::less;
+			}
 
-	auto string_t::operator <= (const wind::string_t& rhs) const noexcept -> bool
-	{
-		return this->compare(rhs) <= 0;
-	}
+			return std::strong_ordering::greater;
+		}
 
-	auto string_t::operator >  (const wind::string_t& rhs) const noexcept -> bool
-	{
-		return this->compare(rhs) > 0;
-	}
-
-	auto string_t::operator >= (const wind::string_t& rhs) const noexcept -> bool
-	{
-		return this->compare(rhs) >= 0;
+		return std::strong_ordering::equal;
 	}
 
 	namespace string
@@ -751,7 +739,7 @@ namespace wind
 		{
 			string_t output;
 
-			for (auto h : vector)
+			for (auto& h : vector)
 			{
 				if (output.size() > 0)
 				{
@@ -764,19 +752,28 @@ namespace wind
 			return output;
 		}
 
-		auto separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t
+		static auto do_separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t
 		{
 			size_t x = string.find(separator);
 
 			if (x != string_t::npos)
 			{
 				vector.push_back(string.substr(0, x));
-				separate(string.substr(x + 1, string.size() - x), vector, separator);
+				do_separate(string.substr(x + 1, string.size() - x), vector, separator);
 			}
 			else
 			{
 				vector.push_back(string);
 			}
+
+			return vector.size();
+		}
+
+		auto separate(const string_t& string, std::vector<string_t>& vector, const char separator) -> size_t
+		{
+			vector.clear();
+
+			do_separate(string, vector, separator);
 
 			return vector.size();
 		}

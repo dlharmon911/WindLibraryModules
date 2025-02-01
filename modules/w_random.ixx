@@ -4,12 +4,9 @@ import <cstdlib>;
 import <cstdint>;
 import :base;
 
-namespace WIND
+namespace WIND::RANDOM
 {
-	namespace RANDOM
-	{
-		export constexpr int32_t MAXIMUM = RAND_MAX;
-	}
+	export constexpr int32_t MAXIMUM = RAND_MAX;
 }
 
 namespace wind

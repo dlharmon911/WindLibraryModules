@@ -14,14 +14,14 @@ namespace WIND
 {
 	namespace JSON
 	{
-		export enum
+		export enum class TYPE : int32_t
 		{
-			TYPE_NULL,
-			TYPE_BOOLEAN,
-			TYPE_NUMBER,
-			TYPE_STRING,
-			TYPE_OBJECT,
-			TYPE_ARRAY
+			EMPTY,
+			BOOLEAN,
+			NUMBER,
+			STRING,
+			OBJECT,
+			ARRAY
 		};
 	}
 }
@@ -35,11 +35,11 @@ namespace wind
 	{
 	public:
 		json_t();
-		json_t(bool val);
-		json_t(double val);
-		json_t(const string_t& val);
-		json_t(const json_object_t& val);
-		json_t(const json_array_t& val);
+		explicit json_t(bool val);
+		explicit json_t(double val);
+		explicit json_t(const string_t& val);
+		explicit json_t(const json_object_t& val);
+		explicit json_t(const json_array_t& val);
 		json_t(const json_t& json);
 		~json_t();
 
@@ -49,7 +49,7 @@ namespace wind
 
 		auto clear() -> void;
 
-		auto get_type() const->int32_t;
+		auto get_type() const->WIND::JSON::TYPE;
 
 		auto set_as_boolean(bool val) -> bool;
 		auto set_as_number(double val) -> bool;
@@ -75,8 +75,8 @@ namespace wind
 		explicit operator const json_array_t& () const;
 
 	private:
-		int32_t m_type;
-		std::shared_ptr<void> m_data;
+		WIND::JSON::TYPE m_type{ WIND::JSON::TYPE::EMPTY };
+		std::shared_ptr<void> m_data{};
 	};
 
 	using json_key_t = string_t;
@@ -120,7 +120,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(array_t::iterator it) : m_it(it) {}
+			explicit iterator(array_t::iterator it) : m_it(it) {}
 			auto key() -> const json_key_t& { return this->m_it->first; }
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
@@ -139,7 +139,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(array_t::const_iterator it) : m_it(it) {}
+			explicit const_iterator(array_t::const_iterator it) : m_it(it) {}
 
 			auto key() const -> const json_key_t& { return this->m_it->first; }
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
@@ -184,7 +184,7 @@ namespace wind
 		template <class InputIterator> json_array_t(InputIterator first, InputIterator last) : m_data(array_t(first, last)) {}
 		json_array_t(const json_array_t& array);
 		json_array_t(json_array_t& array);
-		json_array_t(std::initializer_list<element_type> il);
+		explicit json_array_t(std::initializer_list<element_type> il);
 		~json_array_t();
 
 		auto operator = (const json_array_t& array)->json_array_t&;
@@ -194,8 +194,8 @@ namespace wind
 		auto size() const noexcept -> size_t;
 		auto is_empty() const noexcept -> bool;
 		auto at(size_t index) -> reference_element_type;
-		auto at(size_t index) const->const_reference_element_type;
-		auto operator [](size_t index)->reference_element_type;
+		auto at(size_t index) const -> const_reference_element_type;
+		auto operator [](size_t index) -> reference_element_type;
 		auto operator [](size_t index) const->const_reference_element_type;
 
 		auto push_back(const element_type& val) -> void;
@@ -206,7 +206,7 @@ namespace wind
 		private:
 			iterator() = default;
 		public:
-			iterator(std::vector<element_type>::iterator it) : m_it(it) {}
+			explicit iterator(std::vector<element_type>::iterator it) : m_it(it) {}
 			auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++ () -> iterator& { ++this->m_it; return *this; }
@@ -224,7 +224,7 @@ namespace wind
 		private:
 			const_iterator() = default;
 		public:
-			const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
+			explicit const_iterator(std::vector<element_type>::const_iterator it) : m_it(it) {}
 			auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
 			auto operator ++ () -> const_iterator& { ++this->m_it; return *this; }
@@ -242,7 +242,7 @@ namespace wind
 		private:
 			reverse_iterator() = default;
 		public:
-			reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
+			explicit reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
 			auto operator == (const reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const reverse_iterator& it) const -> bool { return !operator == (it); }
 			auto operator -- () -> reverse_iterator& { --this->m_it; return *this; }
@@ -260,7 +260,7 @@ namespace wind
 		private:
 			const_reverse_iterator() = default;
 		public:
-			const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
+			explicit const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
 			auto operator == (const const_reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 			auto operator != (const const_reverse_iterator& it) const -> bool { return !operator == (it); }
 			auto operator -- () -> const_reverse_iterator& { ++this->m_it; return *this; }

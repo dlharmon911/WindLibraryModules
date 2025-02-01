@@ -11,27 +11,21 @@ import :bitmap;
 import :tilemap;
 import :string;
 
-namespace WIND
+namespace WIND::MAP::CELL
 {
-	namespace MAP
+	export enum class LAYER : int32_t
 	{
-		namespace CELL
-		{
-			export enum : size_t
-			{
-				LAYER_BACK_GROUND_00,
-				LAYER_BACK_GROUND_01,
-				LAYER_SOLID_00,
-				LAYER_SOLID_01,
-				LAYER_SOLID_02,
-				LAYER_FORE_GROUND_00,
-				LAYER_FORE_GROUND_01,
-				LAYER_UNDEFINED_00,
-				LAYER_UNDEFINED_01,
-				LAYER_COUNT
-			};
-		}
-	}
+		BACK_GROUND_00,
+		BACK_GROUND_01,
+		SOLID_00,
+		SOLID_01,
+		SOLID_02,
+		FORE_GROUND_00,
+		FORE_GROUND_01,
+		UNDEFINED_00,
+		UNDEFINED_01,
+		COUNT
+	};
 }
 
 namespace wind
@@ -50,7 +44,7 @@ namespace wind
 			using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		private:
-			using vector_type = std::array<element_type, WIND::MAP::CELL::LAYER_COUNT>;
+			using vector_type = std::array<element_type, std::to_underlying(WIND::MAP::CELL::LAYER::COUNT)>;
 
 		public:
 			cell_t();
@@ -58,17 +52,17 @@ namespace wind
 			~cell_t();
 			auto operator = (const cell_t& cell)->cell_t&;
 
-			auto at(size_t index) -> reference_element_type;
-			auto at(size_t index) const->const_reference_element_type;
-			auto operator [](size_t index)->reference_element_type;
-			auto operator [](size_t index) const->const_reference_element_type;
+			auto at(WIND::MAP::CELL::LAYER layer) -> reference_element_type;
+			auto at(WIND::MAP::CELL::LAYER layer) const->const_reference_element_type;
+			auto operator [](WIND::MAP::CELL::LAYER layer)->reference_element_type;
+			auto operator [](WIND::MAP::CELL::LAYER layer) const->const_reference_element_type;
 
 			class iterator
 			{
 			private:
 				iterator() = default;
 			public:
-				iterator(vector_type::iterator it) : m_it(it) {}
+				explicit iterator(vector_type::iterator it) : m_it(it) {}
 				auto operator == (const iterator& it) const -> bool { return (this->m_it == it.m_it); }
 				auto operator != (const iterator& it) const -> bool { return !operator == (it); }
 				auto operator ++() -> iterator& { ++this->m_it; return *this; }
@@ -85,7 +79,7 @@ namespace wind
 			private:
 				const_iterator() = default;
 			public:
-				const_iterator(const vector_type::const_iterator it) : m_it(it) {}
+				explicit const_iterator(const vector_type::const_iterator it) : m_it(it) {}
 				auto operator == (const const_iterator& it) const -> bool { return (this->m_it == it.m_it); }
 				auto operator != (const const_iterator& it) const -> bool { return !operator == (it); }
 				auto operator ++() -> const_iterator& { ++this->m_it; return *this; }
@@ -146,7 +140,7 @@ namespace wind
 	public:
 		map_t();
 		map_t(size_t width, size_t height);
-		map_t(ALLEGRO::SIZE<size_t> size);
+		explicit map_t(ALLEGRO::SIZE<size_t> size);
 		map_t(const map_t& map);
 		~map_t();
 		auto operator = (const map_t& map)->map_t&;

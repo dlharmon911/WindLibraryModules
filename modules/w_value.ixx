@@ -11,15 +11,15 @@ namespace wind
 	public:
 		value_t();
 		value_t(const value_t& value);
-		explicit value_t(bool value);
-		explicit value_t(int32_t value);
-		explicit value_t(uint32_t value);
-		explicit value_t(int64_t value);
-		explicit value_t(uint64_t value);
-		explicit value_t(float value);
-		explicit value_t(double value);
-		explicit value_t(const char* value);
+		explicit value_t(const bool& value);
+		explicit value_t(const int32_t& value);
+		explicit value_t(const uint32_t& value);
+		explicit value_t(const int64_t& value);
+		explicit value_t(const uint64_t& value);
+		explicit value_t(const float& value);
+		explicit value_t(const double& value);
 		explicit value_t(const string_t& value);
+		explicit value_t(const char* value);
 		~value_t();
 
 		auto clear() -> void;
@@ -36,25 +36,15 @@ namespace wind
 		auto operator = (const string_t& value)->value_t&;
 
 		auto operator == (const value_t& value) const -> bool;
-		auto operator != (const value_t& value) const -> bool;
 		auto operator == (bool value) const -> bool;
-		auto operator != (bool value) const -> bool;
 		auto operator == (int32_t value) const -> bool;
-		auto operator != (int32_t value) const -> bool;
 		auto operator == (uint32_t value) const -> bool;
-		auto operator != (uint32_t value) const -> bool;
 		auto operator == (int64_t value) const -> bool;
-		auto operator != (int64_t value) const -> bool;
 		auto operator == (uint64_t value) const -> bool;
-		auto operator != (uint64_t value) const -> bool;
 		auto operator == (float value) const -> bool;
-		auto operator != (float value) const -> bool;
 		auto operator == (double value) const -> bool;
-		auto operator != (double value) const -> bool;
 		auto operator == (const char* value) const -> bool;
-		auto operator != (const char* value) const -> bool;
 		auto operator == (const string_t& value) const -> bool;
-		auto operator != (const string_t& value) const -> bool;
 
 		explicit operator bool() const;
 		explicit operator int32_t() const;
@@ -72,20 +62,11 @@ namespace wind
 }
 
 export auto operator == (bool lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (bool lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (int32_t lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (int32_t lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (uint32_t lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (uint32_t lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (int64_t lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (int64_t lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (uint64_t lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (uint64_t lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (float lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (float lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (double lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (double lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (const char* lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (const char* lhs, const wind::value_t& rhs) -> bool;
 export auto operator == (const wind::string_t& lhs, const wind::value_t& rhs) -> bool;
-export auto operator != (const wind::string_t& lhs, const wind::value_t& rhs) -> bool;

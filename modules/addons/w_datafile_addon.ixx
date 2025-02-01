@@ -259,11 +259,11 @@ namespace wind
 
 			export inline const string_t names[WIND::DATAFILE::OBJECT::TYPE_COUNT] =
 			{
-				"DATAFILE",
-				"BITMAP",
-				"FONT",
-				"TEXT",
-				"TILESHEET"
+				static_cast<string_t>("DATAFILE"),
+				static_cast<string_t>("BITMAP"),
+				static_cast<string_t>("FONT"),
+				static_cast<string_t>("TEXT"),
+				static_cast<string_t>("TILESHEET")
 			};
 
 			export using parser_func_t = bool (*)(shared_data_t& data, object_t& object);

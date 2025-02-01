@@ -8,7 +8,7 @@ namespace WIND
 {
 	namespace MOUSE
 	{
-		export inline constexpr int32_t BUTTON_COUNT = 8;
+		export inline constexpr int32_t BUTTON_COUNT = 4;
 	}
 
 	namespace KEYBOARD
@@ -24,8 +24,7 @@ namespace wind
 		export using button_state_t = struct button_state_tag_t
 		{
 			bool m_is_pressed{ false };
-			bool m_was_pressed{ false };
-			bool m_was_released{ false };
+			bool m_last_pressed{ false };
 		};
 
 		namespace mouse

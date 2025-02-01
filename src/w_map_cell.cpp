@@ -22,32 +22,32 @@ namespace wind
 			return *this;
 		}
 
-		auto cell_t::at(size_t index) -> cell_t::reference_element_type
+		auto cell_t::at(WIND::MAP::CELL::LAYER layer) -> cell_t::reference_element_type
 		{
-			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
+			ALLEGRO::ASSERT(layer < WIND::MAP::CELL::LAYER::COUNT);
 
-			return this->m_data[index];
+			return this->m_data[std::to_underlying(layer)];
 		}
 
-		auto cell_t::at(size_t index) const -> cell_t::const_reference_element_type
+		auto cell_t::at(WIND::MAP::CELL::LAYER layer) const -> cell_t::const_reference_element_type
 		{
-			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
+			ALLEGRO::ASSERT(layer < WIND::MAP::CELL::LAYER::COUNT);
 
-			return this->m_data[index];
+			return this->m_data[std::to_underlying(layer)];
 		}
 
-		auto cell_t::operator [](size_t index) -> cell_t::reference_element_type
+		auto cell_t::operator [](WIND::MAP::CELL::LAYER layer) -> cell_t::reference_element_type
 		{
-			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
+			ALLEGRO::ASSERT(layer < WIND::MAP::CELL::LAYER::COUNT);
 
-			return this->m_data[index];
+			return this->m_data[std::to_underlying(layer)];
 		}
 
-		auto cell_t::operator [](size_t index) const -> cell_t::const_reference_element_type
+		auto cell_t::operator [](WIND::MAP::CELL::LAYER layer) const -> cell_t::const_reference_element_type
 		{
-			ALLEGRO::ASSERT(index < WIND::MAP::CELL::LAYER_COUNT);
+			ALLEGRO::ASSERT(layer < WIND::MAP::CELL::LAYER::COUNT);
 
-			return this->m_data[index];
+			return this->m_data[std::to_underlying(layer)];
 		}
 
 		auto cell_t::begin() -> cell_t::iterator

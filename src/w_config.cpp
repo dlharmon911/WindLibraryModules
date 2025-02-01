@@ -23,34 +23,34 @@ namespace wind
 
 			config_file.clear();
 
-			if (!manifest.contains("manifest"))
+			if (!manifest.contains(static_cast<string_t>("manifest")))
 			{
 				return -1;
 			}
 
-			dson_t& _manifest = manifest["manifest"];
+			dson_t& _manifest = manifest[static_cast<string_t>("manifest")];
 
-			if (!_manifest.contains("path"))
+			if (!_manifest.contains(static_cast<string_t>("path")))
 			{
 				return -1;
 			}
 
-			dson_t& _manifest_path = _manifest["path"];
+			dson_t& _manifest_path = _manifest[static_cast<string_t>("path")];
 
 			for (auto it = _manifest_path.cbegin(); it != _manifest_path.cend(); ++it)
 			{
 				string_t key = it.key();
 				string_t input = it->get_content();
 
-				config_file["path"][key].set_content(input);
+				config_file[static_cast<string_t>("path")][key].set_content(input);
 			}
 
-			if (!_manifest.contains("file"))
+			if (!_manifest.contains(static_cast<string_t>("file")))
 			{
 				return -1;
 			}
 
-			dson_t& _manifest_file = _manifest["file"];
+			dson_t& _manifest_file = _manifest[static_cast<string_t>("file")];
 
 			for (auto it = _manifest_file.begin(); it != _manifest_file.end(); ++it)
 			{
@@ -59,7 +59,7 @@ namespace wind
 				string_t filename;
 				dson_t data;
 
-				config_file["file"][key].set_content(input);
+				config_file[static_cast<string_t>("file")][key].set_content(input);
 
 				if (config::expand_string(config_file, input, filename) < 0)
 				{
@@ -83,7 +83,7 @@ namespace wind
 			{
 				string_t key = i.key();
 
-				if (!(key == "path" || key == "file"))
+				if (!(key == "path" || key == static_cast<string_t>("file")))
 				{
 					string_t file_shortcut = string_t("$(file.") + key + ")";
 					string_t file_name;
@@ -205,8 +205,8 @@ namespace wind
 		template <>
 		auto get_as(dson_t& config_file, const string_t& name, const bool default_value) -> bool
 		{
-			string_t str = config::get_content(config_file, name, (default_value ? "true" : "false"));
-			return string::to_lower(str) == "true";
+			string_t str = config::get_content(config_file, name, (default_value ? static_cast<string_t>("true") : static_cast<string_t>("false")));
+			return string::to_lower(str) == static_cast<string_t>("true");
 		}
 
 		template <>

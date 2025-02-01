@@ -21,13 +21,13 @@ namespace wind
 			{
 				ALLEGRO::COLOR color;
 				ALLEGRO::SIZE<size_t> b_size = { al::get_bitmap_width(bitmap), al::get_bitmap_height(bitmap) };
-				ALLEGRO::POINT<int32_t> point;
+				ALLEGRO::POINT<float> point;
 
 				for (size_t j = 0; j < b_size.height; ++j)
 				{
 					for (size_t i = 0; i < b_size.width; ++i)
 					{
-						point = { i, j };
+						point = { (float)i, (float)j };
 						color = al::get_pixel(bitmap, point);
 
 						if (fabs(color.alpha - 0.0f) > std::numeric_limits<float>::epsilon())

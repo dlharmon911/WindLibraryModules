@@ -26,33 +26,37 @@ namespace wind
 			auto was_pressed(int32_t index) -> bool
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
-				return m_state[index].m_was_pressed;
+				return m_state[index].m_is_pressed && !m_state[index].m_last_pressed;
+			}
+
+			auto was_released(int32_t index) -> bool
+			{
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
+				return !m_state[index].m_is_pressed && m_state[index].m_last_pressed;
 			}
 
 			auto set_pressed(int32_t index) -> void
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				m_state[index].m_is_pressed = true;
-				m_state[index].m_was_pressed = true;
-			}
-
-			auto was_released(int32_t index) -> bool
-			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
-				return m_state[index].m_was_released;
 			}
 
 			auto set_released(int32_t index) -> void
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				m_state[index].m_is_pressed = false;
-				m_state[index].m_was_released = true;
 			}
 
 			auto get_state(int32_t index) -> const button_state_t&
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
 				return m_state[index];
+			}
+
+			auto acknowledge(int32_t index) -> void
+			{
+				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
+				m_state[index].m_last_pressed = m_state[index].m_is_pressed;
 			}
 
 			auto set_position(const ALLEGRO::POINT<int32_t>& position) -> void
@@ -74,13 +78,6 @@ namespace wind
 			{
 				return m_wheel;
 			}
-
-			auto acknowledge(int32_t index) -> void
-			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::MOUSE::BUTTON_COUNT);
-				m_state[index].m_was_pressed = false;
-				m_state[index].m_was_released = false;
-			}
 		}
 
 		namespace keyboard
@@ -92,31 +89,28 @@ namespace wind
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				return m_state[index].m_is_pressed;
 			}
-			
+
 			auto was_pressed(int32_t index) -> bool
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
-				return m_state[index].m_was_pressed;
+				return m_state[index].m_is_pressed && !m_state[index].m_last_pressed;
+			}
+
+			auto was_released(int32_t index) -> bool
+			{
+				return !m_state[index].m_is_pressed && m_state[index].m_last_pressed;
 			}
 
 			auto set_pressed(int32_t index) -> void
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				m_state[index].m_is_pressed = true;
-				m_state[index].m_was_pressed = true;
-			}
-
-			auto was_released(int32_t index) -> bool
-			{
-				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
-				return m_state[index].m_was_released;
 			}
 
 			auto set_released(int32_t index) -> void
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
 				m_state[index].m_is_pressed = false;
-				m_state[index].m_was_released = true;
 			}
 
 			auto get_state(int32_t index) -> const button_state_t&
@@ -128,8 +122,7 @@ namespace wind
 			auto acknowledge(int32_t index) -> void
 			{
 				ALLEGRO::ASSERT(index >= 0 && index < WIND::KEYBOARD::BUTTON_COUNT);
-				m_state[index].m_was_pressed = false;
-				m_state[index].m_was_released = false;
+				m_state[index].m_last_pressed = m_state[index].m_is_pressed;
 			}
 		}
 
@@ -137,16 +130,13 @@ namespace wind
 		{
 			for (int32_t index = 0; index < WIND::MOUSE::BUTTON_COUNT; ++index)
 			{
-				mouse::m_state[index].m_was_pressed = false;
-				mouse::m_state[index].m_was_released = false;
+				mouse::m_state[index].m_last_pressed = mouse::m_state[index].m_is_pressed;
 			}
 
 			for (int32_t index = 0; index < WIND::KEYBOARD::BUTTON_COUNT; ++index)
 			{
-				keyboard::m_state[index].m_was_pressed = false;
-				keyboard::m_state[index].m_was_released = false;
+				keyboard::m_state[index].m_last_pressed = keyboard::m_state[index].m_is_pressed;
 			}
 		}
-
 	}
 }

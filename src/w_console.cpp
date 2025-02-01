@@ -130,7 +130,7 @@ namespace wind
 		{
 			auto draw(const console_t& console, const ALLEGRO::POINT<int32_t>& point) -> void
 			{
-				al::draw_bitmap(console->m_bitmap, point);
+				al::draw_bitmap(console->m_bitmap, static_cast<ALLEGRO::POINT<float>>(point));
 			}
 		}
 
@@ -260,8 +260,8 @@ namespace wind
 
 					target = al::get_target_bitmap();
 					al::set_target_bitmap(console::bitmap::get(console));
-					draw_font_glyph(console->m_font, background, point, 255);
-					draw_font_glyph(console->m_font, foreground, point, c);
+					draw_font_glyph(console->m_font, background, static_cast<ALLEGRO::POINT<int32_t>>(point), 255);
+					draw_font_glyph(console->m_font, foreground, static_cast<ALLEGRO::POINT<int32_t>>(point), c);
 					al::set_target_bitmap(target);
 
 					console->m_data.get()[console->m_cursor.x + console->m_cursor.y * console->m_size.width] = c;
@@ -319,7 +319,7 @@ namespace wind
 						al::translate_transform(t, { 0.0f, (float)WIND::CONSOLE::CELL::WIDTH * 2.0f });
 					}
 
-					al::translate_transform(t, point);
+					al::translate_transform(t, static_cast<ALLEGRO::POINT<float>>(point));
 					al::use_transform(t);
 
 					for (int32_t layer = 0; layer < (1 + (end - begin)); ++layer)
@@ -329,13 +329,13 @@ namespace wind
 						{
 							for (int32_t i = 0; i < 2; ++i)
 							{
-								ALLEGRO::POINT<float> p = point;
+								ALLEGRO::POINT<float> p{ static_cast<ALLEGRO::POINT<float>>(point) };
 								p.x += i * (float)WIND::CONSOLE::CELL::WIDTH;
 								p.y += j * (float)WIND::CONSOLE::CELL::HEIGHT;
 
 								ALLEGRO::COLOR color = wind::map_rgba_i((*palette)[layers.get()[layer + begin].m_color]);
 								uint8_t c = layers.get()[layer + begin].m_character[index];
-								draw_font_glyph(font, color, p, layers.get()[layer + begin].m_character[index]);
+								draw_font_glyph(font, color, static_cast<ALLEGRO::POINT<int32_t>>(p), layers.get()[layer + begin].m_character[index]);
 								++index;
 							}
 						}

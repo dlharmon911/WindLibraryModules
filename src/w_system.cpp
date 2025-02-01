@@ -242,7 +242,6 @@ namespace wind
 
 	int32_t system_t::init(wind::add_const_reference_t<array_t<wind::string_t>> args)
 	{
-
 		wind::lout << "Initialization Phase Begin" << "\n----------------------------------------\n";
 
 		if (!al::image_addon::is_initialized())
@@ -331,7 +330,7 @@ namespace wind
 		}
 
 		al::set_new_window_title(this->m_dialog->get_title().c_str());
-		system::m_display = al::create_display(WIND::DISPLAY_SIZE);
+		system::m_display = al::create_display(static_cast<ALLEGRO::SIZE<size_t>>(WIND::DISPLAY_SIZE));
 		if (!system::m_display)
 		{
 			wind::lout << "failed\n";
@@ -385,27 +384,35 @@ namespace wind
 		const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
 		wind::random::set_seed((uint32_t)t_c);
 
+		wind::json::initializer::register_defaults();
+
 		wind::lout << "Initializing Dialog: \n";
-		int r = this->m_dialog->on_initialize(args);
-		if (r < 0)
+		if (this->m_dialog->on_initialize(args) < 0)
 		{
-			wind::lout << "Initialization failed\n";
+			wind::lout << "failed\n";
 			return -1;
 		}
-		wind::lout << "Dialog initialized\n----------------------------------------\n" << 
-					"Initialization Phase Complete\n----------------------------------------" << wind::endl;
+		wind::lout << "pass\n";
+
+		wind::lout << "----------------------------------------\n"
+					<< "Initialization Phase Complete\n"
+					<< "----------------------------------------" << wind::endl;
+
 
 		return 0;
 	}
 
 	void system_t::shutdown()
 	{
-		wind::lout << wind::endl << "----------------------------------------\n" << 
-			"Termination Phase Begin\n----------------------------------------\n";
+		wind::lout << "\n----------------------------------------\n"
+			<< "Termination Phase Begin\n"
+			<< "----------------------------------------" << wind::endl;
 
-		wind::lout << "Terminating Dialog: \n";
 		this->m_dialog->on_shutdown();
 		wind::lout << "Dialog Terminated\n";
+
+		wind::json::initializer::register_defaults(false);
+		wind::lout << "Wind Uninitialized\n";
 
 		if (this->m_timer)
 		{

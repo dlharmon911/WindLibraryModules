@@ -28,14 +28,14 @@ namespace wind
 		class codepoint_t
 		{
 		public:
-			codepoint_t() = delete;
+			codepoint_t() = default;
 			codepoint_t(const ALLEGRO::USTRING& string, int32_t offset);
 			codepoint_t(const codepoint_t& ref);
 			~codepoint_t() = default;
 
 			operator uchar_t () const;
 
-			auto operator = (const codepoint_t& ref)->const codepoint_t&;
+			auto operator = (const codepoint_t& ref) -> codepoint_t&;
 			auto get_string() -> ALLEGRO::USTRING&;
 			auto get_string() const ->const ALLEGRO::USTRING&;
 			auto get_offset() const->int32_t;
@@ -45,19 +45,31 @@ namespace wind
 			auto set_codepoint(uchar_t codepoint) -> size_t;
 			auto operator = (uchar_t codepoint) ->const codepoint_t&;
 			auto operator == (const codepoint_t& codepoint) const -> bool;
-			auto operator != (const codepoint_t& codepoint) const -> bool;
 
-		protected:
-			ALLEGRO::USTRING m_string;
-			int32_t m_offset;
+		private:
+			ALLEGRO::USTRING m_string{};
+			int32_t m_offset{ 0 };
 		};
 
 		string_t();
-		string_t(const ALLEGRO::USTRING& string);
+		string_t(const string_t& string);
+		explicit string_t(const ALLEGRO::USTRING& string);
 		explicit string_t(const std::string& string);
 		string_t(const char* string);
-		string_t(const string_t& string);
-		string_t(const std::initializer_list<uchar_t> il);
+		explicit string_t(const std::initializer_list<uchar_t> il);
+
+		template <size_t N>
+		string_t(const char string[N]) : m_data(al::ustr_new(""))
+		{
+			ALLEGRO::ASSERT(this->m_data);
+
+			size_t i = 0;
+
+			do
+			{
+				this->push_back(static_cast<int32_t>(string[i]));
+			} while (i != N);
+		}
 
 		template <class InputIterator>
 		string_t(InputIterator first, InputIterator last) : m_data(al::ustr_new(""))
@@ -175,8 +187,8 @@ namespace wind
 				return this->m_codepoint;
 			}
 
-		protected:
-			codepoint_t m_codepoint;
+		private:
+			codepoint_t m_codepoint{};
 		};
 
 		class const_iterator
@@ -229,8 +241,8 @@ namespace wind
 				return this->m_codepoint;
 			}
 
-		protected:
-			codepoint_t m_codepoint;
+		private:
+			codepoint_t m_codepoint{};
 		};
 
 		class reverse_iterator
@@ -293,8 +305,8 @@ namespace wind
 				return this->m_codepoint;
 			}
 
-		protected:
-			codepoint_t m_codepoint;
+		private:
+			codepoint_t m_codepoint{};
 		};
 
 		class const_reverse_iterator
@@ -352,16 +364,16 @@ namespace wind
 				return this->m_codepoint;
 			}
 
-		protected:
-			codepoint_t m_codepoint;
+		private:
+			codepoint_t m_codepoint{};
 		};
 
-		auto begin() -> iterator;
-		auto end() -> iterator;
+		auto begin() const-> iterator;
+		auto end() const-> iterator;
 		auto cbegin() const->const_iterator;
 		auto cend() const->const_iterator;
-		auto rbegin() -> reverse_iterator;
-		auto rend() -> reverse_iterator;
+		auto rbegin() const-> reverse_iterator;
+		auto rend() const-> reverse_iterator;
 		auto crbegin() const->const_reverse_iterator;
 		auto crend() const->const_reverse_iterator;
 
@@ -464,14 +476,23 @@ namespace wind
 		}
 
 		auto operator == (const wind::string_t& rhs) const noexcept -> bool;
-		auto operator != (const wind::string_t& rhs) const noexcept -> bool;
-		auto operator <  (const wind::string_t& rhs) const noexcept -> bool;
-		auto operator <= (const wind::string_t& rhs) const noexcept -> bool;
-		auto operator >  (const wind::string_t& rhs) const noexcept -> bool;
-		auto operator >= (const wind::string_t& rhs) const noexcept -> bool;
+		auto operator <=> (const wind::string_t& rhs) const noexcept -> std::strong_ordering;
+
+		template <typename E, typename TR = std::char_traits<E>>
+		friend auto operator << (std::basic_ostream<E, TR>& stream, const wind::string_t& string) -> std::basic_ostream<E, TR>&
+		{
+			stream.write(string.c_str(), string.size());
+			return stream;
+		}
+
+		template <class E, class TR = std::char_traits<E>>
+		friend auto operator >> (std::basic_istream<E, TR>& stream, wind::string_t& string) -> std::basic_istream<E, TR>&
+		{
+			return stream >> (string.u_str());
+		}
 
 
-	protected:
+	private:
 		ALLEGRO::USTRING m_data;
 	};
 
@@ -525,17 +546,6 @@ export auto operator <  (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator <= (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator >  (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator >= (const wind::string_t& lhs, const char* rhs) -> bool;
-
-export template <typename E, typename TR = std::char_traits<E>> auto operator << (std::basic_ostream<E, TR>& stream, const wind::string_t& string) -> std::basic_ostream<E, TR>&
-{
-	stream.write(string.c_str(), string.size());
-	return stream;
-}
-
-export template <class E, class TR = std::char_traits<E>> auto operator >> (std::basic_istream<E, TR>& stream, wind::string_t& string) -> std::basic_istream<E, TR>&
-{
-	return stream >> (string.u_str());
-}
 
 
 namespace std

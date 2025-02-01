@@ -7,41 +7,26 @@ import allegro;
 import :base;
 import :string;
 
-namespace WIND
+namespace WIND::LOG
 {
-	namespace LOG
+	export enum class TYPE : int32_t
 	{
-		namespace TYPE
-		{
-			export enum
-			{
-				TEXT,
-				HTML
-			};
-		}
-	}
+		TEXT,
+		HTML
+	};
 }
 
 namespace wind
 {
-	namespace log
-	{
-		using shared_data_t = struct data_tag_t
-		{
-			ALLEGRO::FILE m_file{};
-			int32_t m_type{ WIND::LOG::TYPE::TEXT };
-		};
-	}
-
 	export class log_t
 	{
 	public:
-		log_t();
-		log_t(const wind::string_t& filename, int32_t type = WIND::LOG::TYPE::TEXT);
-		log_t(const log_t& log);
-		~log_t();
-		auto operator = (const log_t& log)->log_t&;
-		auto open(const wind::string_t& filename, int32_t type = WIND::LOG::TYPE::TEXT) -> void;
+		log_t() = default;
+		log_t(const wind::string_t& filename, WIND::LOG::TYPE type = WIND::LOG::TYPE::TEXT);
+		log_t(const log_t& log) = default;
+		~log_t() = default;
+		auto operator = (const log_t& log)->log_t& = default;
+		auto open(const wind::string_t& filename, WIND::LOG::TYPE type = WIND::LOG::TYPE::TEXT) -> void;
 		auto reset() -> void;
 		auto is_open() const -> bool;
 		auto operator<< (auto (*manipulator)(log_t& log)->log_t&)->log_t&;
@@ -62,8 +47,10 @@ namespace wind
 		auto puts(const wind::string_t& string) -> log_t&;
 		auto write(const char* s, size_t n) -> log_t&;
 		auto flush() -> log_t&;
+
 	private:
-		std::shared_ptr<log::shared_data_t> m_data{};
+		ALLEGRO::FILE m_file{};
+		WIND::LOG::TYPE m_type{ WIND::LOG::TYPE::TEXT };
 	};
 
 	export auto endl(log_t& log) -> log_t&;

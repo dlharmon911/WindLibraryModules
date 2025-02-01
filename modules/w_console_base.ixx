@@ -3,6 +3,7 @@ export module wind:console.base;
 import <string>;
 import <cstdint>;
 import <vector>;
+import <array>;
 import <memory>;
 import allegro;
 import allegro.font_addon;
@@ -43,24 +44,24 @@ namespace WIND
 namespace wind
 {
 	export using console_data_t = struct console_data_tag_t;
-	export using console_t = std::shared_ptr<console_data_t>;
+	export using console_t = typename std::shared_ptr<console_data_t>;
 
 	namespace console
 	{
 		export using font_data_t = struct font_data_tag_t;
-		export using font_t = std::shared_ptr<font_data_t>;
-		export using cursor_t = ALLEGRO::POINT<int32_t>;
-		export using rgba_t = uint32_t;
-		export using palette_t = rgba_t[WIND::CONSOLE::PALETTE::SIZE];
+		export using font_t = typename std::shared_ptr<font_data_t>;
+		export using cursor_t = typename ALLEGRO::POINT<int32_t>;
+		export using rgba_t = typename uint32_t;
+		export using palette_t = typename std::array<rgba_t, WIND::CONSOLE::PALETTE::SIZE>;
 
 		namespace sprite
 		{
 			export using layer_data_t = struct layer_data_tag_t
 			{
 				int8_t m_color;
-				uint8_t m_character[WIND::CONSOLE::SPRITE::CHARACTER_COUNT];
+				std::array<uint8_t, WIND::CONSOLE::SPRITE::CHARACTER_COUNT> m_character{};
 			};
-			export using layer_t = std::shared_ptr<layer_data_t>;
+			export using layer_t = typename std::shared_ptr<layer_data_t>;
 		}
 
 		export using sprite_data_t = struct sprite_data_tag_t
@@ -69,6 +70,6 @@ namespace wind
 			int32_t m_begin{ 0 };
 			int32_t m_end{ 0 };
 		};
-		export using sprite_t = std::shared_ptr<sprite_data_t>;
+		export using sprite_t = typename std::shared_ptr<sprite_data_t>;
 	}
 }

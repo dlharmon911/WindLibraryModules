@@ -5,18 +5,12 @@ import <array>;
 import :base;
 import :string;
 
-namespace WIND
+namespace WIND::VECTOR3D::INDEX
 {
-	namespace VECTOR3D
-	{
-		namespace INDEX
-		{
-			export constexpr size_t ELEMENT_X = 0;
-			export constexpr size_t ELEMENT_Y = 1;
-			export constexpr size_t ELEMENT_Z = 2;
-			export constexpr size_t COUNT = 3;
-		}
-	}
+	export constexpr size_t ELEMENT_X = 0;
+	export constexpr size_t ELEMENT_Y = 1;
+	export constexpr size_t ELEMENT_Z = 2;
+	export constexpr size_t COUNT = 3;
 }
 
 namespace wind
@@ -29,11 +23,6 @@ namespace wind
 		vector3d_t(const vector3d_t& vector);
 		~vector3d_t();
 
-		auto operator+(const vector3d_t& rhs) const->vector3d_t;
-		auto operator-(const vector3d_t& rhs) const->vector3d_t;
-		auto operator*(const float factor) const->vector3d_t;
-		auto operator/(const float factor) const->vector3d_t;
-
 		auto operator-() const->vector3d_t;
 
 		auto operator+=(const vector3d_t& rhs)->vector3d_t&;
@@ -44,7 +33,6 @@ namespace wind
 		auto operator=(const vector3d_t& rhs)->vector3d_t&;
 
 		auto operator==(const vector3d_t& rhs) const -> bool;
-		auto operator!=(const vector3d_t& rhs) const -> bool;
 		auto dot_product(const vector3d_t& rhs) const -> float;
 		auto cross_product(const vector3d_t& rhs) const->vector3d_t;
 		auto is_zero() const -> bool;
@@ -69,6 +57,11 @@ namespace wind
 		auto set_y(float value) -> void;
 		auto set_z(float value) -> void;
 		auto set_element(size_t index, float value) -> void;
+
+		friend auto operator+(const vector3d_t& lhs, const vector3d_t& rhs)->vector3d_t;
+		friend auto operator-(const vector3d_t& lhs, const vector3d_t& rhs)->vector3d_t;
+		friend auto operator*(const vector3d_t& lhs, const float factor)->vector3d_t;
+		friend auto operator/(const vector3d_t& lhs, const float factor)->vector3d_t;
 
 	private:
 		std::array<float, WIND::VECTOR3D::INDEX::COUNT> m_array{ 0.0f, 0.0f, 0.0f };

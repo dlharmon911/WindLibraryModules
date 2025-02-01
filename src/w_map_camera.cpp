@@ -67,17 +67,17 @@ namespace wind
 		auto camera_t::move(const ALLEGRO::POINT<int32_t>& delta) -> ALLEGRO::POINT<int32_t>
 		{
 			const ALLEGRO::POINT<int32_t> br = { this->m_map_br.x - (this->m_camera.size.width << this->m_tile.position.x), this->m_map_br.y - (this->m_camera.size.height << this->m_tile.position.y) };
-			const ALLEGRO::POINT<int32_t> start = this->m_camera.position;
+			const ALLEGRO::POINT<int32_t> start = static_cast<ALLEGRO::POINT<int32_t>>(this->m_camera.position);
 
 			if (delta.x)
 			{
 				if (delta.x < 0)
 				{
-					this->m_camera.position.x = start.x - std::min(-delta.x, start.x - this->m_map_tl.x);
+					this->m_camera.position.x = static_cast<size_t>(start.x) - std::min(-delta.x, start.x - this->m_map_tl.x);
 				}
 				else
 				{
-					this->m_camera.position.x = start.x + std::min(delta.x, br.x - start.x);
+					this->m_camera.position.x = static_cast<size_t>(start.x) + std::min(delta.x, br.x - start.x);
 				}
 			}
 
@@ -85,11 +85,11 @@ namespace wind
 			{
 				if (delta.y < 0)
 				{
-					this->m_camera.position.y = start.y - std::min(-delta.y, start.y - this->m_map_tl.y);
+					this->m_camera.position.y = static_cast<size_t>(start.y) - std::min(-delta.y, start.y - this->m_map_tl.y);
 				}
 				else
 				{
-					this->m_camera.position.y = start.y + std::min(delta.y, br.y - start.y);
+					this->m_camera.position.y = static_cast<size_t>(start.y) + std::min(delta.y, br.y - start.y);
 				}
 			}
 

@@ -16,8 +16,8 @@ namespace wind
 		export class widget_t : public dialog::base_t<wind::dialog::widget_t>
 		{
 		public:
-			widget_t() {}
-			virtual ~widget_t() {}
+			widget_t() = default;
+			virtual ~widget_t() = default;
 
 			virtual auto on_initialize() -> int32_t = 0;
 			virtual auto on_shutdown() -> int32_t = 0;
@@ -42,8 +42,6 @@ namespace wind
 			virtual auto on_mouse_leave(const ALLEGRO::EVENT& event) -> bool { return false; }
 
 			friend class wind::system_t;
-
-		protected:
 		};
 	}
 }

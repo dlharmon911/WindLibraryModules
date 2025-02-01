@@ -54,7 +54,7 @@ namespace wind
 
 	namespace ninepatch
 	{
-		void get_vertical_positions(const ALLEGRO::BITMAP& bitmap, int32_t height, int32_t x, int32_t& y1, int32_t& y2)
+		static void get_vertical_positions(const ALLEGRO::BITMAP& bitmap, int32_t height, int32_t x, int32_t& y1, int32_t& y2)
 		{
 			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0, 0 });
 			ALLEGRO::COLOR pixel{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -81,7 +81,7 @@ namespace wind
 			}
 		}
 
-		void get_horizontal_positions(const ALLEGRO::BITMAP& bitmap, int32_t width, int32_t y, int32_t& x1, int32_t& x2)
+		static void get_horizontal_positions(const ALLEGRO::BITMAP& bitmap, int32_t width, int32_t y, int32_t& x1, int32_t& x2)
 		{
 			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0, 0 });
 			ALLEGRO::COLOR pixel{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -156,7 +156,7 @@ namespace wind
 
 	namespace ninepatch
 	{
-		auto draw(const ninepatch_t& ninepatch, const ALLEGRO::POINT<int32_t>& position, const ALLEGRO::SIZE<int32_t>& size, int32_t flags) -> void
+		auto draw(const ninepatch_t& ninepatch, const ALLEGRO::POINT<int32_t>& position, const ALLEGRO::SIZE<int32_t>& size, WIND::NINEPATCH::DRAW::FLAG flag) -> void
 		{
 			ALLEGRO::SIZE<int32_t> dimensions{ al::get_bitmap_dimensions(ninepatch.m_bitmap) };
 			ALLEGRO::SIZE<int32_t> bsize[3] =
@@ -195,7 +195,7 @@ namespace wind
 						destination.size.width = bsize[i].width;
 					}
 
-					al::draw_scaled_bitmap(ninepatch.get_bitmap(), source, destination);
+					al::draw_scaled_bitmap(ninepatch.get_bitmap(), static_cast<ALLEGRO::RECTANGLE<float>>(source), static_cast<ALLEGRO::RECTANGLE<float>>(destination));
 
 					source.position.x += source.size.width;
 					destination.position.x += destination.size.width;
