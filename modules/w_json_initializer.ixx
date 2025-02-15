@@ -76,7 +76,6 @@ namespace wind
 			export auto register_function(int32_t type, func_t function) -> int32_t;
 			export auto unregister_function(int32_t type) -> int32_t;
 
-
 			namespace object
 			{
 				export template <typename T> auto parse(const json_object_t& json, const string_t& id, T& value) -> int32_t
@@ -90,7 +89,6 @@ namespace wind
 
 					return initializer::parse<T>(*it, value);
 				}
-
 
 				export template <typename T, typename Q> auto parse(const json_object_t& json, const string_t& id, std::pair<T, Q>& value) -> int32_t
 				{

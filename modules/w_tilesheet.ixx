@@ -24,7 +24,7 @@ namespace wind
 		tilesheet_t(const std::vector<element_type>& bitmaps, const ALLEGRO::SIZE<size_t>& tile_size);
 		tilesheet_t(const tilesheet_t& tilesheet);
 		~tilesheet_t();
-		auto operator = (const tilesheet_t& tilesheet)-> tilesheet_t&;
+		auto operator = (const tilesheet_t& tilesheet)->tilesheet_t&;
 		auto clear() -> void;
 		auto count() const->size_t;
 		auto is_empty() const -> bool;

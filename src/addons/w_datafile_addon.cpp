@@ -1,4 +1,4 @@
-module wind.datafile_addon;
+module wind.datafile;
 
 import <cassert>;
 import <vector>;
@@ -75,7 +75,7 @@ namespace wind
 				return 0;
 			}
 
-			string_t get_content(dson_t& config_file, const string_t& name, const string_t& default_value)
+			static string_t get_content(dson_t& config_file, const string_t& name, const string_t& default_value)
 			{
 				string_t expansion;
 
@@ -96,7 +96,7 @@ namespace wind
 				return expansion;
 			}
 
-			void set_content(dson_t& config_file, const string_t& name, const string_t& value)
+			static void set_content(dson_t& config_file, const string_t& name, const string_t& value)
 			{
 				config_file.get_property(name).set_content(value);
 			}
@@ -221,7 +221,7 @@ namespace wind
 				return output;
 			}
 
-			bool load_object(shared_data_t& data, object_t& object)
+			static bool load_object(shared_data_t& data, object_t& object)
 			{
 				string_t type_string{};
 
@@ -311,7 +311,7 @@ namespace wind
 
 			int32_t get_type(const string_t& name)
 			{
-				for (auto t : m_info)
+				for (auto& t : m_info)
 				{
 					if (string::to_lower(name) == t.second.first) return t.first;
 				}
@@ -471,7 +471,7 @@ namespace wind
 		{
 			std::vector<string_t> m_path;
 
-			int32_t process_shortcuts(const dson_t& dson, dson_t& config, const string_t& prefix = static_cast<string_t>(""))
+			static int32_t process_shortcuts(const dson_t& dson, dson_t& config, const string_t& prefix = static_cast<string_t>(""))
 			{
 				for (auto i = dson.cbegin(); i != dson.cend(); ++i)
 				{
@@ -564,7 +564,7 @@ namespace wind
 				return false;
 			}
 
-			string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index, int32_t output_type, int32_t& tab_level)
+			static string_t write_header_object(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, const string_t& name, const string_t& type_name, size_t index, int32_t output_type, int32_t& tab_level)
 			{
 				string_t export_s{ "" };
 
@@ -574,12 +574,12 @@ namespace wind
 				}
 
 				string_t out;
-				
+
 				for (int32_t i = 0; i < tab_level; ++i)
 				{
 					out.push_back('\t');
 				}
-				
+
 				out += export_s + "constexpr auto " + string::fuse(header, '_') + " = " + string::to_string(index) + ';';
 				while (out.size() < 56) out.push_back(' ');
 				out.append("/* ");
@@ -589,7 +589,7 @@ namespace wind
 				return out;
 			}
 
-			bool write_header_datafile(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, int32_t output_type, int32_t& tab_level)
+			static bool write_header_datafile(ALLEGRO::FILE& pfile, const dson_t& dson, std::vector<string_t>& header, int32_t output_type, int32_t& tab_level)
 			{
 				size_t index = 0;
 
@@ -652,7 +652,6 @@ namespace wind
 							return false;
 						}
 
-
 						wind::lout << "*********** ERROR: N/A **********\n";
 
 						header.push_back(key);
@@ -684,7 +683,7 @@ namespace wind
 				return true;
 			}
 
-			bool write_header(const dson_t& dson, const string_t& input_text_filename, const string_t& output_filename, int32_t output_type)
+			static bool write_header(const dson_t& dson, const string_t& input_text_filename, const string_t& output_filename, int32_t output_type)
 			{
 				std::vector<string_t> header{};
 				int32_t n = 0;
@@ -721,7 +720,7 @@ namespace wind
 
 				if (output_type == WIND::DATAFILE::OUTPUT_TYPE::MODULE)
 				{
-					pfile << "export module " << string::to_lower(owner)<< ":" << string::to_lower(prefix) << ";\n\n";
+					pfile << "export module " << string::to_lower(owner) << ":" << string::to_lower(prefix) << ";\n\n";
 				}
 
 				pfile << "namespace " << string::to_upper(owner) << "\n{\n";
@@ -837,12 +836,12 @@ namespace wind
 				register_type(WIND::DATAFILE::OBJECT::TYPE_TILESHEET, names[WIND::DATAFILE::OBJECT::TYPE_TILESHEET], tilesheet_parser);
 			}
 
-			bool temp_data_compare(const object_t& a, const object_t& b)
+			static bool temp_data_compare(const object_t& a, const object_t& b)
 			{
 				return (a.m_index < b.m_index);
 			}
 
-			size_t object_count(shared_data_t& data)
+			static size_t object_count(shared_data_t& data)
 			{
 				size_t size = 0;
 
@@ -946,7 +945,7 @@ namespace wind
 
 					std::sort(data.m_objects->begin(), data.m_objects->end(), temp_data_compare);
 
-					for (auto o : *(data.m_objects.get()))
+					for (auto& o : *(data.m_objects.get()))
 					{
 						((datafile_t*)object.m_object.get())->push_back(o.m_type, o.m_name, o.m_object);
 					}

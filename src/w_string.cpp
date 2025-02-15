@@ -10,7 +10,6 @@ import :string;
 
 namespace wind
 {
-
 	namespace string
 	{
 		static auto validate_string(const char* string)

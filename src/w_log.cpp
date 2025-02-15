@@ -13,7 +13,7 @@ namespace wind
 {
 	namespace log
 	{
-		template<typename T> auto write(const ALLEGRO::FILE &file, const T& value) -> void
+		template<typename T> auto write(const ALLEGRO::FILE& file, const T& value) -> void
 		{
 			if (file)
 			{
@@ -64,8 +64,8 @@ namespace wind
 			if (this->m_type == WIND::LOG::TYPE::HTML)
 			{
 				this->m_file << "</span></pre>\n"
-										<< "</body>\n"
-										<< "</html>\n";
+					<< "</body>\n"
+					<< "</html>\n";
 			}
 
 			this->m_file.reset();

@@ -27,7 +27,7 @@ namespace wind
 		auto get_working_directory() -> string_t
 		{
 			constexpr size_t size = 2048;
-			std::array<char, size> buffer{""};
+			std::array<char, size> buffer{ "" };
 
 			return string_t(_getcwd(buffer.data(), size));
 		}
@@ -89,7 +89,7 @@ namespace wind
 			string_t filename{};
 			string_t extension{};
 
-			if (!(al::get_fs_entry_mode(next) & ALLEGRO::FILEMODE_ISFILE))
+			if (!(al::get_fs_entry_mode(next) & ALLEGRO::FILE_MODE_ISFILE))
 			{
 				return 0;
 			}
@@ -122,7 +122,7 @@ namespace wind
 			size_t size = vec.size();
 			ALLEGRO::FS_ENTRY entry = al::create_fs_entry(filepath.c_str());
 
-			if (!entry || !(al::get_fs_entry_mode(entry) & ALLEGRO::FILEMODE_ISDIR) || al::open_directory(entry))
+			if (!entry || !(al::get_fs_entry_mode(entry) & ALLEGRO::FILE_MODE_ISDIR) || al::open_directory(entry))
 			{
 				return 0;
 			}

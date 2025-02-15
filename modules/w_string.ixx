@@ -35,7 +35,7 @@ namespace wind
 
 			operator uchar_t () const;
 
-			auto operator = (const codepoint_t& ref) -> codepoint_t&;
+			auto operator = (const codepoint_t& ref)->codepoint_t&;
 			auto get_string() -> ALLEGRO::USTRING&;
 			auto get_string() const ->const ALLEGRO::USTRING&;
 			auto get_offset() const->int32_t;
@@ -368,12 +368,12 @@ namespace wind
 			codepoint_t m_codepoint{};
 		};
 
-		auto begin() const-> iterator;
-		auto end() const-> iterator;
+		auto begin() const->iterator;
+		auto end() const->iterator;
 		auto cbegin() const->const_iterator;
 		auto cend() const->const_iterator;
-		auto rbegin() const-> reverse_iterator;
-		auto rend() const-> reverse_iterator;
+		auto rbegin() const->reverse_iterator;
+		auto rend() const->reverse_iterator;
 		auto crbegin() const->const_reverse_iterator;
 		auto crend() const->const_reverse_iterator;
 
@@ -491,7 +491,6 @@ namespace wind
 			return stream >> (string.u_str());
 		}
 
-
 	private:
 		ALLEGRO::USTRING m_data;
 	};
@@ -533,7 +532,6 @@ export auto operator + (const char* rhs, const wind::string_t& lhs)->wind::strin
 export auto operator + (const wind::string_t& lhs, char rhs)->wind::string_t;
 export auto operator + (char lhs, const wind::string_t& rhs)->wind::string_t;
 
-
 export auto operator == (const char* lhs, const wind::string_t& rhs) -> bool;
 export auto operator != (const char* lhs, const wind::string_t& rhs) -> bool;
 export auto operator <  (const char* lhs, const wind::string_t& rhs) -> bool;
@@ -546,7 +544,6 @@ export auto operator <  (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator <= (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator >  (const wind::string_t& lhs, const char* rhs) -> bool;
 export auto operator >= (const wind::string_t& lhs, const char* rhs) -> bool;
-
 
 namespace std
 {
@@ -566,4 +563,3 @@ namespace std
 		}
 	};
 }
-

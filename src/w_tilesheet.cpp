@@ -10,7 +10,7 @@ import :bitmap;
 import :color;
 import :json;
 import :string;
-import wind.datafile_addon;
+import wind.datafile;
 
 namespace wind
 {
@@ -221,7 +221,7 @@ namespace wind
 								return false;
 							}
 
-							bitmaps.push_back(std::static_pointer_cast<ALLEGRO::BITMAP_DATA>(bitmap.m_object));
+							bitmaps.push_back(std::static_pointer_cast<ALLEGRO::INTERNAL::BITMAP_DATA>(bitmap.m_object));
 						}
 					}
 				}

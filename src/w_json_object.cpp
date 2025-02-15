@@ -137,8 +137,8 @@ namespace wind
 
 	auto json_t::get_as_string() const -> string_t
 	{
-		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::BOOLEAN || 
-			this->m_type == WIND::JSON::TYPE::NUMBER || 
+		ALLEGRO::ASSERT(this->m_type == WIND::JSON::TYPE::BOOLEAN ||
+			this->m_type == WIND::JSON::TYPE::NUMBER ||
 			this->m_type == WIND::JSON::TYPE::STRING);
 
 		string_t rv;

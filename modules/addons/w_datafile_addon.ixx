@@ -1,4 +1,4 @@
-export module wind.datafile_addon;
+export module wind.datafile;
 
 import <cassert>;
 import <memory>;
@@ -6,36 +6,35 @@ import <vector>;
 import <string>;
 import <cstdint>;
 import <map>;
+import <array>;
+import <functional>;
 import allegro;
 import wind;
 
-namespace WIND
+namespace WIND::DATAFILE
 {
-	namespace DATAFILE
+	namespace OBJECT
 	{
-		namespace OBJECT
+		export enum
 		{
-			export enum
-			{
-				TYPE_UNDEFINED = -1,
-				TYPE_DATAFILE,
-				TYPE_BITMAP,
-				TYPE_FONT,
-				TYPE_TEXT,
-				TYPE_TILESHEET,
-				TYPE_COUNT,
-				TYPE_USER_DEFINED = 0X100
-			};
-		}
+			TYPE_UNDEFINED = -1,
+			TYPE_DATAFILE,
+			TYPE_BITMAP,
+			TYPE_FONT,
+			TYPE_TEXT,
+			TYPE_TILESHEET,
+			TYPE_COUNT,
+			TYPE_USER_DEFINED = 0X100
+		};
+	}
 
-		namespace OUTPUT_TYPE
+	namespace OUTPUT_TYPE
+	{
+		export enum
 		{
-			export enum
-			{
-				HEADER,
-				MODULE
-			};
-		}
+			HEADER,
+			MODULE
+		};
 	}
 }
 
@@ -79,7 +78,7 @@ namespace wind
 		const object_info_t& get_info(size_t index) const;
 
 		template <typename T>
-		void push_back(int32_t type, const string_t& name, T* data, void (*deleter)(T*))
+		void push_back(int32_t type, const string_t& name, T* data, std::function<void (*)(T*)>& deleter)
 		{
 			std::shared_ptr<T> object{ data, deleter };
 
@@ -105,7 +104,7 @@ namespace wind
 			iterator& operator ++() { ++this->m_o; ++this->m_e; return *this; }
 			iterator operator++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
 			reference_element_type operator *() { return *this->m_o; }
-			pointer_element_type operator &() { return &(*this->m_o); }
+			pointer_element_type operator ->() { return &(*this->m_o); }
 
 		private:
 			array_t::iterator m_o;
@@ -127,7 +126,7 @@ namespace wind
 			const_iterator& operator ++() { ++this->m_o; ++this->m_e; return *this; }
 			const_iterator operator++(int32_t) { const_iterator tmp = *this; ++(*this); return tmp; }
 			const_reference_element_type operator *() const { return *this->m_o; }
-			const_pointer_element_type operator &() const { return &(*this->m_o); }
+			const_pointer_element_type operator ->() const { return &(*this->m_o); }
 
 		private:
 			array_t::const_iterator m_o;
@@ -222,13 +221,13 @@ namespace wind
 					iterator() = default;
 
 					string_t key() const { return this->m_iter.key(); };
-					const shared_data_t data() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
+					shared_data_t data() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
 
 					bool operator == (const iterator& it) const { return (this->m_iter == it.m_iter); }
 					bool operator != (const iterator& it) const { return !operator == (it); }
 					iterator& operator ++() { ++this->m_iter; return *this; }
 					iterator operator++(int32_t) { iterator tmp = *this; ++(*this); return tmp; }
-					const shared_data_t operator *() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
+					shared_data_t operator *() const { return shared_data_t(this->m_objects, this->m_root, &(*this->m_iter), this->m_config); };
 
 					friend class shared_data_t;
 
@@ -257,14 +256,14 @@ namespace wind
 				const dson_t* m_config;
 			};
 
-			export inline const string_t names[WIND::DATAFILE::OBJECT::TYPE_COUNT] =
-			{
-				static_cast<string_t>("DATAFILE"),
-				static_cast<string_t>("BITMAP"),
-				static_cast<string_t>("FONT"),
-				static_cast<string_t>("TEXT"),
-				static_cast<string_t>("TILESHEET")
-			};
+			export inline const std::array<string_t, WIND::DATAFILE::OBJECT::TYPE_COUNT> names
+			{ {
+				"DATAFILE",
+				"BITMAP",
+				"FONT",
+				"TEXT",
+				"TILESHEET"
+			} };
 
 			export using parser_func_t = bool (*)(shared_data_t& data, object_t& object);
 

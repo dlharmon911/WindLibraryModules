@@ -305,5 +305,4 @@ namespace wind
 		rv *= rhs;
 		return rv;
 	}
-
 }

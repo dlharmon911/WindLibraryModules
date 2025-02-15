@@ -14,7 +14,7 @@ namespace wind
 		auto is_empty(const ALLEGRO::BITMAP& bitmap) -> bool
 		{
 			bool rv = true;
-			
+
 			ALLEGRO::BITMAP_LOCKED_REGION region = al::lock_bitmap(bitmap, ALLEGRO::PIXEL_FORMAT_ANY, ALLEGRO::BITMAP_LOCK_READ_ONLY);
 
 			if (region)

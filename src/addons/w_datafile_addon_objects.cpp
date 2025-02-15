@@ -1,4 +1,4 @@
-module wind.datafile_addon;
+module wind.datafile;
 
 import <cstdint>;
 import allegro;
@@ -55,7 +55,7 @@ namespace wind
 
 				if (masked)
 				{
-					ALLEGRO::BITMAP bitmap = std::static_pointer_cast<ALLEGRO::BITMAP_DATA>(object.m_object);
+					ALLEGRO::BITMAP bitmap = std::static_pointer_cast<ALLEGRO::INTERNAL::BITMAP_DATA>(object.m_object);
 					al::convert_mask_to_alpha(bitmap, al::map_rgb(255, 0, 255));
 				}
 

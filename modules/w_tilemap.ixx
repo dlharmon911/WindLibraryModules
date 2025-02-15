@@ -123,7 +123,7 @@ namespace wind
 					uint32_t m_reserved : 16;
 				};
 			};
-			
+
 			_tile m_tile{ 0 };
 		};
 	}

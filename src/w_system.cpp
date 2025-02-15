@@ -395,9 +395,8 @@ namespace wind
 		wind::lout << "pass\n";
 
 		wind::lout << "----------------------------------------\n"
-					<< "Initialization Phase Complete\n"
-					<< "----------------------------------------" << wind::endl;
-
+			<< "Initialization Phase Complete\n"
+			<< "----------------------------------------" << wind::endl;
 
 		return 0;
 	}

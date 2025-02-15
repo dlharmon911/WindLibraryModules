@@ -17,7 +17,7 @@ namespace wind
 		matrix_t(const matrix_t& rhs);
 		~matrix_t();
 		auto operator=(const matrix_t& rhs)->matrix_t&;
-		auto operator-() const -> matrix_t;
+		auto operator-() const->matrix_t;
 		auto operator+=(const float factor)->matrix_t&;
 		auto operator-=(const float factor)->matrix_t&;
 		auto operator*=(const float factor)->matrix_t&;
@@ -47,7 +47,6 @@ namespace wind
 		friend auto operator + (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
 		friend auto operator - (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
 		friend auto operator * (const matrix_t& lhs, const matrix_t& rhs)->matrix_t;
-
 
 	private:
 		wind::array_t<float> m_array{};

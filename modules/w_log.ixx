@@ -25,7 +25,7 @@ namespace wind
 		log_t(const wind::string_t& filename, WIND::LOG::TYPE type = WIND::LOG::TYPE::TEXT);
 		log_t(const log_t& log) = default;
 		~log_t() = default;
-		auto operator = (const log_t& log)->log_t& = default;
+		auto operator = (const log_t& log)->log_t & = default;
 		auto open(const wind::string_t& filename, WIND::LOG::TYPE type = WIND::LOG::TYPE::TEXT) -> void;
 		auto reset() -> void;
 		auto is_open() const -> bool;

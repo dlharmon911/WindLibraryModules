@@ -194,8 +194,8 @@ namespace wind
 		auto size() const noexcept -> size_t;
 		auto is_empty() const noexcept -> bool;
 		auto at(size_t index) -> reference_element_type;
-		auto at(size_t index) const -> const_reference_element_type;
-		auto operator [](size_t index) -> reference_element_type;
+		auto at(size_t index) const->const_reference_element_type;
+		auto operator [](size_t index)->reference_element_type;
 		auto operator [](size_t index) const->const_reference_element_type;
 
 		auto push_back(const element_type& val) -> void;

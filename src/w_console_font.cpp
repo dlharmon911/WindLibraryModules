@@ -38,7 +38,7 @@ namespace wind
 
 		using glyph_data_t = std::array<uint8_t, WIND::CONSOLE::FONT_GLYPH_SIZE>;
 
-		const std::array<glyph_data_t, (1 << 8)> default_font_data 
+		const std::array<glyph_data_t, (1 << 8)> default_font_data
 		{ {
 			{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 			{ 0x7e, 0x81, 0xa5, 0x81, 0xbd, 0x99, 0x81, 0x7e},
