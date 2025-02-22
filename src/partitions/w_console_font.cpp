@@ -303,11 +303,11 @@ namespace wind
 
 		static auto create_font(font_t& font, const uint8_t* data, size_t count, int32_t start) -> int32_t
 		{
-			size_t h = (count >> WIND::CONSOLE::FONT_GLYPH_SHIFT);
-			size_t w = WIND::CONSOLE::FONT_GLYPH_SIZE;
-			size_t rows = (count / WIND::CONSOLE::FONT_GLYPH_SPAN) + ((count % WIND::CONSOLE::FONT_GLYPH_SPAN) ? 1 : 0);
+			int32_t h = (static_cast<int32_t>(count) >> WIND::CONSOLE::FONT_GLYPH_SHIFT);
+			int32_t w = WIND::CONSOLE::FONT_GLYPH_SIZE;
+			int32_t rows = (static_cast<int32_t>(count) / WIND::CONSOLE::FONT_GLYPH_SPAN) + ((count % WIND::CONSOLE::FONT_GLYPH_SPAN) ? 1 : 0);
 			ALLEGRO::RECTANGLE<size_t> rect{ 0, 0, WIND::CONSOLE::FONT_GLYPH_SIZE, WIND::CONSOLE::FONT_GLYPH_SIZE };
-			ALLEGRO::SIZE<size_t> bsize{ WIND::CONSOLE::FONT_GLYPH_SPAN << WIND::CONSOLE::FONT_GLYPH_SHIFT, rows << WIND::CONSOLE::FONT_GLYPH_SHIFT };
+			ALLEGRO::SIZE<int32_t> bsize{ WIND::CONSOLE::FONT_GLYPH_SPAN << WIND::CONSOLE::FONT_GLYPH_SHIFT, rows << WIND::CONSOLE::FONT_GLYPH_SHIFT };
 
 			font->m_count = 0;
 			font->m_start = 0;
@@ -322,11 +322,11 @@ namespace wind
 
 			size_t index = 0;
 
-			for (size_t j = 0; j < h; ++j)
+			for (int32_t j = 0; j < h; ++j)
 			{
 				rect.position.y = (index / WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 
-				for (size_t i = 0; i < w; ++i)
+				for (int32_t i = 0; i < w; ++i)
 				{
 					rect.position.x = (index % WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 

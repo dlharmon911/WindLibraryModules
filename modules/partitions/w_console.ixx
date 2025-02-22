@@ -11,10 +11,10 @@ namespace wind
 {
 	namespace console
 	{
-		export auto create(const font_t& font, ALLEGRO::SIZE<size_t> size = { 40, 25 }) -> console_t;
-		export auto get_width(const console_t& console) -> size_t;
-		export auto get_height(const console_t& console) -> size_t;
-		export auto get_size(const console_t& console) -> ALLEGRO::SIZE<size_t>&;
+		export auto create(const font_t& font, ALLEGRO::SIZE<int32_t> size = { 40, 25 }) -> console_t;
+		export auto get_width(const console_t& console) -> int32_t;
+		export auto get_height(const console_t& console) -> int32_t;
+		export auto get_size(const console_t& console) -> ALLEGRO::SIZE<int32_t>&;
 		export auto clear(console_t& console) -> void;
 
 		namespace gfx

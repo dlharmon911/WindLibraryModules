@@ -21,7 +21,7 @@ namespace wind
 	{
 		size_t m_background{ 0 };
 		size_t m_foreground{ 15 };
-		ALLEGRO::SIZE<size_t> m_size = { 0,0 };
+		ALLEGRO::SIZE<int32_t> m_size = { 0,0 };
 		ALLEGRO::BITMAP m_bitmap{ nullptr };
 		std::shared_ptr<uint8_t> m_data{ nullptr };
 		console::palette_t m_palette{};
@@ -31,7 +31,7 @@ namespace wind
 
 	namespace console
 	{
-		auto create(const font_t& font, ALLEGRO::SIZE<size_t> size) -> console_t
+		auto create(const font_t& font, ALLEGRO::SIZE<int32_t> size) -> console_t
 		{
 			console_t console = std::make_shared<console_data_t>();
 
@@ -89,17 +89,17 @@ namespace wind
 			return console;
 		}
 
-		auto get_width(const console_t& console) -> size_t
+		auto get_width(const console_t& console) -> int32_t
 		{
 			return console->m_size.width;
 		}
 
-		auto get_height(const console_t& console) -> size_t
+		auto get_height(const console_t& console) -> int32_t
 		{
 			return console->m_size.height;
 		}
 
-		auto get_size(const console_t& console) -> ALLEGRO::SIZE<size_t>&
+		auto get_size(const console_t& console) -> ALLEGRO::SIZE<int32_t>&
 		{
 			return console->m_size;
 		}

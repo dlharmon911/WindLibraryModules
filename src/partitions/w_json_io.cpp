@@ -57,7 +57,7 @@ namespace wind
 
 				if (PHYSFS_mount(filename.c_str(), nullptr, 1))
 				{
-					al::physfs_addon::set_file_interface();
+					al::set_physfs_file_interface();
 					rv = json::load(json, filename);
 					PHYSFS_unmount(filename.c_str());
 				}

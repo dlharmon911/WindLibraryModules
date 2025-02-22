@@ -133,67 +133,6 @@ namespace wind
 
 			return string_t(buffer);
 		}
-
-		namespace widget
-		{
-			auto update(wind::add_const_reference_t<std::shared_ptr<wind::dialog::widget_t>> widget) -> int32_t
-			{
-				if (widget->on_update() < 0)
-				{
-					return -1;
-				}
-
-				for (auto it = widget->cbegin(); it != widget->cend(); ++it)
-				{
-					if (widget::update(*it) < 0)
-					{
-						return -1;
-					}
-				}
-				return 0;
-			}
-
-			auto render(wind::add_const_reference_t<std::shared_ptr<wind::dialog::widget_t>> widget) -> void
-			{
-				widget->on_render();
-
-				for (auto it = widget->cbegin(); it != widget->cend(); ++it)
-				{
-					widget::render(*it);
-				}
-			}
-		}
-
-		namespace dialog
-		{
-			auto update(const std::shared_ptr<wind::dialog_t>& dialog) -> int32_t
-			{
-				if (dialog->on_update() < 0)
-				{
-					return -1;
-				}
-
-				for (auto it = dialog->cbegin(); it != dialog->cend(); ++it)
-				{
-					if (widget::update(*it) < 0)
-					{
-						return -1;
-					}
-				}
-
-				return 0;
-			}
-
-			auto render(const std::shared_ptr<wind::dialog_t>& dialog) -> void
-			{
-				dialog->on_render();
-
-				for (auto it = dialog->cbegin(); it != dialog->cend(); ++it)
-				{
-					widget::render(*it);
-				}
-			}
-		}
 	}
 
 	system_t::system_t(wind::add_const_reference_t<std::shared_ptr<dialog_t>> dialog) :
@@ -666,18 +605,20 @@ namespace wind
 					}
 				} break;
 
-				//case ALLEGRO::EVENT_TYPE_MENU_CLICK:
-				//{
-				//	if (this->m_dialog->on_display_menu_click(event))
-				//	{
-				//	}
-				//} break;
+#ifdef PICKLE_BALL
+				case ALLEGRO::EVENT_TYPE_MENU_CLICK:
+				{
+					if (this->m_dialog->on_display_menu_click(event))
+					{
+					}
+				} break;
+#endif
 				}
 			}
 
 			while (system::timer::m_tick_count > 0)
 			{
-				if (system::dialog::update(this->m_dialog) < 0)
+				if (this->m_dialog->on_update() < 0)
 				{
 					this->m_kill = true;
 				}
@@ -689,7 +630,7 @@ namespace wind
 				break;
 			}
 
-			system::dialog::render(this->m_dialog);
+			this->m_dialog->on_render();
 			al::flip_display();
 			al::rest(0.1);
 		}

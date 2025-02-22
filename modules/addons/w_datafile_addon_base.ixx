@@ -1,4 +1,4 @@
-export module wind.d_addon:base;
+export module wind.datafile_addon:base;
 
 import <cassert>;
 import <memory>;

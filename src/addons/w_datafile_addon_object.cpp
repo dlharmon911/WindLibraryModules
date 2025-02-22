@@ -1,4 +1,4 @@
-module wind.d_addon;
+module wind.datafile_addon;
 
 import <cassert>;
 import <memory>;
@@ -22,42 +22,18 @@ namespace wind
 			static std::unordered_map<string_t, int32_t> name_map{};
 		}
 
-		namespace object
-		{
-
-			namespace bitmap
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-
-			namespace datafile
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-
-			namespace font
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-
-			namespace sample
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-
-			namespace text
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-
-			namespace tilesheet
-			{
-				auto parse(const json_t& json, std::any& any) -> int32_t;
-			}
-		}
-
 		static auto do_registration(bool reg) -> void
 		{
+			static const std::array<wind::string_t, WIND::DATAFILE::OBJECT_TYPE::COUNT> default_names
+			{ {
+				"DATAFILE",
+				"BITMAP",
+				"FONT",
+				"TEXT",
+				"SAMPLE",
+				"TILESHEET"
+			} };
+
 			static bool are_defaults_registered{ false };
 			static bool was_registered{ false };
 
@@ -86,7 +62,7 @@ namespace wind
 
 				for (int32_t i = 0; i < WIND::DATAFILE::OBJECT_TYPE::COUNT; ++i)
 				{
-					register_object_type(i, WIND::DATAFILE::DEFAULT_OBJECT_NAMES[i], function_array[i]);
+					register_object_type(i, default_names[i], function_array[i]);
 				}
 
 				are_defaults_registered = true;
@@ -113,7 +89,7 @@ namespace wind
 			do_registration(true);
 		}
 
-		auto get_object_name(int32_t type, string_t& name) -> int32_t
+		auto get_object_type_name(int32_t type, string_t& name) -> int32_t
 		{
 			for (auto it = internal::name_map.cbegin(); it != internal::name_map.cend(); ++it)
 			{
@@ -154,7 +130,7 @@ namespace wind
 
 			// verify type is either undefined or returned name matches argument name
 			string_t n{};
-			if (get_object_name(type, n) > 0 && n != name)
+			if (get_object_type_name(type, n) > 0 && n != name)
 			{
 				return -1;
 			}
@@ -175,6 +151,68 @@ namespace wind
 			}
 
 			return -1;
+		}
+
+		auto parse(const json_t& json, datafile_t& datafile) -> int32_t
+		{
+			std::any any{};
+
+			if (json.get_type() != WIND::JSON::TYPE::OBJECT)
+			{
+				return -1;
+			}
+
+			const json_object_t& object = json.get_as_object();
+
+			auto it = object.find("name");
+			if (it == object.cend())
+			{
+				return -1;
+			}
+
+			it = object.find("objects");
+			if (it == object.cend())
+			{
+				return -1;
+			}
+
+			if (object::datafile::parse(json, any) < 0)
+			{
+				return -1;
+			}
+
+			datafile = std::any_cast<datafile_t>(any);
+
+			return 0;
+		}
+
+		namespace object
+		{
+			auto parse_array(const json_t& json, std::vector<std::any>& vector, std::function<auto(const json_t&, std::any&)->int32_t> function) -> int32_t
+			{
+				if (json.get_type() != WIND::JSON::TYPE::ARRAY)
+				{
+					return -1;
+				}
+
+				const json_array_t& array = json.get_as_array();
+
+				vector.clear();
+
+				for (auto it = array.cbegin(); it != array.cend(); ++it)
+				{
+					std::any any{};
+
+					if (function(*it, any) < 0)
+					{
+						return -1;
+					}
+
+					vector.push_back(any);
+				}
+
+				return 0;
+			}
 		}
 	}
 }

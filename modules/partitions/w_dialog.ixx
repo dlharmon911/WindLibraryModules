@@ -1,20 +1,25 @@
-export module dialog.widget.button;
+export module wind:dialog;
 
-import <string>;
+import <cstdint>;
+import <vector>;
 import <memory>;
-import std;
 import allegro;
-import wind;
+import :base;
+import :string;
+import :array;
 
 namespace wind
 {
-	export class button_t : public dialog::widget_t
+	export class dialog_t
 	{
 	public:
-		button_t() = default;
-		virtual ~button_t() = default;
+		dialog_t() = default;
+		virtual ~dialog_t() = default;
 
-		virtual auto on_initialize() -> int32_t = 0;
+		virtual auto get_version() const->int32_t = 0;
+		virtual auto get_title() const-> const wind::string_t& = 0;
+
+		virtual auto on_initialize(const wind::array_t<wind::string_t>& args) -> int32_t = 0;
 		virtual auto on_shutdown() -> int32_t = 0;
 		virtual auto on_start() -> int32_t = 0;
 		virtual auto on_stop() -> int32_t = 0;
@@ -24,6 +29,7 @@ namespace wind
 		virtual auto on_joystick_axis(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_joystick_button_down(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_joystick_button_up(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_joystick_configuration(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_key_down(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_key_up(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_key_char(const ALLEGRO::EVENT& event) -> bool { return false; }
@@ -35,9 +41,14 @@ namespace wind
 		virtual auto on_mouse_drag(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_mouse_enter(const ALLEGRO::EVENT& event) -> bool { return false; }
 		virtual auto on_mouse_leave(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_mouse_warped(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_resize(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_close(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_lost(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_found(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_switch_in(const ALLEGRO::EVENT& event) -> bool { return false; }
+		virtual auto on_display_switch_out(const ALLEGRO::EVENT& event) -> bool { return false; }
 
-		friend class wind::system_t;
-
-	private:
+	protected:
 	};
 }
