@@ -105,23 +105,23 @@ namespace wind
 		public:
 			camera_t();
 			camera_t(const camera_t& camera);
-			camera_t(const ALLEGRO::SIZE<size_t>& camera_size, const ALLEGRO::POINT<size_t>& tile_shift);
+			camera_t(const ALLEGRO::VECTOR_2D<size_t>& camera_size, const ALLEGRO::VECTOR_2D<size_t>& tile_shift);
 			~camera_t();
 			auto operator = (const camera_t& camera)->camera_t&;
 			auto set_map(const ALLEGRO::RECTANGLE<size_t>& map) -> void;
-			auto set_tile(const ALLEGRO::POINT<size_t>& shift) -> void;
-			auto get_position() const->ALLEGRO::POINT<size_t>;
-			auto set_position(const ALLEGRO::POINT<size_t>& position) -> void;
-			auto get_size() const -> const ALLEGRO::SIZE<size_t>&;
-			auto set_size(const ALLEGRO::SIZE<size_t>& size) -> void;
-			auto get_shift() const->ALLEGRO::POINT<size_t>;
-			auto move(const ALLEGRO::POINT<int32_t>& delta) -> ALLEGRO::POINT<int32_t>;
+			auto set_tile(const ALLEGRO::VECTOR_2D<size_t>& shift) -> void;
+			auto get_position() const->ALLEGRO::VECTOR_2D<size_t>;
+			auto set_position(const ALLEGRO::VECTOR_2D<size_t>& position) -> void;
+			auto get_size() const -> const ALLEGRO::VECTOR_2D<size_t>&;
+			auto set_size(const ALLEGRO::VECTOR_2D<size_t>& size) -> void;
+			auto get_shift() const->ALLEGRO::VECTOR_2D<size_t>;
+			auto move(const ALLEGRO::VECTOR_2D<int32_t>& delta) -> ALLEGRO::VECTOR_2D<int32_t>;
 
 		private:
 			ALLEGRO::RECTANGLE<size_t> m_camera;
 			ALLEGRO::RECTANGLE<size_t> m_tile;
-			ALLEGRO::POINT<int32_t> m_map_tl;
-			ALLEGRO::POINT<int32_t> m_map_br;
+			ALLEGRO::VECTOR_2D<int32_t> m_map_tl;
+			ALLEGRO::VECTOR_2D<int32_t> m_map_br;
 		};
 	}
 
@@ -140,7 +140,7 @@ namespace wind
 	public:
 		map_t();
 		map_t(size_t width, size_t height);
-		explicit map_t(ALLEGRO::SIZE<size_t> size);
+		explicit map_t(ALLEGRO::VECTOR_2D<size_t> size);
 		map_t(const map_t& map);
 		~map_t();
 		auto operator = (const map_t& map)->map_t&;
@@ -150,12 +150,12 @@ namespace wind
 		auto clear() -> void;
 
 		auto reset(size_t width, size_t height) -> bool;
-		auto reset(const ALLEGRO::SIZE<size_t>& size) -> bool;
+		auto reset(const ALLEGRO::VECTOR_2D<size_t>& size) -> bool;
 
 		auto data() -> void*;
 		auto data() const -> const void*;
 
-		auto size() const -> const ALLEGRO::SIZE<size_t>&;
+		auto size() const -> const ALLEGRO::VECTOR_2D<size_t>&;
 
 		auto at(size_t index) -> reference_element_type;
 		auto at(size_t index) const->const_reference_element_type;
@@ -205,13 +205,13 @@ namespace wind
 
 	private:
 		shared_type m_data;
-		ALLEGRO::SIZE<size_t> m_size;
+		ALLEGRO::VECTOR_2D<size_t> m_size;
 	};
 
 	namespace map
 	{
 		export auto load(map_t& map, const string_t& filename) -> bool;
 		export auto save(const map_t& map, const string_t& filename) -> bool;
-		export auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, const ALLEGRO::POINT<size_t>& position) -> void;
+		export auto draw(const map_t& map, const tilemap_t& tilemap, const map::camera_t& camera, const ALLEGRO::VECTOR_2D<size_t>& position) -> void;
 	}
 }

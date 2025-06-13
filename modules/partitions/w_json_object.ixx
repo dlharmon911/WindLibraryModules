@@ -1,9 +1,6 @@
 export module wind:json.object;
 
-import <vector>;
-import <map>;
-import <string>;
-import <memory>;
+import std;
 import allegro;
 import :hex;
 import :file;
@@ -28,19 +25,29 @@ namespace WIND
 
 namespace wind
 {
-	class json_object_t;
-	class json_array_t;
+	export class json_object_t;
+	export class json_array_t;
 
 	export class json_t
 	{
 	public:
 		json_t();
-		explicit json_t(bool val);
-		explicit json_t(double val);
-		explicit json_t(const string_t& val);
-		explicit json_t(const json_object_t& val);
-		explicit json_t(const json_array_t& val);
-		json_t(const json_t& json);
+		json_t(const json_t& value);
+		template <typename T> explicit json_t(const T& value) = delete;
+		template <> explicit json_t(const bool& value);
+		template <> explicit json_t(const string_t& value);
+		template <> explicit json_t(const int8_t& value);
+		template <> explicit json_t(const int16_t& value);
+		template <> explicit json_t(const int32_t& value);
+		template <> explicit json_t(const int64_t& value);
+		template <> explicit json_t(const uint8_t& value);
+		template <> explicit json_t(const uint16_t& value);
+		template <> explicit json_t(const uint32_t& value);
+		template <> explicit json_t(const uint64_t& value);
+		template <> explicit json_t(const float& value);
+		template <> explicit json_t(const double& value);
+		template <> explicit json_t(const json_object_t& value);
+		template <> explicit json_t(const json_array_t& value);
 		~json_t();
 
 		auto operator = (const json_t& json)->json_t&;
@@ -51,28 +58,45 @@ namespace wind
 
 		auto get_type() const->WIND::JSON::TYPE;
 
-		auto set_as_boolean(bool val) -> bool;
-		auto set_as_number(double val) -> bool;
-		auto set_as_string(const string_t& val) -> bool;
-		auto set_as_object(const json_object_t& val) -> bool;
-		auto set_as_array(const json_array_t& val) -> bool;
+		template <typename T> auto set_as(const T& value) -> bool = delete;
+		template <> auto set_as(const bool& value) -> bool;
+		template <> auto set_as(const string_t& value) -> bool;
+		template <> auto set_as(const int8_t& value) -> bool;
+		template <> auto set_as(const int16_t& value) -> bool;
+		template <> auto set_as(const int32_t& value) -> bool;
+		template <> auto set_as(const int64_t& value) -> bool;
+		template <> auto set_as(const uint8_t& value) -> bool;
+		template <> auto set_as(const uint16_t& value) -> bool;
+		template <> auto set_as(const uint32_t& value) -> bool;
+		template <> auto set_as(const uint64_t& value) -> bool;
+		template <> auto set_as(const float& value) -> bool;
+		template <> auto set_as(const double& value) -> bool;
+		template <> auto set_as(const json_object_t& value) -> bool;
+		template <> auto set_as(const json_array_t& value) -> bool;
 
-		auto get_as_boolean() const -> bool;
-		auto get_as_number() const -> double;
-		auto get_as_string() const->string_t;
-		auto get_as_object() -> json_object_t&;
-		auto get_as_object() const -> const json_object_t&;
-		auto get_as_array() -> json_array_t&;
-		auto get_as_array() const -> const json_array_t&;
+		template <typename T> auto get_as() const -> T = delete;
+		template <> auto get_as<bool>() const -> bool;
+		template <> auto get_as<int8_t>() const -> int8_t;
+		template <> auto get_as<int16_t>() const -> int16_t;
+		template <> auto get_as<int32_t>() const -> int32_t;
+		template <> auto get_as<int64_t>() const -> int64_t;
+		template <> auto get_as<uint8_t>() const -> uint8_t;
+		template <> auto get_as<uint16_t>() const -> uint16_t;
+		template <> auto get_as<uint32_t>() const -> uint32_t;
+		template <> auto get_as<uint64_t>() const -> uint64_t;
+		template <> auto get_as<float>() const -> float;
+		template <> auto get_as<double>() const -> double;
+		template <> auto get_as<string_t>() const -> string_t;
+		template <> auto get_as<json_object_t>() const -> json_object_t;
+		template <> auto get_as<json_array_t>() const -> json_array_t;
 
-		explicit operator bool() const;
-		explicit operator double() const;
-		explicit operator string_t();
-		explicit operator const string_t() const;
-		explicit operator json_object_t& ();
-		explicit operator const json_object_t& () const;
-		explicit operator json_array_t& ();
-		explicit operator const json_array_t& () const;
+		template <typename T> auto get_as() -> T& = delete;
+		template <> auto get_as<json_object_t&>() -> json_object_t&;
+		template <> auto get_as<json_array_t&>() -> json_array_t&;
+
+
+		auto get_data() -> std::shared_ptr<void>&;
+		auto get_data() const -> const std::shared_ptr<void>&;
 
 	private:
 		WIND::JSON::TYPE m_type{ WIND::JSON::TYPE::EMPTY };
@@ -97,8 +121,8 @@ namespace wind
 		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		json_object_t();
+		json_object_t(const json_t& json);
 		json_object_t(const json_object_t& object);
-		json_object_t(json_object_t& object);
 		~json_object_t();
 
 		auto operator = (const json_object_t& object)->json_object_t&;
@@ -179,11 +203,11 @@ namespace wind
 		using const_reference_element_type = wind::add_reference<wind::add_const<element_type>::type>::type;
 
 		json_array_t();
+		json_array_t(const json_t& json);
 		explicit json_array_t(size_t n);
 		json_array_t(size_t n, const element_type& val);
 		template <class InputIterator> json_array_t(InputIterator first, InputIterator last) : m_data(array_t(first, last)) {}
 		json_array_t(const json_array_t& array);
-		json_array_t(json_array_t& array);
 		explicit json_array_t(std::initializer_list<element_type> il);
 		~json_array_t();
 
@@ -237,42 +261,6 @@ namespace wind
 			std::vector<element_type>::const_iterator m_it;
 		};
 
-		class reverse_iterator
-		{
-		private:
-			reverse_iterator() = default;
-		public:
-			explicit reverse_iterator(std::vector<element_type>::reverse_iterator it) : m_it(it) {}
-			auto operator == (const reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
-			auto operator != (const reverse_iterator& it) const -> bool { return !operator == (it); }
-			auto operator -- () -> reverse_iterator& { --this->m_it; return *this; }
-			auto operator -- (int32_t) -> reverse_iterator { reverse_iterator tmp = *this; --(*this); return tmp; }
-			auto operator * () -> reference_element_type { return (*this->m_it); }
-			auto operator -> () -> pointer_element_type { return &(*this->m_it); }
-
-			friend class json_array_t;
-		private:
-			std::vector<element_type>::reverse_iterator m_it;
-		};
-
-		class const_reverse_iterator
-		{
-		private:
-			const_reverse_iterator() = default;
-		public:
-			explicit const_reverse_iterator(std::vector<element_type>::const_reverse_iterator it) : m_it(it) {}
-			auto operator == (const const_reverse_iterator& it) const -> bool { return (this->m_it == it.m_it); }
-			auto operator != (const const_reverse_iterator& it) const -> bool { return !operator == (it); }
-			auto operator -- () -> const_reverse_iterator& { ++this->m_it; return *this; }
-			auto operator -- (int32_t) -> const_reverse_iterator { const_reverse_iterator tmp = *this; --(*this); return tmp; }
-			auto operator * () const -> const_reference_element_type { return (*this->m_it); }
-			auto operator -> () -> const_pointer_element_type const { return &(*this->m_it); }
-
-			friend class json_array_t;
-		private:
-			std::vector<element_type>::const_reverse_iterator m_it;
-		};
-
 		auto insert(const_iterator position, const element_type& val) -> iterator;
 		auto insert(const_iterator position, size_t n, const element_type& val) -> iterator;
 		auto insert(const_iterator position, std::initializer_list<element_type> il) -> iterator;
@@ -297,10 +285,6 @@ namespace wind
 		auto end() -> iterator;
 		auto cbegin() const->const_iterator;
 		auto cend() const->const_iterator;
-		auto rbegin() -> reverse_iterator;
-		auto rend() -> reverse_iterator;
-		auto crbegin() const->const_reverse_iterator;
-		auto crend() const->const_reverse_iterator;
 
 	private:
 		std::vector<element_type> m_data;

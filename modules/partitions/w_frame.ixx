@@ -8,22 +8,6 @@ import :math;
 
 namespace WIND
 {
-	namespace THEME
-	{
-		export enum class COLOR : int32_t
-		{
-			BACKGROUND,
-			FOREGROUND,
-			WORKSPACE,
-			BORDER,
-			BORDER_LIGHT,
-			BORDER_DARK,
-			TEXT,
-			TEXT_SHADOW,
-			COUNT
-		};
-	}
-
 	namespace FRAME
 	{
 		namespace BORDER
@@ -43,12 +27,14 @@ namespace WIND
 		export enum class TYPE : int32_t
 		{
 			NORMAL,
-			WORKSPACE
+			WORKSPACE,
+			MENU
 		};
 	}
 }
 
 namespace wind::frame
 {
-	export auto draw(const ALLEGRO::POINT<float>& point, const ALLEGRO::SIZE<float>& dim, WIND::FRAME::TYPE type = WIND::FRAME::TYPE::NORMAL, WIND::FRAME::BORDER::TYPE border = WIND::FRAME::BORDER::TYPE::RAISED) -> void;
+	export auto draw(const ALLEGRO::RECTANGLE<float>& rectangle, WIND::FRAME::TYPE type = WIND::FRAME::TYPE::NORMAL, WIND::FRAME::BORDER::TYPE border = WIND::FRAME::BORDER::TYPE::RAISED) -> void;
+	export auto draw(const ALLEGRO::VECTOR_2D<float>& point, const ALLEGRO::VECTOR_2D<float>& size, WIND::FRAME::TYPE type = WIND::FRAME::TYPE::NORMAL, WIND::FRAME::BORDER::TYPE border = WIND::FRAME::BORDER::TYPE::RAISED) -> void;
 }

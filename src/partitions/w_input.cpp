@@ -13,8 +13,8 @@ namespace wind
 	{
 		namespace mouse
 		{
-			ALLEGRO::POINT<int32_t> m_position;
-			ALLEGRO::POINT<int32_t> m_wheel;
+			ALLEGRO::VECTOR_2D<int32_t> m_position;
+			ALLEGRO::VECTOR_2D<int32_t> m_wheel;
 			button_state_t m_state[WIND::MOUSE::BUTTON_COUNT];
 
 			auto is_pressed(int32_t index) -> bool
@@ -59,22 +59,22 @@ namespace wind
 				m_state[index].m_last_pressed = m_state[index].m_is_pressed;
 			}
 
-			auto set_position(const ALLEGRO::POINT<int32_t>& position) -> void
+			auto set_position(const ALLEGRO::VECTOR_2D<int32_t>& position) -> void
 			{
 				m_position = position;
 			}
 
-			auto set_wheel(const ALLEGRO::POINT<int32_t>& position) -> void
+			auto set_wheel(const ALLEGRO::VECTOR_2D<int32_t>& position) -> void
 			{
 				m_wheel = position;
 			}
 
-			auto get_position() -> const ALLEGRO::POINT<int32_t>&
+			auto get_position() -> const ALLEGRO::VECTOR_2D<int32_t>&
 			{
 				return m_position;
 			}
 
-			auto get_wheel() -> const ALLEGRO::POINT<int32_t>&
+			auto get_wheel() -> const ALLEGRO::VECTOR_2D<int32_t>&
 			{
 				return m_wheel;
 			}

@@ -38,7 +38,7 @@ namespace wind
 				return -1;
 			}
 
-			value.m_text = json.get_as_string();
+			value.m_text = json.get_as<string_t>();
 
 			return 0;
 		}

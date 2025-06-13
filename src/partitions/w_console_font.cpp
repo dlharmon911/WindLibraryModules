@@ -307,7 +307,7 @@ namespace wind
 			int32_t w = WIND::CONSOLE::FONT_GLYPH_SIZE;
 			int32_t rows = (static_cast<int32_t>(count) / WIND::CONSOLE::FONT_GLYPH_SPAN) + ((count % WIND::CONSOLE::FONT_GLYPH_SPAN) ? 1 : 0);
 			ALLEGRO::RECTANGLE<size_t> rect{ 0, 0, WIND::CONSOLE::FONT_GLYPH_SIZE, WIND::CONSOLE::FONT_GLYPH_SIZE };
-			ALLEGRO::SIZE<int32_t> bsize{ WIND::CONSOLE::FONT_GLYPH_SPAN << WIND::CONSOLE::FONT_GLYPH_SHIFT, rows << WIND::CONSOLE::FONT_GLYPH_SHIFT };
+			ALLEGRO::VECTOR_2D<int32_t> bsize{ WIND::CONSOLE::FONT_GLYPH_SPAN << WIND::CONSOLE::FONT_GLYPH_SHIFT, rows << WIND::CONSOLE::FONT_GLYPH_SHIFT };
 
 			font->m_count = 0;
 			font->m_start = 0;
@@ -324,11 +324,11 @@ namespace wind
 
 			for (int32_t j = 0; j < h; ++j)
 			{
-				rect.position.y = (index / WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
+				rect.get_position().get_y() = (index / WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 
 				for (int32_t i = 0; i < w; ++i)
 				{
-					rect.position.x = (index % WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
+					rect.get_position().get_x() = (index % WIND::CONSOLE::FONT_GLYPH_SPAN) << WIND::CONSOLE::FONT_GLYPH_SHIFT;
 
 					ALLEGRO::BITMAP glyph = al::create_sub_bitmap(font->m_bitmap, static_cast<ALLEGRO::RECTANGLE<int32_t>>(rect));
 
@@ -508,38 +508,38 @@ namespace wind
 			return set_font_glyph(font, index, data);
 		}
 
-		auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, uint8_t index) -> void
+		auto draw_font_glyph(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::VECTOR_2D<int32_t>& point, uint8_t index) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			ALLEGRO::ASSERT(index >= font->m_start && index <= (font->m_start + font->m_count));
 
-			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, static_cast<ALLEGRO::POINT<float>>(point), 0);
+			al::draw_tinted_bitmap(font->m_glyphs[index - font->m_start], color, static_cast<ALLEGRO::VECTOR_2D<float>>(point), 0);
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const wind::string_t& text) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::VECTOR_2D<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const wind::string_t& text) -> void
 		{
 			ALLEGRO::ASSERT(font);
 			float w = text.length() << WIND::CONSOLE::FONT_GLYPH_SHIFT;
-			ALLEGRO::POINT<int32_t> pos{ point };
+			ALLEGRO::VECTOR_2D<int32_t> pos{ point };
 
 			if (alignment == WIND::CONSOLE::FONT::ALIGNMENT::RIGHT)
 			{
-				pos.x -= w;
+				pos.get_x() -= w;
 			}
 
 			if (alignment == WIND::CONSOLE::FONT::ALIGNMENT::CENTRE)
 			{
-				pos.x -= (w * 0.5f);
+				pos.get_x() -= (w * 0.5f);
 			}
 
 			for (auto it = text.cbegin(); it != text.cend(); ++it)
 			{
 				draw_font_glyph(font, color, pos, (*it).get_codepoint());
-				pos.x += WIND::CONSOLE::FONT_GLYPH_SIZE;
+				pos.get_x() += WIND::CONSOLE::FONT_GLYPH_SIZE;
 			}
 		}
 
-		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::POINT<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const char* format, ...) -> void
+		auto draw_font(const font_t& font, ALLEGRO::COLOR color, const ALLEGRO::VECTOR_2D<int32_t>& point, WIND::CONSOLE::FONT::ALIGNMENT alignment, const char* format, ...) -> void
 		{
 			va_list args;
 			int32_t len;
@@ -566,7 +566,7 @@ namespace wind
 
 			if (glyph)
 			{
-				ALLEGRO::POINT<int32_t> point{ 0,0 };
+				ALLEGRO::VECTOR_2D<int32_t> point{ 0,0 };
 				ALLEGRO::BITMAP target{ al::get_target_bitmap() };
 				uint8_t p{ 0 };
 				float color{ 0.0f };
@@ -591,7 +591,7 @@ namespace wind
 								c = 1.0f;
 							}
 
-							point = { (WIND::CONSOLE::FONT_GLYPH_SIZE - 1) - i, j };
+							point = ALLEGRO::VECTOR_2D<int32_t>((WIND::CONSOLE::FONT_GLYPH_SIZE - 1) - i, j );
 
 							al::put_pixel(point, al::map_rgba_f(c, c, c, c));
 							p = p >> 1;
@@ -615,21 +615,21 @@ namespace wind
 			al::lock_bitmap(glyph, ALLEGRO::PIXEL_FORMAT_ANY, ALLEGRO::BITMAP_LOCK_READ_ONLY);
 
 			int32_t white = 0xffffffff;
-			ALLEGRO::POINT<int32_t> point{ 0,0 };
+			ALLEGRO::VECTOR_2D<int32_t> point{ 0,0 };
 
-			for (point.y = 0; point.y < WIND::CONSOLE::FONT_GLYPH_SIZE; ++point.y)
+			for (point.get_y() = 0; point.get_y() < WIND::CONSOLE::FONT_GLYPH_SIZE; ++point.get_y())
 			{
-				data[point.y] = 0;
+				data[point.get_y()] = 0;
 
-				for (point.x = 0; point.x < WIND::CONSOLE::FONT_GLYPH_SIZE; ++point.x)
+				for (point.get_x() = 0; point.get_x() < WIND::CONSOLE::FONT_GLYPH_SIZE; ++point.get_x())
 				{
-					int32_t color = wind::unmap_rgb_i(al::get_pixel(glyph, static_cast<ALLEGRO::POINT<float>>(point)));
+					int32_t color = wind::unmap_rgb_i(al::get_pixel(glyph, static_cast<ALLEGRO::VECTOR_2D<float>>(point)));
 
-					data[point.y] <<= 1;
+					data[point.get_y()] <<= 1;
 
 					if (white == color)
 					{
-						data[point.y] |= 0x1;
+						data[point.get_y()] |= 0x1;
 					}
 				}
 			}

@@ -13,7 +13,7 @@ namespace wind
 	{
 	}
 
-	tilemap_t::tilemap_t(ALLEGRO::SIZE<int32_t> tilesize) : m_sheets(), m_tilesize(tilesize)
+	tilemap_t::tilemap_t(ALLEGRO::VECTOR_2D<int32_t> tilesize) : m_sheets(), m_tilesize(tilesize)
 	{
 	}
 
@@ -66,12 +66,12 @@ namespace wind
 		return this->m_sheets.empty();
 	}
 
-	auto tilemap_t::get_tile_size() const -> const ALLEGRO::SIZE<int32_t>&
+	auto tilemap_t::get_tile_size() const -> const ALLEGRO::VECTOR_2D<int32_t>&
 	{
 		return this->m_tilesize;
 	}
 
-	auto tilemap_t::set_tile_size(ALLEGRO::SIZE<int32_t> tilesize) -> void
+	auto tilemap_t::set_tile_size(ALLEGRO::VECTOR_2D<int32_t> tilesize) -> void
 	{
 		this->m_tilesize = tilesize;
 	}

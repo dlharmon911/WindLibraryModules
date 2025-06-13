@@ -10,7 +10,7 @@ namespace wind
 	namespace json
 	{
 		export 	template <typename T>
-			auto parse_size(const wind::json_object_t& object, ALLEGRO::SIZE<T>& size) -> int32_t
+			auto parse_size(const wind::json_object_t& object, ALLEGRO::VECTOR_2D<T>& size) -> int32_t
 		{
 			auto width_it = object.find("width");
 			if (width_it == object.cend())
@@ -22,7 +22,7 @@ namespace wind
 			{
 				return -1;
 			}
-			size.width = (T)width_it->get_as_number();
+			size.get_x() = width_it->get_as<T>();
 
 			auto height_it = object.find("height");
 			if (height_it == object.cend())
@@ -34,12 +34,12 @@ namespace wind
 			{
 				return -1;
 			}
-			size.height = (T)height_it->get_as_number();
+			size.get_y() = height_it->get_as<T>();
 			return 0;
 		}
 
 		export 	template <typename T>
-			auto parse_point(const wind::json_object_t& object, ALLEGRO::POINT<T>& point) -> int32_t
+			auto parse_point(const wind::json_object_t& object, ALLEGRO::VECTOR_2D<T>& point) -> int32_t
 		{
 			auto x_it = object.find("x");
 			if (x_it == object.cend())
@@ -51,7 +51,7 @@ namespace wind
 			{
 				return -1;
 			}
-			point.x = (T)x_it->get_as_number();
+			point.get_x() = x_it->get_as<T>();
 
 			auto y_it = object.find("y");
 			if (y_it == object.cend())
@@ -63,7 +63,7 @@ namespace wind
 			{
 				return -1;
 			}
-			point.y = (T)y_it->get_as_number();
+			point.get_y() = y_it->get_as<T>();
 			return 0;
 		}
 	}

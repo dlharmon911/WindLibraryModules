@@ -162,7 +162,7 @@ namespace wind
 				return -1;
 			}
 
-			const json_object_t& object = json.get_as_object();
+			const json_object_t& object = static_cast<const json_object_t&>(json);
 
 			auto it = object.find("name");
 			if (it == object.cend())
@@ -195,7 +195,7 @@ namespace wind
 					return -1;
 				}
 
-				const json_array_t& array = json.get_as_array();
+				const json_array_t& array = static_cast<const json_array_t&>(json);
 
 				vector.clear();
 

@@ -46,6 +46,7 @@ namespace wind
 				int32_t m_value{ 0 };
 				int32_t m_importance{ 0 };
 			};
+			export auto set_start_size(const ALLEGRO::VECTOR_2D<int32_t>& size) -> void;
 			export auto get_new_option(int32_t id) -> display::option_t&;
 			export auto set_new_option(int32_t id, const display::option_t& option) -> void;
 			export auto get_new_flags() -> int32_t;

@@ -21,17 +21,17 @@ namespace wind
 	{
 		size_t m_background{ 0 };
 		size_t m_foreground{ 15 };
-		ALLEGRO::SIZE<int32_t> m_size = { 0,0 };
+		ALLEGRO::VECTOR_2D<int32_t> m_size = { 0,0 };
 		ALLEGRO::BITMAP m_bitmap{ nullptr };
 		std::shared_ptr<uint8_t> m_data{ nullptr };
 		console::palette_t m_palette{};
 		console::font_t m_font{ nullptr };
-		console::cursor_t m_cursor = { 0.0f, 0.0f };
+		console::cursor_t m_cursor{};
 	};
 
 	namespace console
 	{
-		auto create(const font_t& font, ALLEGRO::SIZE<int32_t> size) -> console_t
+		auto create(const font_t& font, ALLEGRO::VECTOR_2D<int32_t> size) -> console_t
 		{
 			console_t console = std::make_shared<console_data_t>();
 
@@ -57,12 +57,12 @@ namespace wind
 					0xffffffff
 				};
 
-				console->m_cursor = { 0.0f, 0.0f };
+				console->m_cursor.zero_out();
 				console->m_background = 0;
 				console->m_foreground = 15;
 				console->m_size = size;
 				console->m_bitmap = al::create_bitmap(size);
-				console->m_data = std::shared_ptr<uint8_t>(new uint8_t[size.width * size.height], array_deleter<uint8_t>());
+				console->m_data = std::shared_ptr<uint8_t>(new uint8_t[size.get_x() * size.get_y()], array_deleter<uint8_t>());
 				console->m_font = font;
 
 				if (!console->m_bitmap || !console->m_data || !console->m_font)
@@ -70,11 +70,11 @@ namespace wind
 					return nullptr;
 				}
 
-				for (size_t j = 0; j < console->m_size.height; ++j)
+				for (size_t j = 0; j < console->m_size.get_y(); ++j)
 				{
-					for (size_t i = 0; i < console->m_size.width; ++i)
+					for (size_t i = 0; i < console->m_size.get_x(); ++i)
 					{
-						console->m_data.get()[i + j * console->m_size.width] = 0;
+						console->m_data.get()[i + j * console->m_size.get_x()] = 0;
 					}
 				}
 
@@ -91,15 +91,15 @@ namespace wind
 
 		auto get_width(const console_t& console) -> int32_t
 		{
-			return console->m_size.width;
+			return console->m_size.get_x();
 		}
 
 		auto get_height(const console_t& console) -> int32_t
 		{
-			return console->m_size.height;
+			return console->m_size.get_y();
 		}
 
-		auto get_size(const console_t& console) -> ALLEGRO::SIZE<int32_t>&
+		auto get_size(const console_t& console) -> ALLEGRO::VECTOR_2D<int32_t>&
 		{
 			return console->m_size;
 		}
@@ -115,22 +115,22 @@ namespace wind
 
 			al::set_target_bitmap(target);
 
-			console->m_cursor = { 0.0f, 0.0f };
+			console->m_cursor.zero_out();
 
-			for (size_t j = 0; j < console->m_size.height; ++j)
+			for (size_t j = 0; j < console->m_size.get_y(); ++j)
 			{
-				for (size_t i = 0; i < console->m_size.width; ++i)
+				for (size_t i = 0; i < console->m_size.get_x(); ++i)
 				{
-					console->m_data.get()[i + j * console->m_size.width] = 0;
+					console->m_data.get()[i + j * console->m_size.get_x()] = 0;
 				}
 			}
 		}
 
 		namespace gfx
 		{
-			auto draw(const console_t& console, const ALLEGRO::POINT<int32_t>& point) -> void
+			auto draw(const console_t& console, const ALLEGRO::VECTOR_2D<int32_t>& point) -> void
 			{
-				al::draw_bitmap(console->m_bitmap, static_cast<ALLEGRO::POINT<float>>(point));
+				al::draw_bitmap(console->m_bitmap, static_cast<ALLEGRO::VECTOR_2D<float>>(point));
 			}
 		}
 
@@ -250,30 +250,30 @@ namespace wind
 				auto draw(console_t& console, uint8_t c) -> void
 				{
 					static ALLEGRO::BITMAP target{ nullptr };
-					static ALLEGRO::POINT<float> point{ 0.0f, 0.0f };
+					static ALLEGRO::VECTOR_2D<float> point{ 0.0f, 0.0f };
 					static ALLEGRO::COLOR background = { 0.0f, 0.0f, 0.0f, 0.0f };
 					static ALLEGRO::COLOR  foreground = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-					point = { float(console->m_cursor.x * WIND::CONSOLE::CELL::WIDTH), float(console->m_cursor.y * WIND::CONSOLE::CELL::HEIGHT) };
+					point.set_values(static_cast<float>(console->m_cursor.get_x() * WIND::CONSOLE::CELL::WIDTH), static_cast<float>(console->m_cursor.get_y() * WIND::CONSOLE::CELL::HEIGHT));
 					background = wind::map_rgba_i(console->m_palette[console->m_background]);
 					foreground = wind::map_rgba_i(console->m_palette[console->m_foreground]);
 
 					target = al::get_target_bitmap();
 					al::set_target_bitmap(console::bitmap::get(console));
-					draw_font_glyph(console->m_font, background, static_cast<ALLEGRO::POINT<int32_t>>(point), 255);
-					draw_font_glyph(console->m_font, foreground, static_cast<ALLEGRO::POINT<int32_t>>(point), c);
+					draw_font_glyph(console->m_font, background, static_cast<ALLEGRO::VECTOR_2D<int32_t>>(point), 255);
+					draw_font_glyph(console->m_font, foreground, static_cast<ALLEGRO::VECTOR_2D<int32_t>>(point), c);
 					al::set_target_bitmap(target);
 
-					console->m_data.get()[console->m_cursor.x + console->m_cursor.y * console->m_size.width] = c;
+					console->m_data.get()[console->m_cursor.get_x() + console->m_cursor.get_y() * console->m_size.get_x()] = c;
 
-					++console->m_cursor.x;
-					if (console->m_cursor.x == console->m_size.width)
+					++console->m_cursor.get_x();
+					if (console->m_cursor.get_x() == console->m_size.get_x())
 					{
-						console->m_cursor.x = 0;
-						++console->m_cursor.y;
-						if (console->m_cursor.y == console->m_size.height)
+						console->m_cursor.get_x() = 0;
+						++console->m_cursor.get_y();
+						if (console->m_cursor.get_y() == console->m_size.get_y())
 						{
-							console->m_cursor.y = 0;
+							console->m_cursor.get_y() = 0;
 						}
 					}
 				}
@@ -284,12 +284,12 @@ namespace wind
 		{
 			namespace gfx
 			{
-				auto draw(console_t& console, const sprite_t& sprite, const ALLEGRO::POINT<int32_t>& point, int32_t flags) -> void
+				auto draw(console_t& console, const sprite_t& sprite, const ALLEGRO::VECTOR_2D<int32_t>& point, int32_t flags) -> void
 				{
 					draw(console, sprite->m_layers, sprite->m_begin, sprite->m_end, point, flags);
 				}
 
-				auto draw(console_t& console, const layer_t& layers, int32_t begin, int32_t end, const ALLEGRO::POINT<int32_t>& point, int32_t flags) -> void
+				auto draw(console_t& console, const layer_t& layers, int32_t begin, int32_t end, const ALLEGRO::VECTOR_2D<int32_t>& point, int32_t flags) -> void
 				{
 					static ALLEGRO::BITMAP target{ nullptr };
 					static ALLEGRO::TRANSFORM backup{};
@@ -305,7 +305,7 @@ namespace wind
 
 					al::copy_transform(backup, al::get_current_transform());
 					al::identity_transform(t);
-					al::translate_transform(t, { -point.x, -point.y });
+					al::translate_transform(t, ALLEGRO::VECTOR_2D<float>(-point.get_x(), -point.get_y()));
 
 					if (flags & WIND::CONSOLE::SPRITE::DRAW_FLAGS::FLIP_HORIZONTAL)
 					{
@@ -319,7 +319,7 @@ namespace wind
 						al::translate_transform(t, { 0.0f, (float)WIND::CONSOLE::CELL::WIDTH * 2.0f });
 					}
 
-					al::translate_transform(t, static_cast<ALLEGRO::POINT<float>>(point));
+					al::translate_transform(t, static_cast<ALLEGRO::VECTOR_2D<float>>(point));
 					al::use_transform(t);
 
 					for (int32_t layer = 0; layer < (1 + (end - begin)); ++layer)
@@ -329,13 +329,13 @@ namespace wind
 						{
 							for (int32_t i = 0; i < 2; ++i)
 							{
-								ALLEGRO::POINT<float> p{ static_cast<ALLEGRO::POINT<float>>(point) };
-								p.x += i * (float)WIND::CONSOLE::CELL::WIDTH;
-								p.y += j * (float)WIND::CONSOLE::CELL::HEIGHT;
+								ALLEGRO::VECTOR_2D<float> p{ static_cast<ALLEGRO::VECTOR_2D<float>>(point) };
+								p.get_x() += i * (float)WIND::CONSOLE::CELL::WIDTH;
+								p.get_y() += j * (float)WIND::CONSOLE::CELL::HEIGHT;
 
 								ALLEGRO::COLOR color = wind::map_rgba_i((*palette)[layers.get()[layer + begin].m_color]);
 								uint8_t c = layers.get()[layer + begin].m_character[index];
-								draw_font_glyph(font, color, static_cast<ALLEGRO::POINT<int32_t>>(p), layers.get()[layer + begin].m_character[index]);
+								draw_font_glyph(font, color, static_cast<ALLEGRO::VECTOR_2D<int32_t>>(p), layers.get()[layer + begin].m_character[index]);
 								++index;
 							}
 						}

@@ -20,20 +20,20 @@ namespace wind
 			if (region)
 			{
 				ALLEGRO::COLOR color;
-				ALLEGRO::SIZE<size_t> b_size = { al::get_bitmap_width(bitmap), al::get_bitmap_height(bitmap) };
-				ALLEGRO::POINT<float> point;
+				ALLEGRO::VECTOR_2D<size_t> b_size(al::get_bitmap_width(bitmap), al::get_bitmap_height(bitmap));
+				ALLEGRO::VECTOR_2D<float> point{};
 
-				for (size_t j = 0; j < b_size.height; ++j)
+				for (size_t j = 0; j < b_size.get_y(); ++j)
 				{
-					for (size_t i = 0; i < b_size.width; ++i)
+					for (size_t i = 0; i < b_size.get_x(); ++i)
 					{
-						point = { (float)i, (float)j };
+						point.set_values(static_cast<float>(i), static_cast<float>(j));
 						color = al::get_pixel(bitmap, point);
 
-						if (fabs(color.alpha - 0.0f) > std::numeric_limits<float>::epsilon())
+						if (std::abs<float>(color.a - 0.0f) > std::numeric_limits<float>::epsilon())
 						{
-							i = b_size.width;
-							j = b_size.height;
+							i = b_size.get_x();
+							j = b_size.get_y();
 							rv = false;
 						}
 					}
@@ -47,16 +47,16 @@ namespace wind
 
 		auto flood_fill(const ALLEGRO::BITMAP& bitmap, const ALLEGRO::RECTANGLE<int32_t>& region) -> void
 		{
-			ALLEGRO::SIZE<int32_t> bgsize = al::get_bitmap_dimensions(bitmap);
+			ALLEGRO::VECTOR_2D<int32_t> bgsize = al::get_bitmap_dimensions(bitmap);
 
 			const ALLEGRO::RECTANGLE<int32_t> clip = al::get_clipping_rectangle();
 			al::set_clipping_rectangle(region);
 
-			for (int32_t y = region.position.y; y < (region.position.y + region.size.height); y += bgsize.height)
+			for (int32_t y = region.get_y(); y < (region.get_y() + region.get_height()); y += bgsize.get_y())
 			{
-				for (int32_t x = region.position.x; x < (region.position.x + region.size.width); x += bgsize.width)
+				for (int32_t x = region.get_x(); x < (region.get_x() + region.get_width()); x += bgsize.get_x())
 				{
-					al::draw_bitmap(bitmap, { x, y });
+					al::draw_bitmap(bitmap, { static_cast<float>(x), static_cast<float>(y) });
 				}
 			}
 			al::set_clipping_rectangle(clip);

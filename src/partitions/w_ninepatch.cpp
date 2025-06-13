@@ -56,13 +56,13 @@ namespace wind
 	{
 		static void get_vertical_positions(const ALLEGRO::BITMAP& bitmap, int32_t height, int32_t x, int32_t& y1, int32_t& y2)
 		{
-			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0, 0 });
+			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0.0f, 0.0f });
 			ALLEGRO::COLOR pixel{ 0.0f, 0.0f, 0.0f, 0.0f };
 			bool first_found = false;
 
 			for (int32_t j = 0; j < height; ++j)
 			{
-				pixel = al::get_pixel(bitmap, { x, j });
+				pixel = al::get_pixel(bitmap, { static_cast<float>(x), static_cast<float>(j) });
 
 				if (color != pixel)
 				{
@@ -83,13 +83,13 @@ namespace wind
 
 		static void get_horizontal_positions(const ALLEGRO::BITMAP& bitmap, int32_t width, int32_t y, int32_t& x1, int32_t& x2)
 		{
-			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0, 0 });
+			ALLEGRO::COLOR color = al::get_pixel(bitmap, { 0.0f, 0.0f });
 			ALLEGRO::COLOR pixel{ 0.0f, 0.0f, 0.0f, 0.0f };
 			bool first_found = false;
 
 			for (int32_t i = 0; i < width; ++i)
 			{
-				pixel = al::get_pixel(bitmap, { i, y });
+				pixel = al::get_pixel(bitmap, { static_cast<float>(i), static_cast<float>(y) });
 
 				if (color != pixel)
 				{
@@ -113,24 +113,24 @@ namespace wind
 	{
 		if (bitmap)
 		{
-			ALLEGRO::SIZE<int32_t> dimensions = al::get_bitmap_dimensions(bitmap);
+			ALLEGRO::VECTOR_2D<int32_t> dimensions = al::get_bitmap_dimensions(bitmap);
 
-			this->m_bitmap = al::create_bitmap({ dimensions.width - 2, dimensions.height - 2 });
+			this->m_bitmap = al::create_bitmap({ dimensions.get_x() - 2, dimensions.get_y() - 2 });
 
 			if (this->m_bitmap)
 			{
 				ALLEGRO::BITMAP target = al::get_target_bitmap();
 				al::set_target_bitmap(this->m_bitmap);
-				al::draw_bitmap(bitmap, { 1, 1 });
+				al::draw_bitmap(bitmap, { 1.0f, 1.0f });
 				al::set_target_bitmap(target);
 
 				auto region = al::lock_bitmap(bitmap, ALLEGRO::PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
 
-				ninepatch::get_vertical_positions(bitmap, dimensions.height, 0, this->m_partition.top_left.y, this->m_partition.bottom_right.y);
-				ninepatch::get_horizontal_positions(bitmap, dimensions.width, 0, this->m_partition.top_left.x, this->m_partition.bottom_right.x);
+				ninepatch::get_vertical_positions(bitmap, dimensions.get_y(), 0, this->m_partition.get_top_left().get_y(), this->m_partition.get_bottom_right().get_y());
+				ninepatch::get_horizontal_positions(bitmap, dimensions.get_x(), 0, this->m_partition.get_top_left().get_x(), this->m_partition.get_bottom_right().get_x());
 
-				ninepatch::get_vertical_positions(bitmap, dimensions.height, dimensions.width - 1, this->m_margin.top_left.y, this->m_margin.bottom_right.y);
-				ninepatch::get_horizontal_positions(bitmap, dimensions.width, dimensions.height - 1, this->m_margin.top_left.x, this->m_margin.bottom_right.x);
+				ninepatch::get_vertical_positions(bitmap, dimensions.get_y(), dimensions.get_x() - 1, this->m_margin.get_top_left().get_y(), this->m_margin.get_bottom_right().get_y());
+				ninepatch::get_horizontal_positions(bitmap, dimensions.get_x(), dimensions.get_y() - 1, this->m_margin.get_top_left().get_x(), this->m_margin.get_bottom_right().get_x());
 
 				al::unlock_bitmap(bitmap);
 			}
@@ -156,14 +156,14 @@ namespace wind
 
 	namespace ninepatch
 	{
-		auto draw(const ninepatch_t& ninepatch, const ALLEGRO::POINT<int32_t>& position, const ALLEGRO::SIZE<int32_t>& size, WIND::NINEPATCH::DRAW::FLAG flag) -> void
+		auto draw(const ninepatch_t& ninepatch, const ALLEGRO::VECTOR_2D<int32_t>& position, const ALLEGRO::VECTOR_2D<int32_t>& size, WIND::NINEPATCH::DRAW::FLAG flag) -> void
 		{
-			ALLEGRO::SIZE<int32_t> dimensions{ al::get_bitmap_dimensions(ninepatch.m_bitmap) };
-			ALLEGRO::SIZE<int32_t> bsize[3] =
+			ALLEGRO::VECTOR_2D<int32_t> dimensions{ al::get_bitmap_dimensions(ninepatch.m_bitmap) };
+			ALLEGRO::VECTOR_2D<int32_t> bsize[3] =
 			{
-				{ninepatch.m_partition.top_left.x,ninepatch.m_partition.top_left.y},
-				{ninepatch.m_partition.bottom_right.x - ninepatch.m_partition.top_left.x + 1, ninepatch.m_partition.bottom_right.y - ninepatch.m_partition.top_left.y + 1},
-				{dimensions.width - ninepatch.m_partition.bottom_right.x, dimensions.height - ninepatch.m_partition.bottom_right.y}
+				{ninepatch.m_partition.get_top_left().get_x(),ninepatch.m_partition.get_top_left().get_y()},
+				{ninepatch.m_partition.get_bottom_right().get_x() - ninepatch.m_partition.get_top_left().get_x() + 1, ninepatch.m_partition.get_bottom_right().get_y() - ninepatch.m_partition.get_top_left().get_y() + 1},
+				{dimensions.get_x() - ninepatch.m_partition.get_bottom_right().get_x(), dimensions.get_y() - ninepatch.m_partition.get_bottom_right().get_y()}
 			};
 
 			ALLEGRO::RECTANGLE<int32_t> source{ {0, 0}, {0, 0} };
@@ -171,38 +171,38 @@ namespace wind
 
 			for (int32_t j = 0; j < 3; ++j)
 			{
-				source.size.height = bsize[j].height;
+				source.get_size().get_y() = bsize[j].get_y();
 
 				if (j == 2)
 				{
-					destination.size.height = size.height - (bsize[0].height + bsize[2].height);
+					destination.get_size().get_y() = size.get_y() - (bsize[0].get_y() + bsize[2].get_y());
 				}
 				else
 				{
-					destination.size.height = bsize[j].height;
+					destination.get_size().get_y() = bsize[j].get_y();
 				}
 
 				for (int32_t i = 0; i < 3; ++i)
 				{
-					source.size.width = bsize[i].width;
+					source.get_size().get_x() = bsize[i].get_x();
 
 					if (i == 2)
 					{
-						destination.size.width = size.width - (bsize[0].width + bsize[2].width);
+						destination.get_size().get_x() = size.get_x() - (bsize[0].get_x() + bsize[2].get_x());
 					}
 					else
 					{
-						destination.size.width = bsize[i].width;
+						destination.get_size().get_x() = bsize[i].get_x();
 					}
 
 					al::draw_scaled_bitmap(ninepatch.get_bitmap(), static_cast<ALLEGRO::RECTANGLE<float>>(source), static_cast<ALLEGRO::RECTANGLE<float>>(destination));
 
-					source.position.x += source.size.width;
-					destination.position.x += destination.size.width;
+					source.get_position().get_x() += source.get_size().get_x();
+					destination.get_position().get_x() += destination.get_size().get_x();
 				}
 
-				source.position.y += source.size.height;
-				destination.position.y += destination.size.height;
+				source.get_position().get_y() += source.get_size().get_y();
+				destination.get_position().get_y() += destination.get_size().get_y();
 			}
 		}
 	}

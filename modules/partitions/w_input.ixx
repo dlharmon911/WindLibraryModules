@@ -34,13 +34,13 @@ namespace wind
 			export auto set_pressed(int32_t index) -> void;
 			export auto was_released(int32_t index) -> bool;
 			export auto set_released(int32_t index) -> void;
-			export auto set_position(const ALLEGRO::POINT<int32_t>& position) -> void;
-			export auto set_wheel(const ALLEGRO::POINT<int32_t>& position) -> void;
+			export auto set_position(const ALLEGRO::VECTOR_2D<int32_t>& position) -> void;
+			export auto set_wheel(const ALLEGRO::VECTOR_2D<int32_t>& position) -> void;
 			export auto acknowledge(int32_t index) -> void;
 
 			export auto get_state(int32_t index) -> const button_state_t&;
-			export auto get_position() -> const ALLEGRO::POINT<int32_t>&;
-			export auto get_wheel() -> const ALLEGRO::POINT<int32_t>&;
+			export auto get_position() -> const ALLEGRO::VECTOR_2D<int32_t>&;
+			export auto get_wheel() -> const ALLEGRO::VECTOR_2D<int32_t>&;
 		}
 
 		namespace keyboard

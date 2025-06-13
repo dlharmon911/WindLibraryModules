@@ -30,7 +30,7 @@ namespace wind
 	auto tilesheet_t::clear() -> void
 	{
 		this->m_sub_bitmaps.clear();
-		this->m_tile_size = { 0,0 };
+		this->m_tile_size.zero_out();
 	}
 
 	auto tilesheet_t::count() const -> size_t
@@ -43,7 +43,7 @@ namespace wind
 		return !this->m_sub_bitmaps.size();
 	}
 
-	auto tilesheet_t::tile_size() const -> const ALLEGRO::SIZE<int32_t>&
+	auto tilesheet_t::tile_size() const -> const ALLEGRO::VECTOR_2D<int32_t>&
 	{
 		return this->m_tile_size;
 	}
@@ -110,14 +110,14 @@ namespace wind
 		return const_reverse_iterator(this->m_sub_bitmaps.crend());
 	}
 
-	static auto generate_sub_bitmaps(const ALLEGRO::BITMAP& bitmap, const ALLEGRO::SIZE<int32_t>& tsize, std::vector<ALLEGRO::BITMAP>& sub_bitmap_array) -> int32_t
+	static auto generate_sub_bitmaps(const ALLEGRO::BITMAP& bitmap, const ALLEGRO::VECTOR_2D<int32_t>& tsize, std::vector<ALLEGRO::BITMAP>& sub_bitmap_array) -> int32_t
 	{
-		ALLEGRO::SIZE<int32_t> bsize{ al::get_bitmap_dimensions(bitmap) };
+		ALLEGRO::VECTOR_2D<int32_t> bsize{ al::get_bitmap_dimensions(bitmap) };
 		ALLEGRO::RECTANGLE<int32_t> rectangle{ {0, 0}, tsize };
 
-		for (rectangle.position.y = 0; rectangle.position.y < bsize.height; rectangle.position.y += tsize.height)
+		for (rectangle.get_position().get_y() = 0; rectangle.get_position().get_y() < bsize.get_y(); rectangle.get_position().get_y() += tsize.get_y())
 		{
-			for (rectangle.position.x = 0; rectangle.position.x < bsize.width; rectangle.position.x += tsize.width)
+			for (rectangle.get_position().get_x() = 0; rectangle.get_position().get_x() < bsize.get_x(); rectangle.get_position().get_x() += tsize.get_x())
 			{
 				ALLEGRO::BITMAP sub{ al::create_sub_bitmap(bitmap, rectangle) };
 
@@ -136,7 +136,7 @@ namespace wind
 		return 0;
 	}
 
-	static auto create_empty_bitmap(std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::SIZE<int32_t>& tile_size) -> int32_t
+	static auto create_empty_bitmap(std::vector<ALLEGRO::BITMAP>& bitmaps, const ALLEGRO::VECTOR_2D<int32_t>& tile_size) -> int32_t
 	{
 		ALLEGRO::BITMAP sub{ al::create_bitmap(tile_size) };
 
@@ -154,7 +154,7 @@ namespace wind
 		return 0;
 	}
 
-	auto tilesheet_t::generate(const std::vector<element_type>& bitmaps, const ALLEGRO::SIZE<int32_t>& tile_size) -> int32_t
+	auto tilesheet_t::generate(const std::vector<element_type>& bitmaps, const ALLEGRO::VECTOR_2D<int32_t>& tile_size) -> int32_t
 	{
 		this->m_bitmaps.clear();
 		this->m_sub_bitmaps.clear();
@@ -180,19 +180,19 @@ namespace wind
 
 	namespace tilesheet
 	{
-		static size_t populate_vector(ALLEGRO::BITMAP& bitmap, ALLEGRO::SIZE<size_t> tile_size, std::vector<ALLEGRO::BITMAP>& bitmaps)
+		static size_t populate_vector(ALLEGRO::BITMAP& bitmap, ALLEGRO::VECTOR_2D<size_t> tile_size, std::vector<ALLEGRO::BITMAP>& bitmaps)
 		{
-			ALLEGRO::SIZE<size_t> bitmap_size{ al::get_bitmap_dimensions(bitmap) };
+			ALLEGRO::VECTOR_2D<size_t> bitmap_size{ al::get_bitmap_dimensions(bitmap) };
 			ALLEGRO::BITMAP sub{ nullptr };
 			ALLEGRO::BITMAP target{};
-			ALLEGRO::RECTANGLE<size_t> source = { {0,0}, tile_size };
+			ALLEGRO::RECTANGLE<size_t> source = { ALLEGRO::VECTOR_2D<size_t>(), tile_size};
 
-			bitmap_size.width -= (bitmap_size.width % tile_size.width);
-			bitmap_size.height -= (bitmap_size.height % tile_size.height);
+			bitmap_size.get_x() -= (bitmap_size.get_x() % tile_size.get_x());
+			bitmap_size.get_y() -= (bitmap_size.get_y() % tile_size.get_y());
 
-			for (source.position.y = 0; source.position.y < bitmap_size.height; source.position.y += tile_size.height)
+			for (source.get_position().get_y() = 0; source.get_position().get_y() < bitmap_size.get_y(); source.get_position().get_y() += tile_size.get_y())
 			{
-				for (source.position.x = 0; source.position.x < bitmap_size.width; source.position.x += tile_size.width)
+				for (source.get_position().get_x() = 0; source.get_position().get_x() < bitmap_size.get_x(); source.get_position().get_x() += tile_size.get_x())
 				{
 					if (!(sub = al::create_sub_bitmap(bitmap, static_cast<ALLEGRO::RECTANGLE<int32_t>>(source))))
 					{

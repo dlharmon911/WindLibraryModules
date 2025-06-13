@@ -50,7 +50,7 @@ namespace wind
 	{
 		export using font_data_t = struct font_data_tag_t;
 		export using font_t = typename std::shared_ptr<font_data_t>;
-		export using cursor_t = typename ALLEGRO::POINT<int32_t>;
+		export using cursor_t = typename ALLEGRO::VECTOR_2D<int32_t>;
 		export using rgba_t = typename uint32_t;
 		export using palette_t = typename std::array<rgba_t, WIND::CONSOLE::PALETTE::SIZE>;
 

@@ -23,7 +23,7 @@ namespace wind
 
 	public:
 		tilemap_t();
-		explicit tilemap_t(ALLEGRO::SIZE<int32_t> tilesize);
+		explicit tilemap_t(ALLEGRO::VECTOR_2D<int32_t> tilesize);
 		tilemap_t(const tilemap_t& tilemap);
 		~tilemap_t();
 		auto operator = (const tilemap_t& tilemap)->tilemap_t&;
@@ -39,8 +39,8 @@ namespace wind
 		auto push_back(reference_element_type tilemap) -> void;
 		auto pop_back() -> void;
 
-		auto get_tile_size() const -> const ALLEGRO::SIZE<int32_t>&;
-		auto set_tile_size(ALLEGRO::SIZE<int32_t> tilesize) -> void;
+		auto get_tile_size() const -> const ALLEGRO::VECTOR_2D<int32_t>&;
+		auto set_tile_size(ALLEGRO::VECTOR_2D<int32_t> tilesize) -> void;
 
 		auto at(size_t index) -> reference_element_type;
 		auto at(size_t index) const->const_reference_element_type;
@@ -88,7 +88,7 @@ namespace wind
 
 	private:
 		vector_type m_sheets;
-		ALLEGRO::SIZE<int32_t> m_tilesize;
+		ALLEGRO::VECTOR_2D<int32_t> m_tilesize;
 	};
 
 	namespace tilemap

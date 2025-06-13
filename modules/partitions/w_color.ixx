@@ -5,6 +5,11 @@ import allegro;
 import :base;
 import :math;
 
+namespace WIND
+{
+	export const ALLEGRO::COLOR EIGENGRAU{ 0.08627451f, 0.08627451f, 0.11372549f, 1.0f };
+}
+
 namespace wind
 {
 	union _color
@@ -51,9 +56,9 @@ namespace wind
 	{
 		ALLEGRO::COLOR rv{ 0.0f, 0.0f, 0.0f, 1.0f };
 
-		rv.red = std::min(1.0f, (color.red * 0.393f) + (color.green * 0.769f) + (color.blue * 0.189f));
-		rv.green = std::min(1.0f, (color.red * 0.349f) + (color.green * 0.686f) + (color.blue * 0.168f));
-		rv.blue = std::min(1.0f, (color.red * 0.272f) + (color.green * 0.534f) + (color.blue * 0.131f));
+		rv.r = std::min<float>(1.0f, (color.r * 0.393f) + (color.g * 0.769f) + (color.b * 0.189f));
+		rv.g = std::min<float>(1.0f, (color.r * 0.349f) + (color.g * 0.686f) + (color.b * 0.168f));
+		rv.b = std::min<float>(1.0f, (color.r * 0.272f) + (color.g * 0.534f) + (color.b * 0.131f));
 
 		return rv;
 	}
@@ -62,7 +67,7 @@ namespace wind
 	{
 		ALLEGRO::COLOR rv{ 0.0f, 0.0f, 0.0f, 1.0f };
 
-		rv.red = std::min(1.0f, (rv.green = rv.blue = 0.299f * color.red + 0.587f * color.green + 0.114f * color.blue));
+		rv.r = std::min<float>(1.0f, (rv.g = rv.b = 0.299f * color.r + 0.587f * color.g + 0.114f * color.b));
 
 		return rv;
 	}

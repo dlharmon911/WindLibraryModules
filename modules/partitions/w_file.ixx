@@ -31,7 +31,7 @@ namespace wind
 
 		auto operator == (const file_iterator_t& it) -> bool
 		{
-			return ((!this->m_data && !it.m_data) ||
+			return ((this->eof() && it.eof()) ||
 				(this->m_data == it.m_data && al::ftell(this->m_data) == al::ftell(it.m_data)));
 		}
 
@@ -40,21 +40,25 @@ namespace wind
 			return !(this->operator==(it));
 		}
 
-		auto get() -> int32_t
+		auto eof() const -> bool
+		{
+			return (!this->m_data || this->m_c == ALLEGRO::FILE_EOF);
+		}
+
+		auto get() const -> int32_t
 		{
 			return this->m_c;
 		}
 
 		auto pop() -> void
 		{
-			if (this->m_data)
+			if (this->m_data && !al::feof(this->m_data))
 			{
 				this->m_c = al::fgetc(this->m_data);
 			}
-
-			if (this->m_c == EOF)
+			else
 			{
-				this->m_data.reset();
+				this->m_c = ALLEGRO::FILE_EOF;
 			}
 		}
 
@@ -87,8 +91,10 @@ namespace wind
 		}
 
 	private:
+
+
 		ALLEGRO::FILE m_data{};
-		int32_t m_c{ EOF };
+		int32_t m_c{ ALLEGRO::FILE_EOF };
 	};
 }
 

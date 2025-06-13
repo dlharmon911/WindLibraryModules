@@ -33,10 +33,12 @@ export import :path;
 export import :random;
 export import :string;
 export import :system;
+export import :theme;
 export import :tilemap;
 export import :tilesheet;
 export import :value;
 export import :vector3d;
+export import :widget;
 export import :word;
 
 namespace wind

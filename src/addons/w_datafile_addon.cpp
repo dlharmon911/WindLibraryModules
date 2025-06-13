@@ -39,7 +39,7 @@ namespace wind
 				return -1;
 			}
 
-			const json_object_t& object = json.get_as_object();
+			const json_object_t& object{ json };
 
 			auto it = object.find("datafile");
 			if (it == object.cend())

@@ -38,7 +38,7 @@ namespace wind
 				return -1;
 			}
 
-			string_t name{ it->get_as_string() };
+			string_t name{ it->get_as<string_t>() };
 
 			return get_object_type(name);
 		}
@@ -52,7 +52,7 @@ namespace wind
 				return -1;
 			}
 
-			const json_object_t& object = json.get_as_object();
+			const json_object_t& object = static_cast<const json_object_t&>(json);
 
 			dobject.m_type = get_type(object);
 
@@ -96,7 +96,7 @@ namespace wind
 				return -1;
 			}
 
-			const json_object_t& object = json.get_as_object();
+			const json_object_t& object = static_cast<const json_object_t&>(json);
 
 			auto it = object.find("objects");
 			if (it == object.cend())
@@ -109,7 +109,7 @@ namespace wind
 				return -1;
 			}
 
-			data_t data(it->get_as_array());
+			data_t data(static_cast<const json_array_t&>(*it));
 
 			if (generate_object(data, any) < 0)
 			{

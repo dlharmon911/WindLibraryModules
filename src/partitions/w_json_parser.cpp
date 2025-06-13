@@ -127,19 +127,19 @@ namespace wind
 
 					case WIND::JSON::TOKEN::TYPE::BOOLEAN:
 					{
-						json.set_as_boolean(begin->get_string() == "true");
+						json.set_as<bool>(begin->get_string() == "true");
 						++begin;
 					} break;
 
 					case WIND::JSON::TOKEN::TYPE::NUMBER:
 					{
-						json.set_as_number(std::atof(begin->get_string().c_str()));
+						json.set_as<double>(std::atof(begin->get_string().c_str()));
 						++begin;
 					} break;
 
 					case WIND::JSON::TOKEN::TYPE::STRING:
 					{
-						json.set_as_string(begin->get_string());
+						json.set_as<string_t>(begin->get_string());
 						++begin;
 					} break;
 
@@ -151,7 +151,7 @@ namespace wind
 
 						if (rv == 0)
 						{
-							json.set_as_object(object);
+							json.set_as<json_object_t>(object);
 						}
 					}break;
 					case WIND::JSON::TOKEN::TYPE::ARRAY_START:
@@ -162,7 +162,7 @@ namespace wind
 
 						if (rv == 0)
 						{
-							json.set_as_array(array);
+							json.set_as<json_array_t>(array);
 						}
 					}break;
 					default:
@@ -197,7 +197,7 @@ namespace wind
 
 				case WIND::JSON::TYPE::BOOLEAN:
 				{
-					string_t output = ((bool)json ? "true" : "false");
+					string_t output = (json.get_as<bool>() ? "true" : "false");
 					for (auto& c : output)
 					{
 						if (al::fputc(info.m_file, c) == EOF)
@@ -210,7 +210,7 @@ namespace wind
 
 				case WIND::JSON::TYPE::NUMBER:
 				{
-					if (al::fprintf(info.m_file, "%G", (double)json) <= 0)
+					if (al::fprintf(info.m_file, "%G", json.get_as<double>()) <= 0)
 					{
 						do_json_error(WIND::JSON::ERROR_STREAM_ENDED_EARLY, __FILE__, __LINE__);
 					}
@@ -224,7 +224,7 @@ namespace wind
 						return -1;
 					}
 
-					string_t s = json.get_as_string();
+					string_t s = json.get_as<string_t>();
 
 					for (auto& c : s)
 					{
@@ -244,12 +244,12 @@ namespace wind
 
 				case WIND::JSON::TYPE::OBJECT:
 				{
-					rv = object::write((json_object_t)json, info);
+					rv = object::write(static_cast<const json_object_t>(json), info);
 				}break;
 
 				case WIND::JSON::TYPE::ARRAY:
 				{
-					rv = array::write((json_array_t)json, info);
+					rv = array::write(static_cast<const json_array_t>(json), info);
 				}break;
 				}
 

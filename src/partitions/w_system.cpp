@@ -16,6 +16,7 @@ import allegro.physfs_addon;
 import :color;
 import :input;
 import :dialog;
+import :widget;
 import :system;
 import :base;
 import :string;
@@ -25,7 +26,7 @@ import :log;
 namespace WIND
 {
 	static constexpr float DISPLAY_SCALE = 1.25f;
-	static constexpr ALLEGRO::SIZE<float> DISPLAY_SIZE = { 800.0f, 600.0f };
+	static constexpr ALLEGRO::VECTOR_2D<float> DISPLAY_SIZE = { 800.0f, 600.0f };
 	static constexpr double LOGIC_TIMING = 60.0;
 	static constexpr uint32_t BACKGROUND_DEFAULT = 0x101030;
 }
@@ -63,6 +64,12 @@ namespace wind
 			std::map<int32_t, display::option_t> m_options{};
 			int32_t m_flags{ ALLEGRO::DISPLAY_FLAG_WINDOWED | ALLEGRO::DISPLAY_FLAG_RESIZABLE };
 			display::option_t m_null_option{ -1, 0 };
+			ALLEGRO::VECTOR_2D<int32_t> m_start_size{ WIND::DISPLAY_SIZE };
+
+			auto set_start_size(const ALLEGRO::VECTOR_2D<int32_t>& size) -> void
+			{
+				m_start_size = size;
+			}
 
 			auto get_new_option(int32_t id) -> display::option_t&
 			{
@@ -108,7 +115,7 @@ namespace wind
 
 		auto timestamp() -> string_t
 		{
-			char buffer[1024];
+			std::array<char, 1024> buffer{""};
 			struct tm local;
 			__time64_t long_time;
 
@@ -121,7 +128,7 @@ namespace wind
 				exit(1);
 			}
 
-			sprintf_s<1024>(buffer,
+			sprintf_s(buffer.data(), buffer.size(),
 				"%2d:%02d:%02d %s %2d/%02d/%4d",
 				(local.tm_hour % 12 == 0 ? 12 : local.tm_hour % 12),
 				local.tm_min,
@@ -131,7 +138,7 @@ namespace wind
 				local.tm_mday,
 				1900 + local.tm_year);
 
-			return string_t(buffer);
+			return string_t(buffer.data());
 		}
 	}
 
@@ -269,7 +276,7 @@ namespace wind
 		}
 
 		al::set_new_window_title(this->m_dialog->get_title().c_str());
-		system::m_display = al::create_display(static_cast<ALLEGRO::SIZE<size_t>>(WIND::DISPLAY_SIZE));
+		system::m_display = al::create_display(static_cast<ALLEGRO::VECTOR_2D<int32_t>>(system::display::m_start_size));
 		if (!system::m_display)
 		{
 			wind::lout << "failed\n";
@@ -326,7 +333,7 @@ namespace wind
 		wind::json::initializer::register_defaults();
 
 		wind::lout << "Initializing Dialog: \n";
-		if (this->m_dialog->on_initialize(args) < 0)
+		if (this->m_dialog->on_initialize() < 0)
 		{
 			wind::lout << "failed\n";
 			return -1;
@@ -379,6 +386,7 @@ namespace wind
 	void system_t::loop()
 	{
 		ALLEGRO::EVENT event{};
+		std::shared_ptr<widget_t> selected{};
 
 		this->m_dialog->on_start();
 
@@ -391,104 +399,33 @@ namespace wind
 			{
 				al::get_next_event(system::m_event_queue, event);
 
+				this->m_dialog->on_event(event);
+
 				switch (event.type)
 				{
-				case ALLEGRO::EVENT_TYPE_JOYSTICK_AXIS:
-				{
-					if (this->m_dialog->on_joystick_axis(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_JOYSTICK_BUTTON_DOWN:
-				{
-					if (this->m_dialog->on_joystick_button_down(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_JOYSTICK_BUTTON_UP:
-				{
-					if (this->m_dialog->on_joystick_button_up(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_JOYSTICK_CONFIGURATION:
-				{
-					if (this->m_dialog->on_joystick_configuration(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
 				case ALLEGRO::EVENT_TYPE_KEY_UP:
 				{
 					wind::input::keyboard::set_released(event.keyboard.keycode);
-
-					if (this->m_dialog->on_key_up(event))
-					{
-					}
-					else
-					{
-					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_KEY_DOWN:
 				{
 					wind::input::keyboard::set_pressed(event.keyboard.keycode);
-
-					if (this->m_dialog->on_key_down(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_KEY_CHAR:
-				{
-					if (this->m_dialog->on_key_char(event))
-					{
-					}
-					else
-					{
-					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_AXES:
 				{
 					wind::input::mouse::set_position({ event.mouse.x, event.mouse.y });
 					wind::input::mouse::set_wheel({ event.mouse.w, event.mouse.z });
-
-					if (this->m_dialog->on_mouse_axes(event))
-					{
-					}
-					else
-					{
-					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_DOWN:
 				{
 					wind::input::mouse::set_pressed(event.mouse.button);
-
-					if (this->m_dialog->on_mouse_button_down(event))
+					selected = this->m_dialog->get_mouse_over(wind::input::mouse::get_position());
+					if (!selected)
 					{
-					}
-					else
-					{
+						selected = this->m_dialog;
 					}
 				} break;
 
@@ -496,42 +433,18 @@ namespace wind
 				{
 					wind::input::mouse::set_released(event.mouse.button);
 
-					if (this->m_dialog->on_mouse_button_up(event))
+					std::shared_ptr<widget_t> temp = this->m_dialog->get_mouse_over(wind::input::mouse::get_position());
+					if (!temp)
 					{
+						temp = std::static_pointer_cast<widget_t>(this->m_dialog);
 					}
-					else
-					{
-					}
-				} break;
 
-				case ALLEGRO::EVENT_TYPE_MOUSE_ENTER_DISPLAY:
-				{
-					if (this->m_dialog->on_mouse_enter(event))
+					if (selected == temp)
 					{
+						event.type = ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_CLICK;
+						selected->on_event(event);
 					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_MOUSE_LEAVE_DISPLAY:
-				{
-					if (this->m_dialog->on_mouse_leave(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_MOUSE_WARPED:
-				{
-					if (this->m_dialog->on_mouse_warped(event))
-					{
-					}
-					else
-					{
-					}
+					selected.reset();
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_TIMER:
@@ -544,65 +457,12 @@ namespace wind
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_RESIZE:
 				{
-					if (this->m_dialog->on_display_resize(event))
-					{
-					}
-					else
-					{
-					}
-
 					al::acknowledge_resize(system::m_display);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_CLOSE:
 				{
-					if (this->m_dialog->on_display_close(event))
-					{
-					}
-					else
-					{
-						this->m_kill = true;
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_DISPLAY_LOST:
-				{
-					if (this->m_dialog->on_display_lost(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_DISPLAY_FOUND:
-				{
-					if (this->m_dialog->on_display_found(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_DISPLAY_SWITCH_IN:
-				{
-					if (this->m_dialog->on_display_switch_in(event))
-					{
-					}
-					else
-					{
-					}
-				} break;
-
-				case ALLEGRO::EVENT_TYPE_DISPLAY_SWITCH_OUT:
-				{
-					if (this->m_dialog->on_display_switch_out(event))
-					{
-					}
-					else
-					{
-					}
+					this->m_kill = true;
 				} break;
 
 #ifdef PICKLE_BALL

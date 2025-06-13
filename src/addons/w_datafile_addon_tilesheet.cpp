@@ -18,7 +18,7 @@ namespace wind
 		using data_t = struct data_tag_t
 		{
 			std::vector<ALLEGRO::BITMAP> m_bitmaps{};
-			ALLEGRO::SIZE<int32_t> m_size{ 0, 0 };
+			ALLEGRO::VECTOR_2D<int32_t> m_size{ 0, 0 };
 		};
 
 		static auto generate_object(const data_t& data, std::any& any) -> int32_t
@@ -82,7 +82,7 @@ namespace wind
 				return -1;
 			}
 
-			const json_object_t& object = json.get_as_object();
+			const json_object_t& object = static_cast<const json_object_t&>(json);
 
 			auto it = object.find("bitmap");
 			if (it == object.cend())
@@ -99,7 +99,7 @@ namespace wind
 			{
 				return -1;
 			}
-			if (wind::json::initializer::parse<int32_t>(*it, value.m_size.width) < 0)
+			if (wind::json::initializer::parse<int32_t>(*it, value.m_size.get_x()) < 0)
 			{
 				return -1;
 			}
@@ -109,7 +109,7 @@ namespace wind
 			{
 				return -1;
 			}
-			if (wind::json::initializer::parse<int32_t>(*it, value.m_size.height) < 0)
+			if (wind::json::initializer::parse<int32_t>(*it, value.m_size.get_y()) < 0)
 			{
 				return -1;
 			}

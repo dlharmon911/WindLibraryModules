@@ -11,12 +11,12 @@ namespace wind
 	namespace box
 	{
 		export template <typename T, typename Q>
-			auto is_point_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::POINT<Q>& point) -> bool
+			auto is_point_inside(const ALLEGRO::BOX<T>& box, const ALLEGRO::VECTOR_2D<Q>& point) -> bool
 		{
-			return (math.compare<T>(T(point.x), box.top_left.x) >= 0 &&
-				math.compare<T>(T(point.y), box.top_left.y) >= 0 &&
-				math.compare<T>(T(point.x), box.bottom_right.x) <= 0 &&
-				math.compare<T>(T(point.y), box.bottom_right.y) <= 0);
+			return (math.compare<T>(T(point.get_x()), box.top_left.get_x()) >= 0 &&
+				math.compare<T>(T(point.get_y()), box.top_left.get_y()) >= 0 &&
+				math.compare<T>(T(point.get_x()), box.bottom_right.get_x()) <= 0 &&
+				math.compare<T>(T(point.get_y()), box.bottom_right.get_y()) <= 0);
 		}
 
 		export template <typename T, typename Q>
@@ -28,18 +28,18 @@ namespace wind
 		export template <typename T, typename Q>
 			auto is_box_over(const ALLEGRO::BOX<T>& box, const ALLEGRO::BOX<Q>& other, ALLEGRO::BOX<T>& over) -> bool
 		{
-			if (wind::math::compare<T>(T(other.bottom_right.x), box.top_left.x) < 0 ||
-				wind::math::compare<T>(T(other.top_left.x), box.bottom_right.x) > 0 ||
-				wind::math::compare<T>(T(other.bottom_right.y), box.top_left.y) < 0 ||
-				wind::math::compare<T>(T(other.top_left.y), box.bottom_right.y) > 0)
+			if (wind::math::compare<T>(T(other.bottom_right.get_x()), box.top_left.get_x()) < 0 ||
+				wind::math::compare<T>(T(other.top_left.get_x()), box.bottom_right.get_x()) > 0 ||
+				wind::math::compare<T>(T(other.bottom_right.get_y()), box.top_left.get_y()) < 0 ||
+				wind::math::compare<T>(T(other.top_left.get_y()), box.bottom_right.get_y()) > 0)
 			{
 				return false;
 			}
 
-			over.top_left.x = std::max(other.top_left.x, box.top_left.x);
-			over.bottom_right.x = std::min(other.bottom_right.x, box.bottom_right.x);
-			over.top_left.y = std::max(other.top_left.y, box.top_left.y);
-			over.bottom_right.y = std::min(other.bottom_right.y, box.bottom_right.y);
+			over.top_left.get_x() = std::max(other.top_left.get_x(), box.top_left.get_x());
+			over.bottom_right.get_x() = std::min(other.bottom_right.get_x(), box.bottom_right.get_x());
+			over.top_left.get_y() = std::max(other.top_left.get_y(), box.top_left.get_y());
+			over.bottom_right.get_y() = std::min(other.bottom_right.get_y(), box.bottom_right.get_y());
 
 			return true;
 		}

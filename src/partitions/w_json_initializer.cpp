@@ -30,7 +30,7 @@ namespace wind
 					return -1;
 				}
 
-				bool json_value = json.get_as_boolean();
+				bool json_value = json.get_as<bool>();
 
 				value = json_value;
 
@@ -44,7 +44,7 @@ namespace wind
 					return -1;
 				}
 
-				double json_value = json.get_as_number();
+				double json_value = json.get_as<double>();
 
 				value = json_value;
 
@@ -53,126 +53,126 @@ namespace wind
 
 			template <> auto parse(const json_t& json, float& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (float)json_value;
+				float json_value = json.get_as<float>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, int8_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (int8_t)json_value;
+				int8_t json_value = json.get_as<int8_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, uint8_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (uint8_t)json_value;
+				uint8_t json_value = json.get_as<uint8_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, int16_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (int16_t)json_value;
+				int16_t json_value = json.get_as<int16_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, uint16_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (uint16_t)json_value;
+				uint16_t json_value = json.get_as<uint16_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, int32_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (int32_t)json_value;
+				int32_t json_value = json.get_as<int32_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, uint32_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (uint32_t)json_value;
+				uint32_t json_value = json.get_as<uint32_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, int64_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (int64_t)json_value;
+				int64_t json_value = json.get_as<int64_t>();
+
+				value = json_value;
 
 				return 0;
 			}
 
 			template <> auto parse(const json_t& json, uint64_t& value) -> int32_t
 			{
-				double json_value{ 0.0 };
-
-				if (parse(json, json_value) < 0)
+				if (json.get_type() != WIND::JSON::TYPE::NUMBER)
 				{
 					return -1;
 				}
 
-				value = (uint64_t)json_value;
+				uint64_t json_value = json.get_as<uint64_t>();
+
+				value = json_value;
 
 				return 0;
 			}
@@ -184,14 +184,14 @@ namespace wind
 					return -1;
 				}
 
-				wind::string_t json_value = json.get_as_string();
+				wind::string_t json_value = json.get_as<string_t>();
 
 				value = json_value;
 
 				return 0;
 			}
 
-			auto parse_bool(const json_t& json, std::any& value) -> int32_t
+			static auto parse_bool(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(bool))
 				{
@@ -210,7 +210,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_int8(const json_t& json, std::any& value) -> int32_t
+			static auto parse_int8(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(int8_t))
 				{
@@ -229,7 +229,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_uint8(const json_t& json, std::any& value) -> int32_t
+			static auto parse_uint8(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(uint8_t))
 				{
@@ -248,7 +248,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_int16(const json_t& json, std::any& value) -> int32_t
+			static auto parse_int16(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(int16_t))
 				{
@@ -267,7 +267,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_uint16(const json_t& json, std::any& value) -> int32_t
+			static auto parse_uint16(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(uint16_t))
 				{
@@ -286,7 +286,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_int32(const json_t& json, std::any& value) -> int32_t
+			static auto parse_int32(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(int32_t))
 				{
@@ -305,7 +305,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_uint32(const json_t& json, std::any& value) -> int32_t
+			static auto parse_uint32(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(uint32_t))
 				{
@@ -324,7 +324,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_int64(const json_t& json, std::any& value) -> int32_t
+			static auto parse_int64(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(int64_t))
 				{
@@ -343,7 +343,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_uint64(const json_t& json, std::any& value) -> int32_t
+			static auto parse_uint64(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(uint64_t))
 				{
@@ -362,7 +362,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_float(const json_t& json, std::any& value) -> int32_t
+			static auto parse_float(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(float))
 				{
@@ -381,7 +381,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_double(const json_t& json, std::any& value) -> int32_t
+			static auto parse_double(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(double))
 				{
@@ -400,7 +400,7 @@ namespace wind
 				return 0;
 			}
 
-			auto parse_string(const json_t& json, std::any& value) -> int32_t
+			static auto parse_string(const json_t& json, std::any& value) -> int32_t
 			{
 				if (value.type() != typeid(string_t))
 				{

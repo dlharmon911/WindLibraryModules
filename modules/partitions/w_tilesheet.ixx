@@ -27,13 +27,13 @@ namespace wind
 		auto clear() -> void;
 		auto count() const->size_t;
 		auto is_empty() const -> bool;
-		auto tile_size() const-> const ALLEGRO::SIZE<int32_t>&;
+		auto tile_size() const-> const ALLEGRO::VECTOR_2D<int32_t>&;
 		auto at(size_t index) -> reference_element_type;
 		auto at(size_t index) const->const_reference_element_type;
 		auto operator [](size_t index)->reference_element_type;
 		auto operator [](size_t index) const->const_reference_element_type;
 
-		auto generate(const std::vector<element_type>& bitmaps, const ALLEGRO::SIZE<int32_t>& tile_size) -> int32_t;
+		auto generate(const std::vector<element_type>& bitmaps, const ALLEGRO::VECTOR_2D<int32_t>& tile_size) -> int32_t;
 
 		class iterator
 		{
@@ -115,6 +115,6 @@ namespace wind
 	private:
 		std::vector<element_type> m_bitmaps{};
 		std::vector<element_type> m_sub_bitmaps{};
-		ALLEGRO::SIZE<int32_t> m_tile_size{ 0, 0 };
+		ALLEGRO::VECTOR_2D<int32_t> m_tile_size{ 0, 0 };
 	};
 }
