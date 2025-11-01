@@ -1,18 +1,24 @@
 export module wind:json.io;
 
-import <string>;
-import :json.object;
-import :json.parser;
 import :base;
 import :string;
+import :json.base;
+import :json.parser;
 
-namespace wind
+namespace wind::json
 {
-	namespace json
+	export auto load(json_t& json, const string_t& filename) -> int32_t
 	{
-		export auto load(json_t& json, const string_t& filename) -> int32_t;
-		export auto parse_buffer(json_t& json, const string_t& buffer) -> int32_t;
-		export auto save(const json_t& json, const string_t& filename) -> int32_t;
-		export auto load_from_archive(wind::json_t& json, const wind::string_t& archive_filename, const wind::string_t& filename) -> int32_t;
+		return parser::file::parse(json, filename);
+	}
+
+	export auto save(const json_t& json, const string_t& filename) -> int32_t
+	{
+		return parser::value::write(json, filename);
+	}
+
+	export auto parse(json_t& json, const string_t& buffer) -> int32_t
+	{
+		return parser::string::parse(json, buffer);
 	}
 }

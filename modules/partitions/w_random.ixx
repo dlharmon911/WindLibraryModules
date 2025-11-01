@@ -4,18 +4,35 @@ import <cstdlib>;
 import <cstdint>;
 import :base;
 
-namespace WIND::RANDOM
+namespace wind::random
 {
-	export constexpr int32_t MAXIMUM = RAND_MAX;
-}
-
-namespace wind
-{
-	namespace random
+	namespace internal
 	{
-		export auto set_seed(int32_t seed) -> void;
-		export auto get_seed() -> int32_t;
-		export auto generate(int32_t max_value = WIND::RANDOM::MAXIMUM) -> int32_t;
-		export auto generate(int32_t min_value, int32_t max_value) -> int32_t;
+		static auto get_seed() -> uint32_t&
+		{
+			static uint32_t seed{ 0 };
+			return seed;
+		}
+	}
+
+	export auto set_seed(uint32_t seed) -> void
+	{
+		internal::get_seed() = seed;
+		srand(seed);
+	}
+
+	export auto get_seed() -> uint32_t
+	{
+		return internal::get_seed();
+	}
+
+	export template <typename T> auto generate(T max_value) -> T
+	{
+		return static_cast<T>(std::rand()) / (static_cast<T>(RAND_MAX) / max_value);
+	}
+
+	export template <typename T> auto generate(T min_value, T max_value) -> T
+	{
+		return min_value + generate<T>(max_value - min_value);
 	}
 }
