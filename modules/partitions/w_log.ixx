@@ -2,6 +2,7 @@ export module wind:log;
 
 import <cstdarg>;
 import :base;
+import :file;
 import :string;
 
 namespace WIND::LOG
@@ -63,7 +64,7 @@ namespace wind
 		{
 			if (!this->m_file)
 			{
-				return ALLEGRO::FILE_EOF;
+				return file::error(__FILE__, __LINE__);
 			}
 
 			return al::fputc(this->m_file, c);
@@ -73,7 +74,7 @@ namespace wind
 		{
 			if (!this->m_file)
 			{
-				return ALLEGRO::FILE_EOF;
+				return file::error(__FILE__, __LINE__);
 			}
 
 			if (!data)
@@ -88,7 +89,7 @@ namespace wind
 
 			if (length != al::fwrite(this->m_file, data, length))
 			{
-				return ALLEGRO::FILE_EOF;
+				return file::error(__FILE__, __LINE__);
 			}
 
 			return static_cast<int32_t>(length);
@@ -123,7 +124,7 @@ namespace wind
 
 			if (this->putc(WIND::LOG::ENDL_CHAR) < 0)
 			{
-				return ALLEGRO::FILE_EOF;
+				return file::error(__FILE__, __LINE__);
 			}
 
 			return 1 + size;

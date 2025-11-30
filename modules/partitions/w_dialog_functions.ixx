@@ -7,23 +7,15 @@ import :dialog.system.type;
 
 namespace wind::dialog
 {
-	export template <typename T> int32_t run(std::span<const char* const>& span) requires(std::is_base_of_v<wind::dialog_t, T>)
+	export template <typename T> int32_t run(std::span<const char* const>& span) requires std::is_base_of_v<wind::dialog_t, T>
 	{
-		int32_t rv = 0;
+		int32_t rv = -1;
 
-		std::shared_ptr<T> dialog = std::make_shared<T>();
+		std::shared_ptr<dialog_t> dialog = std::static_pointer_cast<dialog_t>(std::make_shared<T>());
 
 		if (dialog)
 		{
-			system_t system(dialog);
-
-			rv = system.run(span);
-
-			dialog.reset();
-		}
-		else
-		{
-			rv = -1;
+			rv = system_t::run(dialog, span);
 		}
 
 		return rv;

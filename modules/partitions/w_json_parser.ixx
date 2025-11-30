@@ -2,7 +2,7 @@ export module wind:json.parser;
 
 import :base;
 import :hex;
-import :file_iterator;
+import :file.iterator;
 import :json.constants;
 import :json.base;
 import :json.tokenizer;
@@ -590,7 +590,7 @@ namespace wind::json
 
 				if (file = al::fopen(filename.c_str(), "rb"))
 				{
-					rv = parser::parse<file_iterator_t>(json, file_iterator_t::begin(file), file_iterator_t());
+					rv = parser::parse<wind::file::iterator_t>(json, wind::file::iterator_t::begin(file), wind::file::iterator_t());
 				}
 
 				return rv;

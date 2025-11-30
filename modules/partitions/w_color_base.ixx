@@ -11,7 +11,7 @@ namespace wind
 		export using array_t = typename std::array<type_t, WIND::COLOR::ARRAY_SIZE>;
 	}
 
-	export using color_t = struct color_tag_t
+	export struct color_t
 	{
 		union
 		{
@@ -28,6 +28,21 @@ namespace wind
 		operator ALLEGRO::COLOR() const
 		{
 			return *reinterpret_cast<const ALLEGRO::COLOR*>(this);
+		}
+
+		auto operator = (const ALLEGRO::COLOR& al_color) -> color_t&
+		{
+			*this = *reinterpret_cast<const color_t*>(&al_color);
+			return *this;
+		}
+
+		auto operator = (const color_t& other) -> color_t&
+		{
+			this->m_r = other.m_r;
+			this->m_g = other.m_g;
+			this->m_b = other.m_b;
+			this->m_a = other.m_a;
+			return *this;
 		}
 	};
 }

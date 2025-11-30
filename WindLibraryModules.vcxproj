@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.props" Condition="Exists('..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -182,13 +183,17 @@
     <ClCompile Include="modules\partitions\w_color_functions.ixx" />
     <ClCompile Include="modules\partitions\w_dialog.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_constants.ixx" />
-    <ClCompile Include="modules\partitions\w_dialog_data_type.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_functions.ixx" />
+    <ClCompile Include="modules\partitions\w_dialog_settings.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_system.ixx" />
+    <ClCompile Include="modules\partitions\w_dialog_system_data.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_system_functions.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_system_type.ixx" />
     <ClCompile Include="modules\partitions\w_dialog_type.ixx" />
+    <ClCompile Include="modules\partitions\w_file.ixx" />
     <ClCompile Include="modules\partitions\w_file_iterator.ixx" />
+    <ClCompile Include="modules\partitions\w_file_read_primitives.ixx" />
+    <ClCompile Include="modules\partitions\w_file_write_primitives.ixx" />
     <ClCompile Include="modules\partitions\w_flag.ixx" />
     <ClCompile Include="modules\partitions\w_hex.ixx" />
     <ClCompile Include="modules\partitions\w_input.ixx" />
@@ -203,6 +208,31 @@
     <ClCompile Include="modules\partitions\w_json_tokenizer.ixx" />
     <ClCompile Include="modules\partitions\w_log.ixx" />
     <ClCompile Include="modules\partitions\w_math.ixx" />
+    <ClCompile Include="modules\partitions\w_file_error.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_constants.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read_node.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload_compound.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload_list.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_read_string.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write_node.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload_compound.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload_list.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_file_write_string.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_functions.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_io.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_io_load.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_io_save.ixx" />
+    <ClCompile Include="modules\partitions\w_nbt_types.ixx" />
+    <ClCompile Include="modules\partitions\w_packfile.ixx" />
+    <ClCompile Include="modules\partitions\w_packfile_constants.ixx" />
+    <ClCompile Include="modules\partitions\w_packfile_functions.ixx" />
+    <ClCompile Include="modules\partitions\w_packfile_interface.ixx" />
+    <ClCompile Include="modules\partitions\w_packfile_types.ixx" />
     <ClCompile Include="modules\partitions\w_path.ixx" />
     <ClCompile Include="modules\partitions\w_random.ixx" />
     <ClCompile Include="modules\partitions\w_string.ixx" />
@@ -210,6 +240,10 @@
     <ClCompile Include="modules\partitions\w_string_constants.ixx" />
     <ClCompile Include="modules\partitions\w_string_functions.ixx" />
     <ClCompile Include="modules\partitions\w_timestamp.ixx" />
+    <ClCompile Include="modules\partitions\w_ustring.ixx" />
+    <ClCompile Include="modules\partitions\w_ustring_base.ixx" />
+    <ClCompile Include="modules\partitions\w_ustring_functions.ixx" />
+    <ClCompile Include="modules\partitions\w_utf8.ixx" />
     <ClCompile Include="modules\partitions\w_uuid.ixx" />
     <ClCompile Include="modules\partitions\w_uuid_base.ixx" />
     <ClCompile Include="modules\partitions\w_uuid_constants.ixx" />
@@ -228,6 +262,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\AllegroDeps.1.15.0\build\native\AllegroDeps.targets" Condition="Exists('packages\AllegroDeps.1.15.0\build\native\AllegroDeps.targets')" />
     <Import Project="packages\Allegro.5.2.10\build\native\Allegro.targets" Condition="Exists('packages\Allegro.5.2.10\build\native\Allegro.targets')" />
+    <Import Project="..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.targets" Condition="Exists('..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -235,5 +270,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\AllegroDeps.1.15.0\build\native\AllegroDeps.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\AllegroDeps.1.15.0\build\native\AllegroDeps.targets'))" />
     <Error Condition="!Exists('packages\Allegro.5.2.10\build\native\Allegro.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Allegro.5.2.10\build\native\Allegro.targets'))" />
+    <Error Condition="!Exists('..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.props'))" />
+    <Error Condition="!Exists('..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\repos\NBT_Test\packages\StoneSteps.zLib.VS2022.Static.1.3.1.1\build\native\StoneSteps.zLib.VS2022.Static.targets'))" />
   </Target>
 </Project>

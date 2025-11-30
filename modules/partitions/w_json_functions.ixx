@@ -2,7 +2,7 @@ export module wind:json.functions;
 
 import :base;
 import :hex;
-import :file_iterator;
+import :file.iterator;
 import :json.constants;
 import :json.base;
 import :json.tokenizer;

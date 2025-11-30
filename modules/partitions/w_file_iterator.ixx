@@ -1,35 +1,35 @@
-export module wind:file_iterator;
+export module wind:file.iterator;
 
 import :base;
 import :string;
 
-namespace wind
+namespace wind::file
 {
-	export class file_iterator_t
+	export class iterator_t
 	{
 	public:
-		file_iterator_t() = default;
+		iterator_t() = default;
 
-		explicit file_iterator_t(const ALLEGRO::FILE& file) : m_data(file), m_c(ALLEGRO::FILE_EOF) {}
+		explicit iterator_t(const ALLEGRO::FILE& file) : m_data(file), m_c(ALLEGRO::FILE_EOF) {}
 
-		file_iterator_t(const file_iterator_t& it) = default;
+		iterator_t(const iterator_t& it) = default;
 
-		~file_iterator_t() = default;
+		~iterator_t() = default;
 
-		auto operator = (const file_iterator_t& it) -> file_iterator_t&
+		auto operator = (const iterator_t& it) -> iterator_t&
 		{
 			this->m_data = it.m_data;
 			this->m_c = it.m_c;
 			return *this;
 		}
 
-		auto operator == (const file_iterator_t& it) -> bool
+		auto operator == (const iterator_t& it) -> bool
 		{
 			return ((this->eof() && it.eof()) ||
 				(this->m_data == it.m_data && al::ftell(this->m_data) == al::ftell(it.m_data)));
 		}
 
-		auto operator != (const file_iterator_t& it) -> bool
+		auto operator != (const iterator_t& it) -> bool
 		{
 			return !(this->operator==(it));
 		}
@@ -61,27 +61,27 @@ namespace wind
 			return this->m_c;
 		}
 
-		auto operator ++() -> file_iterator_t& { this->pop(); return *this; }
+		auto operator ++() -> iterator_t& { this->pop(); return *this; }
 
-		auto operator ++(int32_t) -> file_iterator_t { file_iterator_t tmp = *this; ++(*this); return tmp; }
+		auto operator ++(int32_t) -> iterator_t { iterator_t tmp = *this; ++(*this); return tmp; }
 
-		static auto begin(ALLEGRO::FILE& file) -> file_iterator_t
+		static auto begin(ALLEGRO::FILE& file) -> iterator_t
 		{
 			if (file)
 			{
 				al::fseek(file, 0, ALLEGRO::FILE_SEEK_SET);
 			}
 
-			file_iterator_t it{ file };
+			iterator_t it{ file };
 
 			it.pop();
 
 			return it;
 		}
 
-		static auto end() -> file_iterator_t
+		static auto end() -> iterator_t
 		{
-			return file_iterator_t();
+			return iterator_t();
 		}
 
 	private:
@@ -166,42 +166,42 @@ export auto operator << (ALLEGRO::FILE& stream, const char* val) -> ALLEGRO::FIL
 
 export auto operator << (ALLEGRO::FILE& stream, int8_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, uint8_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, int16_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, uint16_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, int32_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, uint32_t value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, float value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator << (ALLEGRO::FILE& stream, double value) -> ALLEGRO::FILE&
 {
-	return wind::write_to_file(stream, value);
+	return wind::file::write_to_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, wind::string_t& value) -> ALLEGRO::FILE&
@@ -221,40 +221,40 @@ export auto operator >> (ALLEGRO::FILE& stream, wind::string_t& value) -> ALLEGR
 
 export auto operator >> (ALLEGRO::FILE& stream, int8_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, uint8_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, int16_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, uint16_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, int32_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, uint32_t& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, float& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }
 
 export auto operator >> (ALLEGRO::FILE& stream, double& value) -> ALLEGRO::FILE&
 {
-	return wind::read_from_file(stream, value);
+	return wind::file::read_from_file(stream, value);
 }

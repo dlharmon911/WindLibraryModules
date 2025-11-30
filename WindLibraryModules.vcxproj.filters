@@ -67,6 +67,15 @@
     <Filter Include="Module Files\Partition Files\Timestamp Files">
       <UniqueIdentifier>{95969c74-1692-4e37-bbe4-4770e13917c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Module Files\Partition Files\UString Files">
+      <UniqueIdentifier>{f0aca1d6-ae4c-48ce-8302-94b432a63b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Partition Files\Packfile Files">
+      <UniqueIdentifier>{36e0b938-8251-4567-b401-af6610da0025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module Files\Partition Files\NBT Files">
+      <UniqueIdentifier>{168a04df-53b9-427d-9ad5-371301070937}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modules\wind.ixx">
@@ -186,8 +195,107 @@
     <ClCompile Include="modules\partitions\w_timestamp.ixx">
       <Filter>Module Files\Partition Files\Timestamp Files</Filter>
     </ClCompile>
-    <ClCompile Include="modules\partitions\w_dialog_data_type.ixx">
+    <ClCompile Include="modules\partitions\w_dialog_settings.ixx">
       <Filter>Module Files\Partition Files\Dialog Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_dialog_system_data.ixx">
+      <Filter>Module Files\Partition Files\Dialog Files\Dialog System Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_ustring.ixx">
+      <Filter>Module Files\Partition Files\UString Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_ustring_base.ixx">
+      <Filter>Module Files\Partition Files\UString Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_ustring_functions.ixx">
+      <Filter>Module Files\Partition Files\UString Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_packfile.ixx">
+      <Filter>Module Files\Partition Files\Packfile Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_packfile_constants.ixx">
+      <Filter>Module Files\Partition Files\Packfile Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_packfile_types.ixx">
+      <Filter>Module Files\Partition Files\Packfile Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_packfile_functions.ixx">
+      <Filter>Module Files\Partition Files\Packfile Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_packfile_interface.ixx">
+      <Filter>Module Files\Partition Files\Packfile Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_utf8.ixx">
+      <Filter>Module Files\Partition Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_file_error.ixx">
+      <Filter>Module Files\Partition Files\File Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_file_read_primitives.ixx">
+      <Filter>Module Files\Partition Files\File Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_file_write_primitives.ixx">
+      <Filter>Module Files\Partition Files\File Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_file.ixx">
+      <Filter>Module Files\Partition Files\File Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_constants.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read_node.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_functions.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_io.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_io_load.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_types.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload_compound.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read_payload_list.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write_node.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload_compound.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write_payload_list.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_io_save.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_read_string.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\partitions\w_nbt_file_write_string.ixx">
+      <Filter>Module Files\Partition Files\NBT Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,39 +12,19 @@ import :log;
 import :color;
 import :timestamp;
 import :random;
+import :input;
 import :dialog.constants;
 import :dialog.type;
-import :dialog.data.type;
+import :dialog.system.data;
 
 namespace wind::dialog
 {
-	static data_t g_data{};
-
-	namespace data
-	{
-		export inline auto get() -> data_t&
-		{
-			return g_data;
-		}
-
-		static auto clear() -> void
-		{
-			g_data.m_timer.m_object.reset();
-			g_data.m_display.m_object.reset();
-			g_data.m_event_queue.m_object.reset();
-			g_data.m_input.acknowledge();
-			g_data.m_kill = false;
-		}
-	}
-
 	export class system_t
 	{
 	public:
 		~system_t() = default;
-
-		explicit system_t(const std::shared_ptr<dialog_t>& dialog) : m_dialog(dialog) {}
 		
-		auto run(std::span<const char* const>& span) -> int32_t
+		static auto run(std::shared_ptr<dialog_t>& dialog, std::span<const char* const>& span) -> int32_t
 		{
 			int32_t rv = 0;
 
@@ -59,26 +39,25 @@ namespace wind::dialog
 				" Log opened: " << wind::timestamp::get() << "\n" <<
 				"----------------------------------------" << wind::endl;
 
-			if (this->m_dialog)
+			if (dialog)
 			{
-				this->m_dialog->m_data = &g_data;
+				system_t system{ dialog };
 
-				if ((rv = this->init(span)) == 0)
+				if ((rv = system.init(span)) == 0)
 				{
-					this->loop();
+					system.loop();
 				}
-
-				this->m_dialog->m_data = nullptr;
-
-				this->shutdown();
+				system.shutdown();
 			}
+
+			dialog.reset();
+
 
 			lout << "---------------------------------------\n" <<
 				" Log closed: " << wind::timestamp::get() << "\n" <<
 				"---------------------------------------" << wind::endl;
 			lout.close();
 
-			al::uninstall_system();
 
 			return rv;
 		}
@@ -86,10 +65,10 @@ namespace wind::dialog
 	private:
 		system_t() = default;
 
-		auto init(std::span<const char* const>& span) -> int32_t
-		{
-			wind::lout << "Initialization Phase Begin" << "\n----------------------------------------\n";
+		explicit system_t(const std::shared_ptr<dialog_t>& dialog) : m_dialog(dialog), m_data() {}
 
+		auto init_addons(std::span<const char* const>& span) -> int32_t
+		{
 			if (!al::image_addon::is_initialized())
 			{
 				wind::lout << "Initializing Image Addon: ";
@@ -167,17 +146,34 @@ namespace wind::dialog
 				wind::lout << "pass\n";
 			}
 
-			wind::lout << "Creating Display: ";
-			al::set_new_display_flags(g_data.m_display.m_flags);
+			return 0;
+		}
 
-			for (auto i = g_data.m_display.m_options.cbegin(); i != g_data.m_display.m_options.cend(); ++i)
+		auto init(std::span<const char* const>& span) -> int32_t
+		{
+			wind::lout << "Initialization Phase Begin" << "\n----------------------------------------\n";
+
+			if (init_addons(span) < 0)
+			{
+				return -1;
+			}
+
+			if (this->m_dialog->on_pre_initialize(this->m_data.m_settings_data) < 0)
+			{
+				return -1;
+			}
+
+			wind::lout << "Creating Display: ";
+			al::set_new_display_flags(this->m_data.m_settings_data.m_display_data.m_flags);
+
+			for (auto i = this->m_data.m_settings_data.m_display_data.m_options.cbegin(); i != this->m_data.m_settings_data.m_display_data.m_options.cend(); ++i)
 			{
 				al::set_new_display_option(i->first, i->second.m_value, i->second.m_importance);
 			}
 
 			al::set_new_window_title(this->m_dialog->title().c_str());
-			g_data.m_display.m_object = al::create_display(g_data.m_display.m_width, g_data.m_display.m_height);
-			if (!g_data.m_display.m_object)
+			this->m_data.m_display_object = al::create_display(this->m_data.m_settings_data.m_display_data.m_width, this->m_data.m_settings_data.m_display_data.m_height);
+			if (!this->m_data.m_display_object)
 			{
 				wind::lout << "failed\n";
 				return -1;
@@ -189,7 +185,7 @@ namespace wind::dialog
 			HICON icon = LoadIcon(GetModuleHandle(nullptr), L"IDI_ICON1");
 			if (icon)
 			{
-				HWND winhandle = al::windows::get_window_handle(g_data.m_display.m_object);
+				HWND winhandle = al::windows::get_window_handle(this->m_data.m_display_object);
 				SetClassLongPtr(winhandle, GCLP_HICON, (LONG_PTR)icon);
 				SetClassLongPtr(winhandle, GCLP_HICONSM, (LONG_PTR)icon);
 			}
@@ -198,14 +194,14 @@ namespace wind::dialog
 			if (icon)
 			{
 				al::convert_mask_to_alpha(icon, wind::map_rgb_i(0xff00ff));
-				al::set_display_icon(g_data.m_display.m_object, icon);
+				al::set_display_icon(this->m_data.m_display, icon);
 				icon.reset();
 			}
 #endif
 
 			wind::lout << "Creating Event Queue: ";
-			g_data.m_event_queue.m_object = al::create_event_queue();
-			if (!g_data.m_event_queue.m_object)
+			this->m_data.m_event_queue_object = al::create_event_queue();
+			if (!this->m_data.m_event_queue_object)
 			{
 				wind::lout << "failed\n";
 				return -1;
@@ -213,18 +209,18 @@ namespace wind::dialog
 			wind::lout << "pass\n";
 
 			wind::lout << "Creating Logic Timer: ";
-			g_data.m_timer.m_object = al::create_timer(1.0 / g_data.m_timer.m_interval);
-			if (!g_data.m_timer.m_object)
+			this->m_data.m_timer_object = al::create_timer(1.0 / this->m_data.m_settings_data.m_timer_data.m_interval);
+			if (!this->m_data.m_timer_object)
 			{
 				wind::lout << "failed\n";
 				return -1;
 			}
 			wind::lout << "pass\n";
 
-			al::register_event_source(g_data.m_event_queue.m_object, al::get_display_event_source(g_data.m_display.m_object));
-			al::register_event_source(g_data.m_event_queue.m_object, al::get_timer_event_source(g_data.m_timer.m_object));
-			al::register_event_source(g_data.m_event_queue.m_object, al::get_keyboard_event_source());
-			al::register_event_source(g_data.m_event_queue.m_object, al::get_mouse_event_source());
+			al::register_event_source(this->m_data.m_event_queue_object, al::get_display_event_source(this->m_data.m_display_object));
+			al::register_event_source(this->m_data.m_event_queue_object, al::get_timer_event_source(this->m_data.m_timer_object));
+			al::register_event_source(this->m_data.m_event_queue_object, al::get_keyboard_event_source());
+			al::register_event_source(this->m_data.m_event_queue_object, al::get_mouse_event_source());
 
 			const auto now = std::chrono::system_clock::now();
 			const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
@@ -243,21 +239,26 @@ namespace wind::dialog
 				<< "----------------------------------------" << wind::endl;
 
 			return 0;
-
 		}
 
 		auto shutdown() -> void
 		{
-			data::clear();
+			this->m_dialog->on_shutdown();
+
+			this->m_data.m_timer_object.reset();
+			this->m_data.m_display_object.reset();
+			this->m_data.m_event_queue_object.reset();
+			this->m_data.m_input_data.acknowledge();
+			this->m_data.m_kill = false;
 		}
 
 		auto input() -> void
 		{
 			ALLEGRO::EVENT event{};
 
-			while (!al::is_event_queue_empty(g_data.m_event_queue.m_object))
+			while (!al::is_event_queue_empty(this->m_data.m_event_queue_object))
 			{
-				al::get_next_event(g_data.m_event_queue.m_object, event);
+				al::get_next_event(this->m_data.m_event_queue_object, event);
 
 				this->m_dialog->on_event(event);
 
@@ -265,51 +266,51 @@ namespace wind::dialog
 				{
 				case ALLEGRO::EVENT_TYPE_KEY_UP:
 				{
-					auto& button = g_data.m_input.key().button(event.keyboard.keycode);
+					auto& button = this->m_data.m_input_data.key().button(event.keyboard.keycode);
 					button.value(WIND::INPUT::BUTTON::CHANGED);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_KEY_DOWN:
 				{
-					auto& button = g_data.m_input.key().button(event.keyboard.keycode);
+					auto& button = this->m_data.m_input_data.key().button(event.keyboard.keycode);
 					button.value(WIND::INPUT::BUTTON::PRESSED | WIND::INPUT::BUTTON::CHANGED);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_AXES:
 				{
-					auto& axis{ g_data.m_input.mouse().axis() };
+					auto& axis{ this->m_data.m_input_data.mouse().axis() };
 					axis.first = static_cast<float>(event.mouse.x);
 					axis.second = static_cast<float>(event.mouse.y);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_DOWN:
 				{
-					auto& button = g_data.m_input.mouse().button(static_cast<int32_t>(event.mouse.button - 1));
+					auto& button = this->m_data.m_input_data.mouse().button(static_cast<int32_t>(event.mouse.button - 1));
 					button.value(WIND::INPUT::BUTTON::PRESSED | WIND::INPUT::BUTTON::CHANGED);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_MOUSE_BUTTON_UP:
 				{
-					auto& button = g_data.m_input.mouse().button(static_cast<int32_t>(event.mouse.button - 1));
+					auto& button = this->m_data.m_input_data.mouse().button(static_cast<int32_t>(event.mouse.button - 1));
 					button.value(WIND::INPUT::BUTTON::CHANGED);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_TIMER:
 				{
-					if (!g_data.m_timer.m_paused)
+					if (!this->m_data.m_timer_data.m_paused)
 					{
-						++g_data.m_timer.m_tick_count;
+						++this->m_data.m_timer_data.m_tick_count;
 					}
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_RESIZE:
 				{
-					al::acknowledge_resize(g_data.m_display.m_object);
+					al::acknowledge_resize(this->m_data.m_display_object);
 				} break;
 
 				case ALLEGRO::EVENT_TYPE_DISPLAY_CLOSE:
 				{
-					g_data.m_kill = true;
+					this->m_data.m_kill = true;
 				} break;
 
 #ifdef PICKLE_BALL
@@ -326,34 +327,36 @@ namespace wind::dialog
 
 		auto update() -> void
 		{
-			while (g_data.m_timer.m_tick_count > 0)
+			while (this->m_data.m_timer_data.m_tick_count > 0)
 			{
-				if (this->m_dialog->on_update() < 0)
+				if (this->m_dialog->on_update(this->m_data.m_input_data) < 0)
 				{
-					g_data.m_kill = true;
+					this->m_data.m_kill = true;
 				}
-				--g_data.m_timer.m_tick_count;
+				--this->m_data.m_timer_data.m_tick_count;
 			}
+
+			al::rest(0.01);
 		}
 
 		auto render() -> void
 		{
-			this->m_dialog->on_render();
+			this->m_dialog->on_render(this->m_data.m_display_object);
 		}
 
 		auto loop() -> void
 		{
 			this->m_dialog->on_start();
 
-			al::start_timer(g_data.m_timer.m_object);
-			al::pause_event_queue(g_data.m_event_queue.m_object, false);
+			al::start_timer(this->m_data.m_timer_object);
+			al::pause_event_queue(this->m_data.m_event_queue_object, false);
 
-			while (!g_data.m_kill)
+			while (!this->m_data.m_kill)
 			{
 				input();
 				update();
 
-				if (g_data.m_kill)
+				if (this->m_data.m_kill)
 				{
 					break;
 				}
@@ -362,12 +365,13 @@ namespace wind::dialog
 				al::rest(0.1);				
 			}
 
-			al::pause_event_queue(g_data.m_event_queue.m_object, true);
-			al::stop_timer(g_data.m_timer.m_object);
+			al::pause_event_queue(this->m_data.m_event_queue_object, true);
+			al::stop_timer(this->m_data.m_timer_object);
 
 			this->m_dialog->on_stop();
 		}
 
 		std::shared_ptr<dialog_t> m_dialog{};
+		system::data_t m_data{};
 	};
 }
